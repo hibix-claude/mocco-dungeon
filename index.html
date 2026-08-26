@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>モッコメリアンの不思議のダンジョン</title>
+<title>モッコメリアンの不思議な洞窟</title>
 <style>
   :root{--bg:#14121a;--panel:#221f2c;--line:#3a3547;--txt:#ece8f4;--dim:#9b94ad;--acc:#ffd54a;--hp:#ff6b6b;--btc:#f7931a;--thunder:#8fd3ff}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
@@ -56,7 +56,7 @@
     <canvas id="cv"></canvas>
     <div id="title" class="overlay show">
       <canvas id="titleMocco" class="mocco" width="120" height="120" style="filter:drop-shadow(0 0 18px rgba(143,211,255,.5))"></canvas>
-      <h1>モッコメリアンの<br>不思議のダンジョン</h1>
+      <h1>モッコメリアンの<br>不思議な洞窟</h1>
       <p>手、ありませんけどー！<br>灰色の幻獣モッコメリアンが、<br>消えた画材を取り戻すため地下へ飛び込む。<br>BTC残高が尽きる前に地下10階を目指せ。</p>
       <button class="btn main" style="flex:none;padding:14px 40px" onclick="openHome()">工房モコファクへ</button>
       <button class="btn" id="contBtn" style="flex:none;padding:12px 40px;margin-top:10px;display:none" onclick="resumeGame()">つづきから（前回の冒険）</button>
@@ -89,7 +89,7 @@
     </div>
     <div id="wh" class="overlay" style="z-index:7">
       <h2>📦 倉庫 <small id="whcount"></small></h2>
-      <div class="desc">タップで「持っていく」を切り替え（最大5個）。選んだものを次の冒険に持ち込める。</div>
+      <div class="desc">タップで「持っていく」を切り替え（最大5個）。いらない物は「1モコで売る」で処分できる。</div>
       <div id="whlist"></div>
       <div class="row"><button class="btn" onclick="closeWh()">閉じる</button></div>
     </div>
@@ -237,9 +237,10 @@ function renderWh(){
   document.getElementById('whcount').textContent=`${META.wh.length}/30 ・ 持っていく ${WSEL.size}/5`;
   const l=document.getElementById('whlist');
   if(!META.wh.length){l.innerHTML='<div class="desc">倉庫は空だ。生きて持ち帰ったアイテムがここに貯まる。</div>';return;}
-  l.innerHTML=META.wh.map((it,i)=>`<div class="item ${WSEL.has(i)?'sel':''}" onclick="toggleWh(${i})"><span>${it.g} ${itemName(it)}</span>${WSEL.has(i)?'<small>持っていく</small>':''}</div>`).join('');
+  l.innerHTML=META.wh.map((it,i)=>`<div class="item ${WSEL.has(i)?'sel':''}" onclick="toggleWh(${i})"><span>${it.g} ${itemName(it)}${WSEL.has(i)?'<small>　持っていく</small>':''}</span><button class="btn" style="flex:none;min-width:0;padding:4px 10px;font-size:11px" onclick="sellWh(${i},event)">1モコで売る</button></div>`).join('');
 }
 function toggleWh(i){if(WSEL.has(i))WSEL.delete(i);else if(WSEL.size<5)WSEL.add(i);renderWh();}
+function sellWh(i,ev){ev.stopPropagation();const it=META.wh[i];if(!it)return;META.wh.splice(i,1);WSEL.clear();META.fund+=1;META.total+=1;saveMeta();renderWh();}
 function rankIdx(){let i=0;for(let j=0;j<RANKS.length;j++)if(META.total>=RANKS[j].need)i=j;return i;}
 function sellArts(){
   const arts=G.p.inv.filter(i=>i.t==='art');
@@ -620,13 +621,11 @@ function useSelected(){
     case 'map':for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(G.f.map[y][x]!==WALL||nearFloor(x,y))G.f.seen[y][x]=true;log('フロアの地形が頭に浮かんだ。');break;
     case 'wup':
       if(!p.weapon)log('何も武器をまとっていない……巻物は虚しく消えた。');
-      else if((p.weapon.plus||0)>=9){log('首輪はもう限界まで強化されている！（最大+9）巻物をしまった。');consumed=false;}
-      else{p.weapon.plus=(p.weapon.plus||0)+1;log(`首輪が眩く光った！ ${itemName(p.weapon)}になった。（最大+9）`);}
+      else{p.weapon.plus=(p.weapon.plus||0)+1;log(`首輪が眩く光った！ ${itemName(p.weapon)}になった。`);}
       break;
     case 'aup':
       if(!p.armor)log('何も防具をまとっていない……巻物は虚しく消えた。');
-      else if((p.armor.plus||0)>=9){log('マントはもう限界まで強化されている！（最大+9）巻物をしまった。');consumed=false;}
-      else{p.armor.plus=(p.armor.plus||0)+1;log(`マントが眩く光った！ ${itemName(p.armor)}になった。（最大+9）`);}
+      else{p.armor.plus=(p.armor.plus||0)+1;log(`マントが眩く光った！ ${itemName(p.armor)}になった。`);}
       break;
     case 'wand':
       closeInv();
