@@ -894,10 +894,6 @@ function drawMocco(px,py,g){
   // からだ
   c.fillStyle=GRAY;c.beginPath();c.ellipse(cx,cy+6,6.5,7.5,0,0,Math.PI*2);c.fill();c.stroke();
   c.fillStyle=GRAY2;c.beginPath();c.ellipse(cx,cy+7,4,5.5,0,0,Math.PI*2);c.fill();
-  // うで（ちいさい）
-  c.fillStyle=GRAY;
-  c.beginPath();c.ellipse(cx-7,cy+5,2.5,2,-.5,0,Math.PI*2);c.fill();c.stroke();
-  c.beginPath();c.ellipse(cx+7,cy+5,2.5,2,.5,0,Math.PI*2);c.fill();c.stroke();
   // 青いエラのフリル（頭の両側）
   c.fillStyle='#7fb5d6';c.strokeStyle='#4a7a9c';
   for(const sd of [-1,1])for(let i=0;i<3;i++){
