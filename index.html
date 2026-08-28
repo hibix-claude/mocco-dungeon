@@ -197,14 +197,15 @@ const ARTS=[
  {id:'a5',n:'幻の大作',tier:5,v:[1500,2500]},
 ];
 const RANKS=[
- {need:0,n:'個人事業主',hp:0,atk:0,btc:0,wcap:30},
- {need:500,n:'町のアトリエ',hp:5,atk:0,btc:10,wcap:34},
- {need:2000,n:'モッコメリアン工房',hp:10,atk:1,btc:20,wcap:38},
- {need:6000,n:'モッコメリアン商会',hp:15,atk:2,btc:30,wcap:42},
- {need:15000,n:'モッコメリアンファクトリー株式会社',hp:25,atk:3,btc:50,wcap:46},
- {need:40000,n:'世界のMOCCOMERIAN（上場）',hp:40,atk:5,btc:100,wcap:50},
+ {need:0,n:'個人事業主',hp:0,atk:0,btc:0,wcap:30,bcap:20},
+ {need:500,n:'町のアトリエ',hp:5,atk:0,btc:10,wcap:34,bcap:22},
+ {need:2000,n:'モッコメリアン工房',hp:10,atk:1,btc:20,wcap:38,bcap:24},
+ {need:6000,n:'モッコメリアン商会',hp:15,atk:2,btc:30,wcap:42,bcap:26},
+ {need:15000,n:'モッコメリアンファクトリー株式会社',hp:25,atk:3,btc:50,wcap:46,bcap:28},
+ {need:40000,n:'世界のMOCCOMERIAN（上場）',hp:40,atk:5,btc:100,wcap:50,bcap:30},
 ];
 function whCap(){return RANKS[rankIdx()].wcap;}
+function bagCap(){return RANKS[rankIdx()].bcap||20;}
 const store={m:{},get(k){try{const v=localStorage.getItem(k);if(v!=null)return JSON.parse(v);}catch(e){}return this.m[k]!==undefined?this.m[k]:null;},set(k,v){this.m[k]=v;try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}},del(k){delete this.m[k];try{localStorage.removeItem(k);}catch(e){}}};
 let META=Object.assign({fund:0,total:0,arts:0,runs:0,best:0,wh:[]},store.get('mocco_meta')||{});
 if(!Array.isArray(META.wh))META.wh=[];
@@ -337,7 +338,7 @@ function openHome(){
     `会社ランク：<b style="color:var(--acc)">${rk.n}</b><br>`+
     `資金：${META.fund}モコ ／ 累計売上：${META.total}モコ<br>`+
     `売った絵：${META.arts}枚 ／ 挑戦：${META.runs}回 ／ 最深：地下${META.best}階<br>`+
-    `倉庫：${META.wh.length}/${whCap()}個（ランクで拡張）<br>`+
+    `倉庫：${META.wh.length}/${whCap()}個 ／ 袋：${bagCap()}個（ランクで拡張）<br>`+
     (next?`次のランクまで あと${next.need-META.total}モコ<br>`:'これ以上ない大企業だ！<br>')+
     `現在の恩恵：HP+${rk.hp} ／ 攻撃+${rk.atk} ／ BTC上限+${rk.btc}`;
   saveMeta();drawCompany(ri);
@@ -563,7 +564,7 @@ function tryMove(d){
   if(m){attack(G.p,m);endTurn();return;}
   G.p.x=nx;G.p.y=ny;
   const it=itemAt(nx,ny);
-  if(it){if(G.p.inv.length<20){G.p.inv.push(it);G.items.splice(G.items.indexOf(it),1);log(`${it.g}${itemName(it)}を拾った。`);}else log(`${itemName(it)}が落ちている。袋がいっぱいだ。`);}
+  if(it){if(G.p.inv.length<bagCap()){G.p.inv.push(it);G.items.splice(G.items.indexOf(it),1);log(`${it.g}${itemName(it)}を拾った。`);}else log(`${itemName(it)}が落ちている。袋がいっぱいだ。`);}
   if(G.f.map[ny][nx]===STAIRS)log('階段がある。「足元」で降りられる。');
   const tr=G.traps&&G.traps.find(t=>t.x===nx&&t.y===ny);
   if(tr)trigTrap(tr);
@@ -584,7 +585,7 @@ function attack(a,m){
   if(m.friendly){
     G.mons.splice(G.mons.indexOf(m),1);
     const it={...ITEMS.find(i=>i.id==='rice')};
-    if(G.p.inv.length<20){G.p.inv.push(it);log('アコモンライスは大量の米を置いて消えた！ 米俵のかけらを手に入れた。');}
+    if(G.p.inv.length<bagCap()){G.p.inv.push(it);log('アコモンライスは大量の米を置いて消えた！ 米俵のかけらを手に入れた。');}
     else{if(!itemAt(m.x,m.y))G.items.push({...it,x:m.x,y:m.y});log('アコモンライスは米を置いて消えた！');}
     return;
   }
@@ -612,7 +613,7 @@ function actFoot(){
     if(G.floor>=G.dg.floors){if(G.dg.boss){log('ここが最深部だ。サンダーバードを倒すしかない。');return;}winDepth();return;}
     newFloor();draw();ui();return;}
   const it=itemAt(G.p.x,G.p.y);
-  if(it){if(G.p.inv.length<20){G.p.inv.push(it);G.items.splice(G.items.indexOf(it),1);log(`${itemName(it)}を拾った。`);endTurn();}else log('袋がいっぱいだ。');return;}
+  if(it){if(G.p.inv.length<bagCap()){G.p.inv.push(it);G.items.splice(G.items.indexOf(it),1);log(`${itemName(it)}を拾った。`);endTurn();}else log('袋がいっぱいだ。');return;}
   log('足元には何もない。');
 }
 function actWait(){if(!G.over)endTurn();}
@@ -636,7 +637,7 @@ function openInv(){if(G.over)return;selIdx=-1;renderInv();document.getElementByI
 function closeInv(){document.getElementById('inv').classList.remove('show');}
 function renderInv(){
   const l=document.getElementById('invlist');
-  document.getElementById('invcount').textContent=`${G.p.inv.length}/20`;
+  document.getElementById('invcount').textContent=`${G.p.inv.length}/${bagCap()}`;
   if(!G.p.inv.length)l.innerHTML='<div class="desc">袋は空っぽだ。</div>';
   else l.innerHTML=G.p.inv.map((it,i)=>{const eq=(G.p.armor===it||G.p.weapon===it)?'<small>まとい中</small>':'';return `<div class="item ${i===selIdx?'sel':''}" onclick="selIdx=${i};renderInv()"><span>${it.g} ${itemName(it)}</span>${eq}</div>`;}).join('');
   const it=G.p.inv[selIdx];
