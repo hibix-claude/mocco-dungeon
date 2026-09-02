@@ -68,6 +68,7 @@
       <button class="btn main" style="flex:none;padding:14px 40px" onclick="openHome()">工房モコファクへ</button>
       <button class="btn" id="contBtn" style="flex:none;padding:12px 40px;margin-top:10px;display:none" onclick="resumeGame()">つづきから（前回の冒険）</button>
       <button class="btn" style="flex:none;padding:10px 32px;margin-top:10px" onclick="openRank()">👑 持ち帰り王</button>
+      <button class="btn" style="flex:none;padding:10px 32px;margin-top:10px" onclick="openHelp(0)">📖 あそびかた</button>
     </div>
     <div id="inv" class="overlay">
       <h2>袋の中身 <small id="invcount"></small></h2>
@@ -100,6 +101,16 @@
       <div id="whlist"></div>
       <div class="row"><button class="btn" onclick="sortWh()">並べ替え</button><button class="btn" onclick="closeWh()">閉じる</button></div>
     </div>
+    <div id="help" class="overlay" style="z-index:8">
+      <h2>📖 あそびかた・図鑑</h2>
+      <div class="row" style="margin:0 0 10px">
+        <button class="btn" id="htab0" onclick="openHelp(0)">進め方</button>
+        <button class="btn" id="htab1" onclick="openHelp(1)">アイテム</button>
+        <button class="btn" id="htab2" onclick="openHelp(2)">敵</button>
+      </div>
+      <div id="helpBody"></div>
+      <div class="row"><button class="btn" onclick="closeHelp()">閉じる</button></div>
+    </div>
     <div id="dirsel" class="overlay">
       <h2 id="dirTitle">どの方向に？</h2>
       <div id="dirpad" style="display:grid;grid-template-columns:repeat(3,70px);gap:6px;margin:0 auto"></div>
@@ -123,6 +134,7 @@
       <div class="row" style="max-width:340px;margin:8px auto 0;width:100%">
         <button class="btn" onclick="openWh()">倉庫</button>
         <button class="btn" onclick="openRank()">👑 王</button>
+        <button class="btn" onclick="openHelp(0)">📖 説明</button>
         <button class="btn main" onclick="openDgSel()">潜る</button>
       </div>
     </div>
@@ -358,6 +370,63 @@ async function fetchOnline(){
   return null;
 }
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+let HELP_TAB=0;
+const MON_NOTES={
+ 'ツチノコ':'図鑑004。日本の賞金首。基本の雑魚で、まずはこれで腕試し。',
+ 'ネッシー':'図鑑001。ネス湖の怪獣。陸の上では鈍足で、2ターンに1回しか動けない。',
+ 'チュパカブラ':'図鑑002。吸血UMA。攻撃されると血の代わりにBTC残高を5吸われる。',
+ 'スカイフィッシュ':'図鑑010。高速飛行体。1ターンに2回行動する。先手を取ろう。',
+ 'イエティ':'図鑑009。雪男。怪力でモッコメリアンを吹き飛ばす。倒すとBTC+20のボーナス。',
+ 'モスマン':'図鑑006。死の予言者。壁をすり抜けて追ってくる。逃げ場に注意。',
+ 'アコモンライス':'図鑑100。モッコメリアンの前世と伝わる幻獣。敵ではなく、触れると米俵のかけらを置いて消える。',
+};
+const TYPE_LABELS=[['weapon','📿 まとい（武器）'],['armor','🧣 まとい（防具）'],['wand','🪄 杖'],['scroll','📜 巻物'],['herb','🌿 草'],['food','🪙 食料']];
+function helpCard(t,d){return `<div class="item" style="flex-direction:column;align-items:flex-start;gap:2px"><b>${t}</b><small style="line-height:1.6">${d}</small></div>`;}
+function openHelp(tab){
+  if(tab!==undefined)HELP_TAB=tab;
+  document.getElementById('help').classList.add('show');
+  for(let i=0;i<3;i++)document.getElementById('htab'+i).classList.toggle('main',HELP_TAB===i);
+  const el=document.getElementById('helpBody');
+  if(HELP_TAB===0){
+    let h='';
+    h+=helpCard('🎯 目的','工房「モコファク」から消えた画材を取り戻すため、地下ダンジョンに潜る。最初の目標は「不思議な地下室」地下10階のサンダーバード討伐。');
+    h+=helpCard('🎮 基本ルール','ターン制。モッコメリアンが1歩動く（または攻撃・アイテム使用する）と、敵も1回動く。十字キーかマップのタッチで8方向に移動。敵にぶつかると体当たり攻撃（手はないので）。');
+    h+=helpCard('🪙 BTC残高（おなか）','仮想通貨が主食。1ターンごとに少しずつ減り、ゼロになると毎ターンHPが減っていく。床のコインを食べて補給しよう。HPは歩いていれば少しずつ自然回復する。');
+    h+=helpCard('⚡ 雷速ゲージ','敵を倒すとゲージが1つたまり、3つで必殺技「雷速」が撃てる。向いている方向の直線上の敵をまとめて感電させる大技。');
+    h+=helpCard('🖼️ 絵と会社ランク','ダンジョンに落ちている絵は、生きて持ち帰ると売れる。累計売上で会社がランクアップし、HP・攻撃・BTC上限・倉庫と袋の容量が増える。倒れると絵も持ち物も全部失う——欲張るか帰るかの判断が命。');
+    h+=helpCard('📦 倉庫と持ち込み','持ち帰ったアイテムは工房の倉庫に保管され、出発前に最大5個まで持ち込める（持ち込み不可のダンジョンを除く）。袋・倉庫の容量はランクで拡張。「並べ替え」で整理、いらない物は1モコで売却できる。');
+    h+=helpCard('⚠️ 罠','床には踏むまで見えない罠が隠れている。地雷（大ダメージ）、バネ（ワープ）、ハラヘリの罠（BTC-20）、サビの罠（マントの強化値-1）。一度踏めば赤いプレートで見えるようになる。');
+    for(const dg of DUNGEONS){
+      const lock=dg.lock?`「${(DUNGEONS.find(x=>x.id===dg.lock)||{n:'?'}).n}」制覇で解放。`:'最初から入れる。';
+      h+=helpCard(`🕳️ ${dg.n}（${dg.floors}F）`,`${dg.d}${lock}`);
+    }
+    h+=helpCard('👹 モンスターハウス','「かなり不思議な地下室」では、まれに敵とアイテムがぎっしり詰まった部屋がある。入った瞬間に全員が目を覚ます。お宝と引き換えの大ピンチ。');
+    h+=helpCard('👑 持ち帰り王','一度の冒険で持ち帰った絵の売却総額を競うランキング。帰還・踏破すると自動で登録される。名前はランキング画面でいつでも変えられる。');
+    h+=helpCard('💾 セーブ','冒険は毎ターン自動セーブ。タイトルの「つづきから」で再開できる。会社と倉庫の成長はずっと残る。');
+    el.innerHTML=h;
+  }else if(HELP_TAB===1){
+    let h='';
+    for(const [t,label] of TYPE_LABELS){
+      const list=ITEMS.filter(i=>i.t===t);
+      if(!list.length)continue;
+      h+=`<div class="desc" style="margin:10px 0 4px"><b>${label}</b></div>`;
+      for(const it of list)h+=helpCard(`${it.g} ${it.base?'★':''}${it.n}`,it.d+(it.base?'（レア・色違い）':''));
+    }
+    h+=`<div class="desc" style="margin:10px 0 4px"><b>🖼️ 絵画（持ち帰ると売れる）</b></div>`;
+    for(const a of ARTS)h+=helpCard(`🖼️ ${a.n}`,`売値 ${a.v[0]}〜${a.v[1]}モコ。ダンジョンによっては2〜3倍で売れる。`);
+    el.innerHTML=h;
+  }else{
+    let h='<div class="desc">敵はすべて公式サイト「世界の未確認生物」のUMAたち。深いダンジョンほど強化されて現れる。</div>';
+    for(const m of MONS){
+      const st=m.friendly?'味方':`HP${m.hp} 攻${m.atk} 防${m.def} 経験値${m.xp}`;
+      h+=helpCard(`${m.g} ${m.n}`,`${MON_NOTES[m.n]||''}<br>出現：地下${m.min}〜${m.max}階相当 ／ ${st}`);
+    }
+    h+=helpCard(`${BOSS.g} ${BOSS.n}（ボス）`,`図鑑091。伝説の巨大な鳥。「不思議な地下室」地下10階で画材を抱え込んでいる。3ターンごとに床のアイテムを丸呑みしてHPを回復する。<br>HP${BOSS.hp} 攻${BOSS.atk} 防${BOSS.def} 経験値${BOSS.xp}`);
+    h+=helpCard(`${BOSS.g} 真・サンダーバード（裏ボス）`,`「かなり不思議な地下室」地下30階に待つ真の姿。HPと攻撃力が2.2倍（HP176・攻22）。装備を鍛えてから挑もう。`);
+    el.innerHTML=h;
+  }
+}
+function closeHelp(){document.getElementById('help').classList.remove('show');}
 function sharedRank(){try{const el=document.getElementById('mocco-ranking');const d=JSON.parse(el.textContent);return Array.isArray(d.entries)?d.entries:[];}catch(e){return [];}}
 function localRank(){return store.get('mocco_rank_local')||[];}
 function playerName(){return META.name||'名無しの幻獣';}
