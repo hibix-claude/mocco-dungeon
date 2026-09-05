@@ -257,9 +257,9 @@ body:has(#title.show) #sceneLabel, body:has(#home.show) #sceneLabel, body:has(#d
   #sceneLabel { top: 11px; left: 11px; font-size: 10px; padding: 6px 9px; }
   #log { height: 65px; flex-basis: 65px; padding: 7px 12px 7px 27px; font-size: 11px; line-height: 1.52; }
   #log::before { top: 11px; left: 12px; font-size: 7px; }
-  #ctrl { grid-template-columns: 152px 1fr; gap: 10px; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); }
-  #dpad { grid-template-columns: repeat(3, 48px); grid-template-rows: repeat(3, 42px); gap: 4px; }
-  #dpad button { font-size: 21px; }
+  #ctrl { grid-template-columns: 180px minmax(0, 1fr); gap: 10px; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); }
+  #dpad { grid-template-columns: repeat(3, 56px); grid-template-rows: repeat(3, 56px); gap: 6px; }
+  #dpad button { font-size: 26px; }
   #acts { grid-template-columns: repeat(2, 1fr); gap: 6px; }
   #acts button { padding: 6px 3px; font-size: 13px; letter-spacing: .02em; }
   #acts button::before { display: inline; margin: 0 4px 0 0; font-size: 15px; vertical-align: -1px; }
@@ -277,8 +277,9 @@ body:has(#title.show) #sceneLabel, body:has(#home.show) #sceneLabel, body:has(#d
 }
 @media (max-width: 370px) {
   #masthead .edition { display: none; }
-  #ctrl { grid-template-columns: 137px 1fr; padding-inline: 8px; gap: 8px; }
-  #dpad { grid-template-columns: repeat(3, 43px); grid-template-rows: repeat(3, 42px); }
+  #ctrl { grid-template-columns: 162px minmax(0, 1fr); padding-inline: 8px; gap: 8px; }
+  #dpad { grid-template-columns: repeat(3, 50px); grid-template-rows: repeat(3, 50px); }
+  #dpad button { font-size: 24px; }
   #status { gap: 8px 12px; padding-inline: 10px; }
   #title h1 { font-size: 24px; }
   #titleMocco.mocco { width: 148px; }
@@ -302,9 +303,9 @@ body:has(#title.show) #sceneLabel, body:has(#home.show) #sceneLabel, body:has(#d
   #masthead { min-height: 30px; }
   #status { grid-template-columns: repeat(4, 1fr); padding: 6px 14px; gap: 12px; font-size: 10px; }
   #status > div:nth-child(3) { padding-left: 0; border: 0; }
-  #ctrl { grid-template-columns: 104px 1fr; padding: 5px 14px; gap: 14px; }
-  #dpad { grid-template-columns: repeat(3, 32px); grid-template-rows: repeat(3, 25px); gap: 3px; }
-  #dpad button { font-size: 15px; }
+  #ctrl { grid-template-columns: 140px minmax(0, 1fr); padding: 5px 14px calc(5px + env(safe-area-inset-bottom)); gap: 14px; }
+  #dpad { grid-template-columns: repeat(3, 44px); grid-template-rows: repeat(3, 44px); gap: 4px; }
+  #dpad button { font-size: 21px; }
   #acts { grid-template-columns: repeat(4, 1fr); gap: 8px; }
   #acts button::before { display: inline; font-size: 15px; margin: 0 4px 0 0; }
   #acts button { font-size: 12px; min-height: 32px; padding: 4px; }
@@ -313,6 +314,11 @@ body:has(#title.show) #sceneLabel, body:has(#home.show) #sceneLabel, body:has(#d
   .control-hint { display: none; }
   #title.show { align-content: start; }
   #title { padding-top: 28px; }
+}
+/* Short landscape screens need room for the dungeon above the wider keys. */
+@media (max-height: 400px) and (orientation: landscape) {
+  #dpad { grid-template-rows: repeat(3, 32px); }
+  #dpad button { font-size: 20px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
 
@@ -880,7 +886,14 @@ function sortWh(){
   });
   WSEL.clear();saveMeta();renderWh();
 }
-function sellWh(i,ev){ev.stopPropagation();const it=META.wh[i];if(!it)return;META.wh.splice(i,1);WSEL.clear();META.fund+=1;META.total+=1;saveMeta();renderWh();}
+function sellWh(i,ev){
+  ev.stopPropagation();
+  const it=META.wh[i];if(!it)return;
+  if(!window.confirm(`「${itemName(it)}」を1モコで売ります。\n本当に売りますか？\n\n売却した品物は元に戻せません。`))return;
+  // Sell the confirmed item itself, never a different item that moved into its slot.
+  const index=META.wh.indexOf(it);if(index<0)return;
+  META.wh.splice(index,1);WSEL.clear();META.fund+=1;META.total+=1;saveMeta();renderWh();
+}
 function rankIdx(){let i=0;for(let j=0;j<RANKS.length;j++)if(META.total>=RANKS[j].need)i=j;return i;}
 function sellArts(){
   const arts=G.p.inv.filter(i=>i.t==='art');
