@@ -316,15 +316,310 @@ body:has(#title.show) #sceneLabel, body:has(#home.show) #sceneLabel, body:has(#d
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
 
-/* Latest-edition guide and encyclopedia tabs. */
-#help .row:first-of-type{position:sticky;top:-1px;z-index:1;background:#20291f;padding:7px 0;border-bottom:1px solid var(--line);}
-#help .row:first-of-type .btn{min-width:0;padding:11px 8px;}
-#help .item,#help .item:hover{cursor:default;}
-#helpBody{padding-top:6px;}
-#helpBody .desc b{color:var(--acc);}
-#help .reference-credit{padding-top:12px;border-top:1px solid var(--line);font-size:11px;color:var(--dim);line-height:1.8;}
-#help .reference-credit a{color:var(--acc);}
-#titleMocco{image-rendering:auto;}
+/* Adventure handbook and inventory. Appended after the main dungeon theme. */
+#help, #inv {
+  --paper: #ddd0aa;
+  --paper-ink: #39352a;
+  --entry-accent: #b9aa78;
+  padding: 28px clamp(20px, 4vw, 46px) 22px;
+  background:
+    radial-gradient(ellipse at 95% 0, #92724a1c, transparent 45%),
+    repeating-linear-gradient(0deg, #a49b7106 0 1px, transparent 1px 55px),
+    linear-gradient(130deg, #252b22f9, #131d17fc 64%, #20281cfb);
+  border: 1px solid #8f795241;
+  scroll-padding-block: 18px;
+}
+#help .menu-heading, #inv .menu-heading {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  gap: 7px 16px; align-items: end; margin-bottom: 21px; padding-bottom: 19px;
+  border-bottom: 1px solid #ac966c72;
+}
+#help .menu-heading::after, #inv .menu-heading::after {
+  content: "◆"; position: absolute; bottom: -5px; right: 0;
+  padding-left: 11px; background: #252c21; color: #bda579;
+  font-family: serif; font-size: 10px; line-height: 10px;
+}
+#help .menu-kicker, #inv .menu-kicker {
+  grid-column: 1 / -1; color: #a99c79; font-size: 9px; line-height: 1.4;
+  font-weight: 700; letter-spacing: .25em;
+}
+#help .menu-heading h2, #inv .menu-heading h2 {
+  margin: 0; padding: 0; border: 0; color: #eee1bf;
+  font-family: var(--serif); font-size: 28px; font-weight: 700;
+  letter-spacing: .09em; line-height: 1.5;
+  text-shadow: 0 2px 1px #050c07;
+}
+#invcount {
+  display: inline-block; align-self: center; padding: 5px 10px;
+  color: #e0d6b4; background: #101b1370; border: 1px solid #94845c70;
+  border-radius: 2px; font-family: system-ui, sans-serif; font-size: 12px;
+  line-height: 1.5; font-weight: 500; letter-spacing: .08em;
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+#help .guide-tabs {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px; margin: 0 0 23px !important; padding: 4px;
+  background: #0b130ec2; border: 1px solid #756a4e88; border-radius: 4px;
+  box-shadow: inset 0 2px 4px #0005;
+}
+#help .guide-tabs .btn {
+  position: relative; min-width: 0; min-height: 47px; padding: 11px 8px;
+  background: linear-gradient(#343a2c, #252f22); color: #b9c0a8;
+  border: 1px solid #5f654846; border-radius: 2px; box-shadow: inset 0 1px #a99e5620;
+  font-size: 13px; font-weight: 600; letter-spacing: .11em;
+}
+#help .guide-tabs .btn.main, #help .guide-tabs .btn[aria-selected="true"] {
+  color: #2f291c; background: linear-gradient(#dfc998, #bda26b);
+  border-color: #e2cea2; box-shadow: inset 0 1px #f9e7bf, inset 0 -2px #8b703d;
+  text-shadow: 0 1px #f6dfb06b;
+}
+#help .guide-tabs .btn.main::after {
+  content: ""; position: absolute; bottom: -9px; left: calc(50% - 5px);
+  width: 10px; height: 5px; background: #bea36c; clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+#helpBody { min-width: 0; }
+#help .guide-intro {
+  position: relative; margin: 0 0 25px; padding: 18px 23px;
+  border: 1px solid #e0d2a47d; border-left: 4px solid #b29a61; border-radius: 2px;
+  color: var(--paper-ink);
+  background: repeating-linear-gradient(5deg, #83684404 0 1px, transparent 1px 4px), linear-gradient(110deg, #ded1ae, #c7b88f);
+  box-shadow: inset 0 1px #f8eccb78, 0 5px 16px #030a0640;
+}
+#help .guide-intro h3 {
+  margin: 0 0 7px; color: #403a28; font-family: var(--serif);
+  font-size: 19px; font-weight: 700; letter-spacing: .06em; line-height: 1.6;
+}
+#help .guide-intro p { margin: 0; color: #514d3b; font-size: 12px; line-height: 1.85; }
+#help .guide-section-label {
+  display: flex; align-items: center; gap: 12px; margin: 24px 0 13px;
+  color: #d7c49b; font-family: var(--serif); font-size: 16px; font-weight: 700;
+  letter-spacing: .08em; line-height: 1.5;
+}
+#help .guide-section-label::before { content: "◆"; color: #a9915e; font-size: 8px; }
+#help .guide-section-label::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, #95805c6b, transparent); }
+#help .guide-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 11px; counter-reset: guide-rule; }
+#help .guide-card {
+  --entry-accent: #bcab79;
+  position: relative; display: grid; grid-template-columns: 78px minmax(0, 1fr);
+  align-content: start; align-items: start; gap: 9px 16px; min-width: 0; margin: 0;
+  padding: 16px; border: 1px solid #7c785055; border-radius: 3px;
+  color: #dedbc4;
+  background: linear-gradient(115deg, #383d2ddd, #252e22e6);
+  box-shadow: inset 0 1px #c2bc8712, 0 3px 6px #030a051f;
+}
+#help .guide-card::after {
+  content: ""; position: absolute; top: 0; left: 0; width: 36px; height: 1px;
+  background: var(--entry-accent); opacity: .65;
+}
+#help .entry-art, #inv .entry-art {
+  position: relative; display: grid; place-items: center; overflow: hidden;
+  width: 78px; height: 78px; padding: 3px; grid-column: 1; grid-row: 1 / 3;
+  background: radial-gradient(ellipse at 50% 90%, #6c765233, transparent 62%), linear-gradient(#182419, #0c180f);
+  border: 1px solid #9884535e; border-top-color: #5d684a; border-radius: 3px;
+  box-shadow: inset 0 2px 9px #0005, 0 1px #c5c19112;
+}
+#help .entry-art::after, #inv .entry-art::after {
+  content: ""; position: absolute; inset: 3px; border: 1px solid #a1a47212;
+  pointer-events: none; border-radius: 1px;
+}
+#help .entry-art img, #inv .entry-art img, #inv .detail-art img {
+  display: block; width: 100%; height: 100%; object-fit: contain;
+  image-rendering: pixelated; filter: drop-shadow(0 4px 3px #0007);
+}
+#help .entry-copy { grid-column: 2; min-width: 0; }
+#help .entry-copy h3 { color: #e9ddb9; font-family: var(--serif); font-size: 15px; line-height: 1.65; letter-spacing: .02em; margin: 0 0 6px; }
+#help .entry-copy p { margin: 0; color: #b9c0a6; font-size: 12px; line-height: 1.85; overflow-wrap: anywhere; }
+#help .entry-meta { display: flex; flex-wrap: wrap; gap: 5px; grid-column: 2; align-self: end; }
+#help .entry-meta span {
+  color: #ccc7a7; background: #0b190e72; border: 1px solid #a3a67526;
+  padding: 3px 6px; border-radius: 2px; font-size: 10px; font-variant-numeric: tabular-nums;
+  line-height: 1.3; letter-spacing: .025em;
+}
+#help .monster-card { --entry-accent: #bc8b71; }
+#help .monster-card .entry-art { background: radial-gradient(ellipse at 50% 85%, #9c62342b, transparent 66%), linear-gradient(#29261e, #171d15); border-color: #a580594e; }
+#help .monster-card .entry-meta span:first-child { color: #e4c2a2; border-color: #bb956047; }
+#help .treasure-card { --entry-accent: #d3b870; }
+#help .treasure-card .entry-art { background: radial-gradient(ellipse at 50% 75%, #b096332b, transparent 66%), linear-gradient(#2c301d, #1b2214); }
+#help .rule-card { grid-template-columns: 34px minmax(0, 1fr); gap: 10px 13px; counter-increment: guide-rule; }
+#help .rule-number, #help .rule-card:not(:has(.rule-number))::before {
+  display: grid; place-items: center; grid-column: 1; grid-row: 1 / 3;
+  width: 34px; height: 39px; color: #d9c59b; border: 1px solid #bca36b6b;
+  background: linear-gradient(#4e5138, #323e29); box-shadow: inset 0 1px #f2e3a517;
+  border-radius: 2px 2px 10px 10px; font-family: Georgia, serif; font-size: 17px;
+  line-height: 1; font-variant-numeric: tabular-nums;
+}
+#help .rule-card:not(:has(.rule-number))::before { content: counter(guide-rule, decimal-leading-zero); }
+#help .rule-card .entry-copy p { font-size: 12px; line-height: 1.9; }
+#help .rule-card .entry-art { display: none; }
+#inv .bag-layout { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 22px; align-items: start; min-width: 0; }
+#inv #invlist { min-width: 0; }
+#inv .bag-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 205px), 1fr)); gap: 10px; align-content: start; }
+#inv .bag-item {
+  --entry-accent: #aaa577;
+  position: relative; display: grid; grid-template-columns: 60px minmax(0, 1fr);
+  align-items: center; gap: 9px; min-width: 0; min-height: 96px; margin: 0; padding: 16px 11px 13px;
+  border: 1px solid #736c4c91; border-radius: 3px; color: #e4dfc7;
+  background: linear-gradient(115deg, #343c2e, #222d22);
+  box-shadow: inset 0 1px #c9c78815, inset 0 -2px #0a170e6e, 0 2px 4px #0207022e;
+  text-align: left; text-shadow: 0 1px #0b160e; font-family: inherit;
+  transition: border-color .12s, background .12s, transform .08s;
+}
+#inv .bag-item .entry-art { width: 60px; height: 60px; grid-row: 1; padding: 2px; border-color: #92885b4f; }
+#inv .bag-item .entry-copy { display: block; min-width: 0; grid-column: 2; padding-top: 3px; }
+#inv .item-name { display: block; color: #e4ddc0; font-size: 13px; line-height: 1.55; font-weight: 700; overflow-wrap: anywhere; }
+#inv .item-type { display: block; color: #aab59a; font-size: 10px; font-weight: 400; line-height: 1.5; letter-spacing: .06em; margin-top: 5px; }
+#inv .item-slot {
+  position: absolute; right: 7px; top: 4px; color: #8e9d7e;
+  font-family: Georgia, serif; font-size: 9px; font-weight: 400; line-height: 1; letter-spacing: .1em;
+}
+#inv .bag-item.sel {
+  border-color: #d5b978; background: linear-gradient(115deg, #55583b, #34432d);
+  box-shadow: inset 0 0 0 1px #c9ac6563, inset 0 1px #eee0ae2e, 0 2px 6px #0004;
+}
+#inv .bag-item.sel::before { content: ""; position: absolute; left: -1px; top: 18px; bottom: 18px; width: 3px; background: #e2c687; }
+#inv .bag-item.sel .item-name { color: #ffebbb; }
+#inv .bag-item.sel .item-slot { color: #d3bd81; }
+#inv .equipped-badge {
+  display: inline-block; grid-column: 2; justify-self: start; padding: 2px 5px;
+  margin-top: -5px; color: #c4dcac; background: #3e573181; border: 1px solid #9eaf635e;
+  border-radius: 2px; font-size: 9px; line-height: 1.4; font-weight: 600; letter-spacing: .06em;
+}
+#inv .entry-copy .equipped-badge { margin-top: 5px; }
+#inv .bag-detail {
+  position: sticky; top: 0; min-width: 0; padding: 23px 20px 20px;
+  border: 1px solid #e3d2a680; border-top: 3px solid #b9a16b; border-radius: 3px;
+  color: var(--paper-ink);
+  background: repeating-linear-gradient(3deg, #796d4305 0 1px, transparent 1px 4px), linear-gradient(120deg, #dfd2af, #c9bc96);
+  box-shadow: inset 0 0 0 4px #fbebc02b, 0 5px 14px #030b0642;
+}
+#inv .bag-detail::before, #inv .bag-detail::after {
+  content: ""; position: absolute; top: 9px; width: 5px; height: 5px;
+  background: #927b4a; border: 1px solid #6c633a; border-radius: 50%; box-shadow: inset 0 1px #f0d297;
+}
+#inv .bag-detail::before { left: 9px; }
+#inv .bag-detail::after { right: 9px; }
+#inv .detail-art {
+  display: grid; place-items: center; width: 112px; height: 108px;
+  padding: 8px; margin: 0 auto 17px; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 80%, #7a895640, transparent 63%), linear-gradient(#293626, #16281b);
+  border: 1px solid #a48e5c; border-radius: 3px; box-shadow: inset 0 2px 12px #0004, 0 1px #f3e6bf;
+}
+#inv .detail-art > span { color: #b7ba89; font-family: var(--serif); font-size: 40px; line-height: 1; }
+#inv #bagDetailName { color: #302d20; font-family: var(--serif); font-size: 20px; font-weight: 700; line-height: 1.6; text-align: center; margin: 0 0 8px; overflow-wrap: anywhere; }
+#inv #bagDetailMeta { color: #6b603e; font-size: 11px; font-weight: 600; line-height: 1.7; text-align: center; letter-spacing: .05em; margin: 0 0 16px; padding-bottom: 15px; border-bottom: 1px solid #8f825454; }
+#inv #invdesc { color: #494633; font-size: 12px; line-height: 1.9; margin: 0; min-height: 4em; overflow-wrap: anywhere; }
+#inv .bag-actions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; margin-top: 22px; }
+#inv .bag-actions .btn { min-width: 0; min-height: 42px; padding: 9px 6px; font-size: 12px; letter-spacing: .06em; }
+#inv .bag-actions .btn.main { border-color: #7d693c; background: linear-gradient(#536446, #344b30); color: #f1e4be; box-shadow: inset 0 1px #bbcd922e, inset 0 -2px #23351c; text-shadow: 0 1px #1a2617; }
+#inv .bag-actions .btn:not(.main) { background: linear-gradient(#d6c89f, #bbaa7d); border-color: #8c7b4e; color: #51472b; box-shadow: inset 0 1px #faecca61, inset 0 -2px #8c774640; text-shadow: none; }
+#inv .bag-actions .btn:disabled { opacity: .45; }
+#inv .bag-empty {
+  grid-column: 1 / -1; min-height: 240px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 28px; text-align: center;
+  color: #b6c09d; font-size: 13px; line-height: 1.9;
+  background: repeating-linear-gradient(0deg, #a5b18404 0 1px, transparent 1px 42px), #16241a8c;
+  border: 1px dashed #9aa2704f; border-radius: 3px;
+}
+#inv .bag-empty::before {
+  content: "◇"; display: block; width: 66px; height: 66px; margin: 0 0 18px;
+  border: 1px solid #a8a36a4f; border-radius: 50%; color: #a69a63; font-family: var(--serif); font-size: 34px; line-height: 60px;
+}
+#inv .bag-empty h3 { color: #d8d5b5; font-family: var(--serif); font-size: 18px; margin-bottom: 9px; }
+#inv .bag-empty p { margin: 0; }
+#help > .row:last-child:not(.guide-tabs), #inv > .row:last-child, #inv > .menu-footer {
+  margin-top: 23px; padding-top: 16px; border-top: 1px solid #9c8e5b3d;
+  display: flex; justify-content: flex-end; gap: 10px;
+}
+#help > .row:last-child:not(.guide-tabs) > .btn, #inv > .row:last-child > .btn, #inv > .menu-footer > .btn { flex: 0 1 240px; min-height: 46px; }
+#help [data-type="food"], #inv [data-type="food"], #help .type-food, #inv .type-food { --entry-accent: #c9b06d; }
+#help [data-type="herb"], #inv [data-type="herb"], #help .type-herb, #inv .type-herb { --entry-accent: #9eb681; }
+#help [data-type="scroll"], #inv [data-type="scroll"], #help .type-scroll, #inv .type-scroll { --entry-accent: #cfbd91; }
+#help [data-type="wand"], #inv [data-type="wand"], #help .type-wand, #inv .type-wand { --entry-accent: #b3a0bf; }
+#help [data-type="weapon"], #inv [data-type="weapon"], #help .type-weapon, #inv .type-weapon { --entry-accent: #a5c9b0; }
+#help [data-type="armor"], #inv [data-type="armor"], #help .type-armor, #inv .type-armor { --entry-accent: #a4b7c0; }
+#help [data-type="art"], #inv [data-type="art"], #help .type-art, #inv .type-art { --entry-accent: #d1b276; }
+#help .guide-card[data-type] .entry-art, #inv .bag-item[data-type] .entry-art { border-bottom: 2px solid var(--entry-accent); }
+#help .guide-card[class*="type-"] .entry-art, #inv .bag-item[class*="type-"] .entry-art { border-bottom: 2px solid var(--entry-accent); }
+#inv .bag-item:focus-visible, #help .guide-tabs .btn:focus-visible { outline: 2px solid #f1d995 !important; outline-offset: 2px; }
+#inv .bag-item:active { transform: translateY(1px); }
+@media (hover: hover) {
+  #inv .bag-item:hover { background: linear-gradient(115deg, #455039, #2c3b2a); border-color: #b1a66f; }
+  #inv .bag-item.sel:hover { background: linear-gradient(115deg, #616344, #415233); border-color: #e7cf8f; }
+  #inv .bag-actions .btn.main:hover:not(:disabled) { background: linear-gradient(#677a54, #415e37); color: #fff2c9; }
+  #inv .bag-actions .btn:not(.main):hover:not(:disabled) { background: linear-gradient(#e4d6af, #c8b88a); }
+  #help .guide-tabs .btn:hover:not(.main) { border-color: #b5a675a1; color: #e6dcbb; background: #404d33; }
+}
+@media (min-width: 800px) {
+  #help .guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+  #help .guide-card { min-height: 126px; }
+}
+@media (max-width: 799px) {
+  #help, #inv { padding: 22px 20px 20px; }
+  #help .menu-heading h2, #inv .menu-heading h2 { font-size: 24px; }
+  #help .guide-intro { padding: 16px 18px; }
+  #help .guide-intro h3 { font-size: 18px; }
+  #inv .bag-layout { gap: 15px; }
+  #inv .bag-detail { padding-inline: 17px; }
+}
+@media (max-width: 650px) {
+  #help, #inv { padding: 19px 16px 18px; }
+  #help .menu-heading, #inv .menu-heading { gap: 6px 9px; padding-bottom: 15px; margin-bottom: 17px; }
+  #help .menu-heading h2, #inv .menu-heading h2 { font-size: 23px; letter-spacing: .04em; }
+  #help .menu-kicker, #inv .menu-kicker { font-size: 8px; letter-spacing: .19em; }
+  #invcount { padding: 4px 7px; font-size: 10px; }
+  #help .guide-tabs { margin-bottom: 20px !important; }
+  #help .guide-tabs .btn { min-height: 44px; font-size: 12px; letter-spacing: .04em; padding: 9px 5px; }
+  #help .guide-intro { padding: 15px 16px; margin-bottom: 20px; }
+  #help .guide-intro h3 { font-size: 17px; }
+  #help .guide-intro p { font-size: 11px; }
+  #help .guide-section-label { font-size: 15px; margin-top: 22px; }
+  #help .guide-card { grid-template-columns: 70px minmax(0, 1fr); gap: 8px 12px; padding: 13px; }
+  #help .entry-art { width: 70px; height: 70px; }
+  #help .entry-copy h3 { font-size: 14px; }
+  #help .entry-copy p { font-size: 11px; line-height: 1.85; }
+  #help .entry-meta { gap: 4px; }
+  #help .entry-meta span { font-size: 9px; padding: 3px 5px; }
+  #help .rule-card { grid-template-columns: 30px minmax(0, 1fr); gap: 10px; }
+  #help .rule-number, #help .rule-card:not(:has(.rule-number))::before { width: 30px; height: 36px; font-size: 15px; }
+  #help .rule-card .entry-copy p { font-size: 11px; }
+  #inv .bag-layout { grid-template-columns: minmax(0, 1fr); gap: 19px; }
+  #inv .bag-grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  #inv .bag-item { grid-template-columns: 62px minmax(0, 1fr); min-height: 84px; padding: 10px 14px 10px 10px; gap: 12px; }
+  #inv .bag-item .entry-art { width: 62px; height: 62px; }
+  #inv .item-name { font-size: 14px; }
+  #inv .item-type { font-size: 10px; }
+  #inv .item-slot { right: 9px; top: 7px; }
+  #inv .equipped-badge { font-size: 9px; }
+  #inv .bag-detail { position: relative; top: auto; padding: 19px 20px; }
+  #inv .detail-art { width: 96px; height: 90px; margin-bottom: 13px; }
+  #inv #bagDetailName { font-size: 19px; }
+  #inv #bagDetailMeta { margin-bottom: 12px; padding-bottom: 12px; }
+  #inv #invdesc { min-height: 0; font-size: 12px; }
+  #inv .bag-actions { margin-top: 17px; }
+  #inv .bag-actions .btn { min-height: 46px; font-size: 13px; }
+  #inv .bag-empty { min-height: 205px; }
+  #help > .row:last-child:not(.guide-tabs) > .btn, #inv > .row:last-child > .btn, #inv > .menu-footer > .btn { flex: 1; }
+}
+@media (max-width: 359px) {
+  #help, #inv { padding-inline: 12px; }
+  #help .menu-heading h2, #inv .menu-heading h2 { font-size: 20px; }
+  #help .guide-card { grid-template-columns: 56px minmax(0, 1fr); gap: 8px 10px; padding: 11px; }
+  #help .entry-art { width: 56px; height: 60px; }
+  #help .rule-card { grid-template-columns: 30px minmax(0, 1fr); }
+}
+@media (max-height: 520px) and (min-width: 651px) {
+  #inv .bag-detail { position: relative; top: auto; }
+  #inv .detail-art { width: 88px; height: 82px; }
+}
+@media (max-height: 740px) and (max-width: 650px) {
+  #inv .bag-detail { display: grid; grid-template-columns: 64px minmax(0, 1fr); column-gap: 12px; row-gap: 7px; padding: 16px; }
+  #inv .detail-art { grid-column: 1; grid-row: 1 / 3; width: 64px; height: 66px; padding: 4px; margin: 0; }
+  #inv #bagDetailName { grid-column: 2; align-self: end; margin: 0; font-size: 17px; line-height: 1.5; text-align: left; }
+  #inv #bagDetailMeta { grid-column: 2; align-self: start; margin: 0; padding: 0; border: 0; font-size: 10px; text-align: left; }
+  #inv #invdesc { grid-column: 1 / -1; padding-top: 7px; border-top: 1px solid #8f825454; font-size: 11px; line-height: 1.8; }
+  #inv .bag-actions { grid-column: 1 / -1; margin-top: 4px; }
+  #inv .bag-actions .btn { min-height: 42px; font-size: 12px; }
+}
 
 </style>
 </head>
@@ -351,15 +646,16 @@ body:has(#title.show) #sceneLabel, body:has(#home.show) #sceneLabel, body:has(#d
       <button class="btn" style="flex:none;padding:10px 32px;margin-top:10px" onclick="openHelp(0)">あそびかた・図鑑</button>
       <p class="title-meta">探索し、絵を見つけ、生きて工房へ。<br>一歩ごとに進む、ターン制ダンジョンRPG</p>
     </div>
-    <div id="inv" class="overlay">
-      <h2>袋の中身 <small id="invcount"></small></h2>
-      <div id="invlist"></div>
-      <div class="desc" id="invdesc"></div>
-      <div class="row">
-        <button class="btn main" id="useBtn" onclick="useSelected()">使う</button>
-        <button class="btn" onclick="dropSelected()">置く</button>
-        <button class="btn" onclick="closeInv()">閉じる</button>
+    <div id="inv" class="overlay" role="dialog" aria-label="袋の中身">
+      <header class="menu-heading"><p class="menu-kicker">PROVISIONS &amp; TREASURES</p><h2>袋の中身</h2><span id="invcount" aria-label="袋の使用数と容量"></span></header>
+      <div class="bag-layout">
+        <div id="invlist" class="bag-grid"></div>
+        <aside id="bagDetail" class="bag-detail" aria-live="polite">
+          <div id="bagDetailArt" class="detail-art"></div><h3 id="bagDetailName"></h3><p id="bagDetailMeta"></p><p id="invdesc"></p>
+          <div class="bag-actions"><button class="btn main" id="useBtn" onclick="useSelected()">使う</button><button class="btn" id="dropBtn" onclick="dropSelected()">置く</button></div>
+        </aside>
       </div>
+      <footer class="menu-footer"><button class="btn" onclick="closeInv()">袋を閉じる</button></footer>
     </div>
     <div id="rank" class="overlay" style="z-index:7">
       <h2>👑 持ち帰り王ランキング</h2>
@@ -383,15 +679,14 @@ body:has(#title.show) #sceneLabel, body:has(#home.show) #sceneLabel, body:has(#d
       <div class="row"><button class="btn" onclick="sortWh()">並べ替え</button><button class="btn" onclick="closeWh()">閉じる</button></div>
     </div>
     <div id="help" class="overlay" role="dialog" aria-label="あそびかた・図鑑" style="z-index:8">
-      <h2>📖 あそびかた・図鑑</h2>
-      <div class="row" style="margin:0 0 10px">
-        <button class="btn" id="htab0" onclick="openHelp(0)">進め方</button>
-        <button class="btn" id="htab1" onclick="openHelp(1)">アイテム</button>
-        <button class="btn" id="htab2" onclick="openHelp(2)">敵</button>
+      <header class="menu-heading"><p class="menu-kicker">MOCCOMERIAN'S FIELD NOTES</p><h2>あそびかた・図鑑</h2></header>
+      <div class="guide-tabs" role="tablist" aria-label="冒険手帳の章">
+        <button class="btn" id="htab0" role="tab" aria-controls="helpBody" onclick="openHelp(0)">進め方</button>
+        <button class="btn" id="htab1" role="tab" aria-controls="helpBody" onclick="openHelp(1)">アイテム</button>
+        <button class="btn" id="htab2" role="tab" aria-controls="helpBody" onclick="openHelp(2)">敵の図鑑</button>
       </div>
-      <div id="helpBody"></div>
-      <p class="reference-credit">立ち絵は<a href="https://mikakunin.info/000-moccomerian/" target="_blank" rel="noopener noreferrer">モッコメリアン紹介ページ</a>の吹き出し画像を参照。青いひれ・緑のえり・尾と2本の足を持ち、手はありません。</p>
-      <div class="row"><button class="btn" onclick="closeHelp()">閉じる</button></div>
+      <div id="helpBody" role="tabpanel"></div>
+      <div class="row"><button class="btn" onclick="closeHelp()">手帳を閉じる</button></div>
     </div>
     <div id="dirsel" class="overlay">
       <h2 id="dirTitle">どの方向に？</h2>
@@ -441,9 +736,10 @@ const PRISTINE_DOC=document.documentElement.outerHTML;
 const W=40,H=24,T=48;
 const DUNGEONS=[
  {id:'d1',n:'ちょっと不思議な地下室',floors:5,boss:false,carry:true,pow:0.8,artMul:0.7,bonus:500,d:'練習用の浅い地下室。地下5階まで降りれば踏破。倉庫の持ち込みOK。'},
- {id:'d2',n:'不思議な地下室',floors:10,boss:true,carry:true,pow:1,artMul:1,bonus:3000,d:'本編。地下10階のサンダーバードを倒して画材を取り戻せ。倉庫の持ち込みOK。'},
- {id:'d3',n:'もっと不思議な地下室',floors:20,boss:false,carry:false,pow:1.35,artMul:2,bonus:10000,d:'真の挑戦。地下20階踏破。倉庫の持ち込み不可・敵は強いが、絵は2倍の値で売れる。',lock:'d2'},
- {id:'d4',n:'かなり不思議な地下室',floors:30,boss:true,carry:true,pow:1.6,artMul:3,bonus:30000,mh:1,bossMul:2.2,d:'最果ての地下30階に真・サンダーバードが待つ。持ち込みOK・モンスターハウスあり・絵は3倍で売れる。',lock:'d2'},
+ {id:'d2',n:'不思議な地下室',floors:10,boss:true,carry:true,pow:1,pressure:1,artMul:1,bonus:3000,d:'地下10階の強化サンダーバードに挑む。3階から新種UMA、6階から影の追跡者。持ち込みOK。'},
+ {id:'d3',n:'もっと不思議な地下室',floors:20,boss:false,carry:false,pow:1.35,pressure:2,artMul:2,bonus:10000,d:'地下20階踏破。持ち込み不可。序盤から強敵、深層に特殊能力UMA。絵は2倍。',lock:'d2'},
+ {id:'d4',n:'かなり不思議な地下室',floors:30,boss:true,carry:true,pow:1.6,pressure:3,artMul:3,bonus:30000,mh:1,bossMul:4,d:'地下30階の真・サンダーバードに挑む。強敵とモンスターハウス。持ち込みOK・絵は3倍。',lock:'d2'},
+ {id:'d5',n:'すごく不思議な地下室',floors:50,boss:true,carry:true,pow:1.8,pressure:4,artMul:4,bonus:70000,mh:1,d:'最難関・地下50階。深海の主クラーケンが待つ。持ち込みOK・絵は4倍。予兆を避け、道具を使い切って生還せよ。',lock:'d4'},
 ];
 const DIRS=[[-1,-1],[0,-1],[1,-1],[-1,0],[0,0],[1,0],[-1,1],[0,1],[1,1]];
 const ARROWS=['↖','↑','↗','←','・','→','↙','↓','↘'];
@@ -461,8 +757,16 @@ const MONS=[
  {n:'イエティ',g:'🦍',min:5,max:9,hp:18,atk:6,def:3,xp:12,push:1,coin:1},     // 図鑑009 雪男（怪力で吹き飛ばす）
  {n:'モスマン',g:'🦋',min:7,max:10,hp:22,atk:8,def:3,xp:18,ghost:1},          // 図鑑006 死の予言者（壁をすり抜ける）
  {n:'アコモンライス',g:'🍚',min:2,max:10,hp:1,atk:0,def:0,xp:0,friendly:1,rare:1}, // 図鑑100 大量の米を置き去る（味方）
+ {n:'ジャッカロープ',g:'🐇',min:6,max:12,hp:16,atk:5,def:2,xp:8,fast:1,extended:1},
+ {n:'リザードマン',g:'🦎',min:9,max:19,hp:24,atk:8,def:5,xp:16,extended:1},
+ {n:'シャドーピープル',g:'👤',min:12,max:24,hp:26,atk:9,def:3,xp:22,ghost:1,extended:1},
+ {n:'ジャージー・デビル',g:'🦇',min:17,max:33,hp:30,atk:8,def:4,xp:28,fast:1,extended:1},
+ {n:'アルカリ・レイク・モンスター',g:'🐊',min:23,max:50,hp:38,atk:13,def:7,xp:38,push:1,extended:1},
+ {n:'クリッター',g:'🔮',min:30,max:999,hp:30,atk:11,def:3,xp:42,beam:1,extended:1},
+ {n:'印旛沼の怪獣',g:'🦭',min:40,max:999,hp:46,atk:15,def:7,xp:56,roar:1,extended:1},
 ];
 const BOSS={n:'サンダーバード',g:'🦅',hp:80,atk:10,def:4,xp:100,boss:1};       // 図鑑091 伝説の巨大な鳥
+const KRAKEN={n:'クラーケン',g:'🦑',hp:480,atk:42,def:12,xp:600,boss:1,kraken:1,roar:1};
 
 // ===== アイテム定義 =====
 const ITEMS=[
@@ -481,6 +785,18 @@ const ITEMS=[
  {id:'collar',n:'雷の首輪',g:'📿',t:'weapon',w:9,d:'まとうと攻撃力が上がる。'},
  {id:'cloak2',n:'白銀のマント',g:'🧣',t:'armor',w:2,base:3,d:'白銀に輝くレアなマント。素の防御+3に強化値が上乗せされる。'},
  {id:'collar2',n:'白雷の首輪',g:'📿',t:'weapon',w:2,base:3,d:'白い雷を宿したレアな首輪。素の攻撃+3に強化値が上乗せされる。'},
+ {id:'compressed',n:'圧縮コイン',g:'🪙',t:'food',w:12,extended:1,minDepth:8,d:'BTC残高を100、HPを15回復する。長旅の非常食。'},
+ {id:'moonherb',n:'月光の草',g:'🌿',t:'herb',w:14,extended:1,minDepth:10,d:'HPを80回復する。深い地下での大きな傷に。'},
+ {id:'lifedrop',n:'命のしずく',g:'💧',t:'herb',w:4,extended:1,minDepth:8,d:'最大HPが5増え、HPを30回復する。'},
+ {id:'fury',n:'猛進の草',g:'🌿',t:'herb',w:7,extended:1,minDepth:6,d:'続く12ターン、体当たり・雷速の攻撃力が6上がる。'},
+ {id:'sleepwave',n:'まどろみの巻物',g:'📜',t:'scroll',w:9,extended:1,minDepth:6,d:'周囲3マスの見える敵を眠らせる。通常敵は4ターン、ボスは2ターン行動できない。攻撃予兆も解除。'},
+ {id:'barrier',n:'結界の巻物',g:'📜',t:'scroll',w:9,extended:1,minDepth:8,d:'続く12ターン、防御力+12、予兆のある特殊攻撃のダメージを半減する。'},
+ {id:'sleepwand',n:'睡眠の杖',g:'🪄',t:'wand',w:8,extended:1,minDepth:8,d:'直線上の敵を眠らせる。通常敵6ターン・ボス2ターン行動不能。攻撃予兆も解除。'},
+ {id:'sealwand',n:'封印の杖',g:'🪄',t:'wand',w:7,extended:1,minDepth:12,d:'直線上の敵の倍速・吹き飛ばし・吸収・予兆攻撃を6ターン封印する。壁抜けは残る。'},
+ {id:'stormcollar',n:'嵐の首輪',g:'📿',t:'weapon',w:7,base:7,extended:1,minDepth:12,d:'素の攻撃+7。強化値を上乗せする中層向けのまとい。'},
+ {id:'dragoncloak',n:'竜鱗のマント',g:'🧣',t:'armor',w:7,base:8,extended:1,minDepth:12,d:'素の防御+8。強化値を上乗せする丈夫なまとい。'},
+ {id:'starcollar',n:'星雷の首輪',g:'📿',t:'weapon',w:5,base:12,extended:1,minDepth:35,d:'素の攻撃+12。強化値を上乗せする深層の秘宝。'},
+ {id:'abysscloak',n:'深海のマント',g:'🧣',t:'armor',w:5,base:14,extended:1,minDepth:35,d:'素の防御+14。強化値を上乗せする深層の秘宝。'},
 ];
 
 // ===== 絵画（持ち帰り品）と会社 =====
@@ -492,15 +808,21 @@ const ARTS=[
  {id:'a5',n:'幻の大作',tier:5,v:[1500,2500]},
 ];
 const RANKS=[
- {need:0,n:'個人事業主',hp:0,atk:0,btc:0,wcap:30,bcap:20},
- {need:500,n:'町のアトリエ',hp:5,atk:0,btc:10,wcap:34,bcap:22},
- {need:2000,n:'モッコメリアン工房',hp:10,atk:1,btc:20,wcap:38,bcap:24},
- {need:6000,n:'モッコメリアン商会',hp:15,atk:2,btc:30,wcap:42,bcap:26},
- {need:15000,n:'モッコメリアンファクトリー株式会社',hp:25,atk:3,btc:50,wcap:46,bcap:28},
- {need:40000,n:'世界のMOCCOMERIAN（上場）',hp:40,atk:5,btc:100,wcap:50,bcap:30},
+ {need:0,n:'個人事業主',hp:0,atk:0,btc:0,wcap:50,bcap:30},
+ {need:500,n:'町のアトリエ',hp:5,atk:0,btc:10,wcap:55,bcap:32},
+ {need:1000,n:'評判のアトリエ',hp:8,atk:0,btc:15,wcap:60,bcap:34},
+ {need:2000,n:'モッコメリアン工房',hp:10,atk:1,btc:20,wcap:65,bcap:36},
+ {need:3500,n:'人気のモッコメリアン工房',hp:12,atk:1,btc:25,wcap:70,bcap:38},
+ {need:6000,n:'モッコメリアン商会',hp:15,atk:2,btc:30,wcap:75,bcap:40},
+ {need:10000,n:'モッコメリアン制作会社',hp:20,atk:3,btc:40,wcap:80,bcap:42},
+ {need:15000,n:'モッコメリアンファクトリー株式会社',hp:25,atk:3,btc:50,wcap:85,bcap:44},
+ {need:25000,n:'全国モッコメリアンネットワーク',hp:32,atk:4,btc:75,wcap:90,bcap:46},
+ {need:40000,n:'世界のMOCCOMERIAN（上場）',hp:40,atk:5,btc:100,wcap:95,bcap:48},
+ {need:80000,n:'世界のアートグループ',hp:45,atk:6,btc:120,wcap:110,bcap:54},
+ {need:150000,n:'伝説のモッコメリアン財団',hp:50,atk:7,btc:140,wcap:130,bcap:60},
 ];
 function whCap(){return RANKS[rankIdx()].wcap;}
-function bagCap(){return RANKS[rankIdx()].bcap||20;}
+function bagCap(){return RANKS[rankIdx()].bcap||RANKS[0].bcap;}
 const store={m:{},get(k){try{const v=localStorage.getItem(k);if(v!=null)return JSON.parse(v);}catch(e){}return this.m[k]!==undefined?this.m[k]:null;},set(k,v){this.m[k]=v;try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}},del(k){delete this.m[k];try{localStorage.removeItem(k);}catch(e){}}};
 let META=Object.assign({fund:0,total:0,arts:0,runs:0,best:0,wh:[]},store.get('mocco_meta')||{});
 if(!Array.isArray(META.wh))META.wh=[];
@@ -570,67 +892,168 @@ function sellArts(){
   return {n:arts.length,sum,up};
 }
 function drawCompany(ri){
-  const c=document.getElementById('homeCv');if(!c)return;const g=c.getContext('2d');
-  const CW=c.width,CH=c.height;
-  // 夜空と星と月
-  const sky=g.createLinearGradient(0,0,0,CH);sky.addColorStop(0,'#131a33');sky.addColorStop(1,'#251d33');
-  g.fillStyle=sky;g.fillRect(0,0,CW,CH);
-  for(let i=0;i<45;i++){g.fillStyle=`rgba(255,255,255,${0.25+((i*37)%55)/100})`;g.fillRect((i*53)%CW,(i*29)%(CH-70),1.5,1.5);}
-  g.fillStyle='#f2e9c8';g.beginPath();g.arc(CW-42,28,12,0,Math.PI*2);g.fill();
-  g.fillStyle='#131a33';g.beginPath();g.arc(CW-47,25,10,0,Math.PI*2);g.fill();
-  // 地面
-  g.fillStyle='#2c2836';g.fillRect(0,CH-26,CW,26);
-  g.fillStyle='#3a3448';g.fillRect(0,CH-26,CW,3);
-  const floors=ri+1,bw=78+ri*17,fh=15,bx=(CW-bw)/2,by=CH-26-floors*fh;
-  const wallCols=['#7d6547','#8a5f4c','#93857b','#6e7f93','#5d7fa3','#4f6f9e'];
-  const wall=wallCols[ri];
-  // スポットライト（上場）
-  if(ri>=5){g.fillStyle='rgba(255,230,150,.13)';
-    g.beginPath();g.moveTo(bx-14,CH-26);g.lineTo(bx+26,0);g.lineTo(bx+62,0);g.closePath();g.fill();
-    g.beginPath();g.moveTo(bx+bw+14,CH-26);g.lineTo(bx+bw-26,0);g.lineTo(bx+bw-62,0);g.closePath();g.fill();}
-  // 本体（階数＝ランク+1）
-  for(let f=0;f<floors;f++){
-    const y=by+f*fh;
-    g.fillStyle=wall;g.fillRect(bx,y,bw,fh);
-    g.fillStyle='rgba(0,0,0,.16)';g.fillRect(bx,y+fh-2,bw,2);
-    const nw=Math.floor((bw-12)/16);
-    for(let w=0;w<nw;w++){
-      g.fillStyle=(w+f*2+ri)%3?'#ffd97a':'#3a3a4a';
-      g.fillRect(bx+7+w*16,y+4,7,7);
+  const c=document.getElementById('homeCv');if(!c)return;
+  const g=c.getContext('2d');if(!g)return;
+  const CW=c.width,CH=c.height;if(!CW||!CH)return;
+  const maxRank=Math.max(0,RANKS.length-1);
+  ri=Math.max(0,Math.min(maxRank,Number.isFinite(Number(ri))?Math.floor(Number(ri)):0));
+  // A fixed illustration stage keeps roofs, signs and the mascot on the canvas.
+  const stages=[
+    {w:72, floors:1,wall:'#786249',roof:'#574633'},
+    {w:88, floors:1,wall:'#8d6a4d',roof:'#6c4834'},
+    {w:106,floors:2,wall:'#968365',roof:'#67513a'},
+    {w:122,floors:2,wall:'#a18f71',roof:'#526452'},
+    {w:140,floors:3,wall:'#9b8c72',roof:'#4e6357'},
+    {w:156,floors:3,wall:'#ac9e82',roof:'#536b62'},
+    {w:170,floors:3,wall:'#b3a68a',roof:'#48655b'},
+    {w:184,floors:4,wall:'#a9aa94',roof:'#405e57'},
+    {w:198,floors:4,wall:'#b6b5a0',roof:'#496c62'},
+    {w:212,floors:4,wall:'#c2b9a0',roof:'#536854'},
+    {w:226,floors:4,wall:'#c7bfa7',roof:'#4f6357'},
+    {w:240,floors:4,wall:'#d0c4a5',roof:'#4d6a5a'}
+  ];
+  const stage=Math.min(ri,stages.length-1),s=stages[stage];
+  const ground=135,mid=156,fh=17,bx=Math.round(mid-s.w/2),by=ground-s.floors*fh;
+  const rect=(x,y,w,h,col)=>{g.fillStyle=col;g.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));};
+  const poly=(points,col)=>{g.fillStyle=col;g.beginPath();points.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.fill();};
+  const lamp=(x,y)=>{
+    const glow=g.createRadialGradient(x,y,1,x,y,17);glow.addColorStop(0,'#efc87542');glow.addColorStop(1,'#efc87500');g.fillStyle=glow;g.fillRect(x-17,y-17,34,34);
+    rect(x-1,y+4,2,ground-y-3,'#403d29');rect(x-4,ground-1,8,3,'#797252');
+    rect(x-4,y-4,8,9,'#343e29');rect(x-2,y-2,4,6,'#e3c582');rect(x-5,y-5,10,2,'#8b7c48');
+  };
+  const flag=(x,roofY,color)=>{
+    rect(x,roofY-15,1,17,'#bcb38d');poly([[x+1,roofY-14],[x+12,roofY-12],[x+10,roofY-6],[x+1,roofY-7]],color);
+    rect(x-1,roofY-17,3,3,'#dfc982');
+  };
+  g.save();g.setTransform(CW/340,0,0,CH/160,0,0);g.imageSmoothingEnabled=false;
+  const sky=g.createLinearGradient(0,0,0,160);sky.addColorStop(0,'#172b29');sky.addColorStop(.66,'#314338');sky.addColorStop(1,'#465040');
+  g.fillStyle=sky;g.fillRect(0,0,340,160);
+  for(let i=0;i<38;i++)rect((i*53+17)%340,(i*29+8)%88,1,1,i%3?'#a9b99b':'#e7d9ac');
+  g.fillStyle='#e0d7ab';g.beginPath();g.arc(302,25,10,0,Math.PI*2);g.fill();
+  g.fillStyle='#1e312d';g.beginPath();g.arc(307,22,9,0,Math.PI*2);g.fill();
+  poly([[0,118],[0,79],[27,61],[57,83],[87,69],[129,103],[163,76],[209,96],[248,68],[288,89],[321,75],[340,88],[340,135]],'#1d3329');
+  // Distant roofs turn a lone workshop into a small, prosperous town.
+  for(let i=0;i<Math.min(6,Math.max(0,stage-2));i++){
+    const x=10+i*58,h=13+(i%3)*4;rect(x,116-h,28,h+17,'#2a3c2d');poly([[x-3,116-h],[x+14,106-h],[x+31,116-h]],'#334438');
+    rect(x+6,119-h,3,4,'#ada46b');rect(x+18,119-h,3,4,'#c4b57b');
+  }
+  rect(0,128,340,32,'#343c2b');rect(0,134,340,3,'#677058');
+  for(let i=0;i<28;i++)rect((i*43)%340,140+(i%3)*6,8+(i%4)*3,1,i%2?'#73745a':'#505941');
+  poly([[mid-10,135],[mid+10,135],[mid+29,160],[mid-29,160]],'#777660');
+  for(let y=142;y<160;y+=7)rect(mid-21,y,42,1,'#a099784f');
+  if(stage>=8){
+    const light=g.createRadialGradient(mid,92,5,mid,92,111);light.addColorStop(0,'#e3c57912');light.addColorStop(1,'#e3c57900');g.fillStyle=light;g.fillRect(36,10,240,134);
+  }
+  // Projecting side workshops, with a bounded footprint at the later ranks.
+  if(stage>=5){
+    const wing=stage>=8?18:12,wy=ground-29;
+    rect(bx-wing,wy,wing+2,29,s.wall);rect(bx+s.w-2,wy,wing+2,29,s.wall);
+    rect(bx-wing-2,wy-4,wing+4,5,s.roof);rect(bx+s.w-2,wy-4,wing+4,5,s.roof);
+    rect(bx-wing+4,wy+8,6,9,'#d1b471');rect(bx+s.w+3,wy+8,6,9,'#d1b471');
+    rect(bx-wing,ground-3,wing,3,'#6d7159');rect(bx+s.w,ground-3,wing,3,'#6d7159');
+  }
+  rect(bx-1,by-1,s.w+2,ground-by+2,'#263b2b');
+  rect(bx,by,s.w,ground-by,s.wall);
+  rect(bx+2,by+1,3,ground-by-2,'#dacda241');rect(bx+s.w-5,by+1,4,ground-by-2,'#303c293c');
+  for(let y=by+8,row=0;y<ground-1;y+=8,row++){
+    rect(bx+4,y,s.w-8,1,'#504e351e');
+    for(let x=bx+9+(row%2)*10;x<bx+s.w-6;x+=22)rect(x,y-7,1,7,'#514d3318');
+  }
+  for(let f=0;f<s.floors;f++){
+    const y=by+f*fh,n=Math.min(9,Math.max(2,Math.floor((s.w-18)/21))),step=(s.w-16)/n;
+    if(f)rect(bx,y,s.w,2,stage>=7?'#d1c79c':'#787656');
+    for(let w=0;w<n;w++){
+      const wx=Math.round(bx+8+(w+.5)*step-4);
+      if(f===s.floors-1&&Math.abs(wx+4-mid)<14)continue;
+      rect(wx-1,y+4,10,11,'#514e35');rect(wx,y+5,8,8,(w+f+stage)%5?'#e3c487':'#405443');
+      rect(wx,y+5,8,1,'#f9dfa479');rect(wx+3,y+5,1,8,'#706446');rect(wx,y+8,8,1,'#706446');
+      if(stage>=4)rect(wx-2,y+14,12,2,'#d3c391');
     }
   }
-  // 入口
-  g.fillStyle='#33261c';g.fillRect(bx+bw/2-8,CH-26-13,16,13);
-  g.fillStyle='#ffd97a';g.fillRect(bx+bw/2+3,CH-26-8,2,2);
-  // 屋根：ランク0〜1は三角屋根、2以上はビル屋上
-  if(ri<2){g.fillStyle='#4a3527';g.beginPath();g.moveTo(bx-8,by);g.lineTo(bx+bw/2,by-18);g.lineTo(bx+bw+8,by);g.closePath();g.fill();}
-  else{g.fillStyle='#3b3547';g.fillRect(bx-4,by-6,bw+8,6);}
-  const roofTop=ri<2?by-18:by-6;
-  // 看板（ランク1以上）
-  if(ri>=1){
-    g.fillStyle='#211d2c';g.fillRect(CW/2-40,roofTop-18,80,14);
-    g.strokeStyle='#ffd54a';g.lineWidth=1;g.strokeRect(CW/2-40.5,roofTop-18.5,81,15);
-    g.fillStyle='#ffd54a';g.font='bold 9px sans-serif';g.textAlign='center';g.textBaseline='alphabetic';
-    g.fillText(ri>=4?'MOCCOMERIAN':'MOCCO FAC',CW/2,roofTop-8);
+  // Shop entrance remains readable and unobstructed at every level.
+  rect(mid-11,ground-21,22,22,stage>=4?'#cbbb88':'#4a442f');
+  rect(mid-8,ground-18,16,19,'#273c2b');rect(mid-6,ground-16,12,16,'#493f2a');
+  rect(mid-5,ground-15,10,6,'#ddbc70');rect(mid,ground-17,1,18,'#85784c');rect(mid+4,ground-7,2,2,'#e3c877');
+  rect(mid-14,ground-1,28,3,'#b0a47d');rect(mid-17,ground+2,34,2,'#797d5e');
+  if(stage===0||stage===1){
+    poly([[bx-7,by],[mid,by-19],[bx+s.w+7,by]],s.roof);
+    poly([[bx-7,by],[mid,by-19],[mid,by-15],[bx,by]],'#987949');
+    rect(bx-8,by, s.w+16,3,'#b29961');
+    if(stage===1){
+      rect(bx+s.w-18,by-19,8,15,'#77624b');rect(bx+s.w-20,by-20,12,3,'#9c8960');
+      rect(bx+s.w-17,by-28,5,4,'#bac0a545');rect(bx+s.w-14,by-34,6,4,'#bac0a52e');
+      rect(mid-23,ground-26,46,5,'#536b48');for(let x=mid-23;x<mid+23;x+=10)rect(x,ground-26,5,5,'#b7a677');
+    }
+  }else{
+    rect(bx-5,by-6,s.w+10,6,s.roof);rect(bx-6,by-7,s.w+12,2,'#a49264');
+    rect(bx-2,by-3,s.w+4,1,'#b9b28845');
+    if(stage>=7){
+      for(let x=bx-2;x<bx+s.w;x+=16){rect(x,by-12,7,6,s.wall);rect(x,by-12,7,2,'#d8c99c');}
+      rect(bx-5,by-8,s.w+10,2,'#526046');
+    }
   }
-  // 旗（ランク3以上）
-  if(ri>=3){g.strokeStyle='#999';g.beginPath();g.moveTo(bx+10,roofTop);g.lineTo(bx+10,roofTop-16);g.stroke();g.fillStyle='#e0b23f';g.fillRect(bx+10,roofTop-16,13,8);}
-  // アンテナ（ランク4以上）
-  if(ri>=4){g.strokeStyle='#aaa';g.beginPath();g.moveTo(bx+bw-12,roofTop);g.lineTo(bx+bw-12,roofTop-14);g.stroke();g.fillStyle='#ff5a5a';g.beginPath();g.arc(bx+bw-12,roofTop-15,2.5,0,Math.PI*2);g.fill();}
-  // 工房にも同じ、手のないモッコメリアン。
-  g.save();g.translate(bx+bw+7,CH-59);g.scale(.64,.64);drawMocco(0,0,g);g.restore();
+  // The first hut has no sign; later façades reserve a compact nameplate.
+  if(stage>=1){
+    const signY=stage===1?by-34:by-5,signW=stage===1?58:82;
+    if(stage===1){rect(mid-19,signY+11,2,8,'#927b4c');rect(mid+17,signY+11,2,8,'#927b4c');}
+    rect(mid-signW/2-1,signY-1,signW+2,13,'#bea26a');rect(mid-signW/2,signY,signW,11,'#263d2b');
+    g.fillStyle='#e4d09d';g.font='bold 7px sans-serif';g.textAlign='center';g.textBaseline='alphabetic';g.fillText(stage<4?'MOCCO FAC':'MOCCOMERIAN',mid,signY+8);
+  }
+  if(stage>=3)flag(bx+10,by-8,stage>=9?'#d9b964':'#779260');
+  if(stage>=6){
+    const ty=by-28;
+    rect(mid-12,ty,24,23,'#c0b08a');rect(mid-14,ty-2,28,3,'#d0bb85');
+    poly([[mid-15,ty-2],[mid,ty-12],[mid+15,ty-2]],s.roof);
+    g.fillStyle='#353f2b';g.beginPath();g.arc(mid,ty+8,7,0,Math.PI*2);g.fill();
+    g.fillStyle='#ded4aa';g.beginPath();g.arc(mid,ty+8,5,0,Math.PI*2);g.fill();
+    rect(mid,ty+4,1,5,'#5e5d3e');rect(mid,ty+8,4,1,'#5e5d3e');
+    rect(mid-15,ty+20,30,3,'#b59c60');
+  }
+  if(stage>=9){
+    flag(bx+s.w-12,by-8,'#c5a358');
+    for(const x of [bx-3,bx+s.w-11]){
+      rect(x,by-14,14,15,'#b0aa86');poly([[x-3,by-14],[x+7,by-27],[x+17,by-14]],stage===11?'#d0ae61':s.roof);
+      rect(x+5,by-10,4,7,'#dfc380');
+    }
+  }
+  if(stage>=10){
+    // Bronze columns and gallery pennants distinguish the final expansions.
+    for(const x of [bx+17,bx+s.w-20]){rect(x,by+3,3,ground-by-7,'#d3bd7b');rect(x-2,by+3,7,3,'#eee0ad');rect(x-2,ground-5,7,3,'#9c8b57');}
+    for(const x of [mid-43,mid+34]){rect(x,by+20,9,21,'#476b52');poly([[x,by+41],[x+4,by+46],[x+9,by+41]],'#476b52');rect(x+3,by+25,3,8,'#d1b56d');}
+  }
+  if(stage===11){
+    const crestY=by-45;
+    poly([[mid-8,crestY+6],[mid-10,crestY-1],[mid-4,crestY+2],[mid,crestY-4],[mid+4,crestY+2],[mid+10,crestY-1],[mid+8,crestY+6]],'#e0bf6d');
+    rect(mid-8,crestY+6,16,3,'#a08746');rect(mid-1,crestY+1,2,3,'#f4e4a0');
+  }
+  if(stage>=2){
+    rect(bx-18,ground-8,12,8,'#76604a');rect(bx-19,ground-10,14,3,'#a08256');
+    for(let i=0;i<5;i++)rect(bx-19+i*3,ground-16-(i%2)*3,4,8,'#607649');
+  }
+  if(stage>=4){lamp(17,112);lamp(327,111);}
+  if(stage>=8){
+    for(const x of [19,269]){rect(x,142,36,7,'#253b27');for(let i=0;i<8;i++){rect(x+3+i*4,140-(i%2),3,5,'#6d8750');if(stage>=10)rect(x+3+i*4,140-(i%2),2,2,i%2?'#d4b36e':'#cda799');}}
+  }
+  // The same handless character as the dungeon, always within the right margin.
+  const heroX=Math.min(305,bx+s.w+(stage>=5?32:25));
+  const tileSize=typeof T==='number'&&T>0?T:48;
+  g.save();g.translate(heroX-16,ground-32);g.scale(32/tileSize,32/tileSize);drawMocco(0,0,g);g.restore();
+  g.restore();
 }
+
 function openHome(){
   document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('show'));
   const ri=rankIdx(),rk=RANKS[ri],next=RANKS[ri+1];
   document.getElementById('homeSale').innerHTML=HOME_MSG||'絵描きたちが筆を走らせている。';HOME_MSG='';
   document.getElementById('homeInfo').innerHTML=
-    `会社ランク：<b style="color:var(--acc)">${rk.n}</b><br>`+
+    `会社ランク ${ri+1}/${RANKS.length}：<b style="color:var(--acc)">${rk.n}</b><br>`+
     `資金：${META.fund}モコ ／ 累計売上：${META.total}モコ<br>`+
     `売った絵：${META.arts}枚 ／ 挑戦：${META.runs}回 ／ 最深：地下${META.best}階<br>`+
     `倉庫：${META.wh.length}/${whCap()}個 ／ 袋：${bagCap()}個（ランクで拡張）<br>`+
-    (next?`次のランクまで あと${next.need-META.total}モコ<br>`:'これ以上ない大企業だ！<br>')+
-    `現在の恩恵：HP+${rk.hp} ／ 攻撃+${rk.atk} ／ BTC上限+${rk.btc}`;
+    (next?`次のランク「${next.n}」まで あと${next.need-META.total}モコ<br>`:'最高ランクに到達！ 絵描きたちを支える伝説の会社だ。<br>')+
+    `次の冒険の恩恵：HP+${rk.hp} ／ 攻撃+${rk.atk} ／ BTC上限+${rk.btc}`+
+    (next?`<br><span style="color:var(--acc)">次の昇格：倉庫+${next.wcap-rk.wcap}個 ／ 袋+${next.bcap-rk.bcap}個`+
+      [['hp','HP'],['atk','攻撃'],['btc','BTC上限']].filter(([key])=>next[key]>rk[key]).map(([key,label])=>` ／ ${label}+${next[key]-rk[key]}`).join('')+'</span>':'');
   saveMeta();drawCompany(ri);
   const pct=next?clamp((META.total-rk.need)/(next.need-rk.need)*100,0,100):100;
   document.querySelector('#rankProg i').style.width=pct+'%';
@@ -659,51 +1082,15 @@ const MON_NOTES={
  'アコモンライス':'図鑑100。モッコメリアンの前世と伝わる幻獣。敵ではなく、触れると米俵のかけらを置いて消える。',
 };
 const TYPE_LABELS=[['weapon','📿 まとい（武器）'],['armor','🧣 まとい（防具）'],['wand','🪄 杖'],['scroll','📜 巻物'],['herb','🌿 草'],['food','🪙 食料']];
-function helpCard(t,d){return `<div class="item" style="flex-direction:column;align-items:flex-start;gap:2px"><b>${t}</b><small style="line-height:1.6">${d}</small></div>`;}
-function openHelp(tab){
-  if(tab!==undefined)HELP_TAB=tab;
-  document.getElementById('help').classList.add('show');
-  for(let i=0;i<3;i++)document.getElementById('htab'+i).classList.toggle('main',HELP_TAB===i);
-  const el=document.getElementById('helpBody');
-  if(HELP_TAB===0){
-    let h='';
-    h+=helpCard('🎯 目的','工房「モコファク」から消えた画材を取り戻すため、地下ダンジョンに潜る。最初の目標は「不思議な地下室」地下10階のサンダーバード討伐。');
-    h+=helpCard('🎮 基本ルール','ターン制。モッコメリアンが1歩動く（または攻撃・アイテム使用する）と、敵も1回動く。十字キーかマップのタッチで8方向に移動。敵にぶつかると体当たり攻撃（手はないので）。');
-    h+=helpCard('🪙 BTC残高（おなか）','仮想通貨が主食。1ターンごとに少しずつ減り、ゼロになると毎ターンHPが減っていく。床のコインを食べて補給しよう。HPは歩いていれば少しずつ自然回復する。');
-    h+=helpCard('⚡ 雷速ゲージ','敵を倒すとゲージが1つたまり、3つで必殺技「雷速」が撃てる。向いている方向の直線上の敵をまとめて感電させる大技。');
-    h+=helpCard('🖼️ 絵と会社ランク','ダンジョンに落ちている絵は、生きて持ち帰ると売れる。累計売上で会社がランクアップし、HP・攻撃・BTC上限・倉庫と袋の容量が増える。倒れると絵も持ち物も全部失う——欲張るか帰るかの判断が命。');
-    h+=helpCard('📦 倉庫と持ち込み','持ち帰ったアイテムは工房の倉庫に保管され、出発前に最大5個まで持ち込める（持ち込み不可のダンジョンを除く）。袋・倉庫の容量はランクで拡張。「並べ替え」で整理、いらない物は1モコで売却できる。');
-    h+=helpCard('⚠️ 罠','床には踏むまで見えない罠が隠れている。地雷（大ダメージ）、バネ（ワープ）、ハラヘリの罠（BTC-20）、サビの罠（マントの強化値-1）。一度踏めば赤いプレートで見えるようになる。');
-    for(const dg of DUNGEONS){
-      const lock=dg.lock?`「${(DUNGEONS.find(x=>x.id===dg.lock)||{n:'?'}).n}」制覇で解放。`:'最初から入れる。';
-      h+=helpCard(`🕳️ ${dg.n}（${dg.floors}F）`,`${dg.d}${lock}`);
-    }
-    h+=helpCard('👹 モンスターハウス','「かなり不思議な地下室」では、まれに敵とアイテムがぎっしり詰まった部屋がある。入った瞬間に全員が目を覚ます。お宝と引き換えの大ピンチ。');
-    h+=helpCard('👑 持ち帰り王','一度の冒険で持ち帰った絵の売却総額を競うランキング。帰還・踏破すると自動で登録される。名前はランキング画面でいつでも変えられる。');
-    h+=helpCard('💾 セーブ','冒険は毎ターン自動セーブ。タイトルの「つづきから」で再開できる。会社と倉庫の成長はずっと残る。');
-    el.innerHTML=h;
-  }else if(HELP_TAB===1){
-    let h='';
-    for(const [t,label] of TYPE_LABELS){
-      const list=ITEMS.filter(i=>i.t===t);
-      if(!list.length)continue;
-      h+=`<div class="desc" style="margin:10px 0 4px"><b>${label}</b></div>`;
-      for(const it of list)h+=helpCard(`${it.g} ${it.base?'★':''}${it.n}`,it.d+(it.base?'（レア・色違い）':''));
-    }
-    h+=`<div class="desc" style="margin:10px 0 4px"><b>🖼️ 絵画（持ち帰ると売れる）</b></div>`;
-    for(const a of ARTS)h+=helpCard(`🖼️ ${a.n}`,`売値 ${a.v[0]}〜${a.v[1]}モコ。ダンジョンによっては2〜3倍で売れる。`);
-    el.innerHTML=h;
-  }else{
-    let h='<div class="desc">敵はすべて公式サイト「世界の未確認生物」のUMAたち。深いダンジョンほど強化されて現れる。</div>';
-    for(const m of MONS){
-      const st=m.friendly?'味方':`HP${m.hp} 攻${m.atk} 防${m.def} 経験値${m.xp}`;
-      h+=helpCard(`${m.g} ${m.n}`,`${MON_NOTES[m.n]||''}<br>出現：地下${m.min}〜${m.max}階相当 ／ ${st}`);
-    }
-    h+=helpCard(`${BOSS.g} ${BOSS.n}（ボス）`,`図鑑091。伝説の巨大な鳥。「不思議な地下室」地下10階で画材を抱え込んでいる。3ターンごとに床のアイテムを丸呑みしてHPを回復する。<br>HP${BOSS.hp} 攻${BOSS.atk} 防${BOSS.def} 経験値${BOSS.xp}`);
-    h+=helpCard(`${BOSS.g} 真・サンダーバード（裏ボス）`,`「かなり不思議な地下室」地下30階に待つ真の姿。HPと攻撃力が2.2倍（HP176・攻22）。装備を鍛えてから挑もう。`);
-    el.innerHTML=h;
-  }
-}
+Object.assign(MON_NOTES,{
+ 'ジャッカロープ':'図鑑093。角を持つウサギ。ゲームでは1ターンに2回行動する。通路で囲まれないように。',
+ 'リザードマン':'図鑑040。緑の鱗と赤い目を持つ爬虫類型のUMA。ゲームでは高防御の敵。雷速やまといの強化が有効。',
+ 'シャドーピープル':'図鑑014。人型の黒い影。ゲームでは壁をすり抜ける追跡者。壁だけでは振り切れない。',
+ 'ジャージー・デビル':'図鑑013。獣の顔とコウモリ状の翼を持つUMA。ゲームでは1ターンに2回行動する。睡眠・封印で勢いを止めよう。',
+ 'アルカリ・レイク・モンスター':'図鑑095。鼻先に角を持つワニに似た怪物。ゲームでは硬い体と吹き飛ばし攻撃を持つ。',
+ 'クリッター':'図鑑098。空中を漂う不定形のプラズマ状UMA。ゲームでは直線上に放電を予告し、次のターンに発射する。赤い床から移動しよう。',
+ '印旛沼の怪獣':'図鑑096。黒い体、猿に似た顔とヒレ状の手を持つUMA。ゲームではひし形2マスの咆哮を予告し、次のターンに放つ。斜めに退くか、睡眠・封印で止めよう。'
+});
 function closeHelp(){document.getElementById('help').classList.remove('show');}
 function sharedRank(){try{const el=document.getElementById('mocco-ranking');const d=JSON.parse(el.textContent);return Array.isArray(d.entries)?d.entries:[];}catch(e){return [];}}
 function localRank(){return store.get('mocco_rank_local')||[];}
@@ -749,7 +1136,7 @@ function renderRankList(){
   const rows=base.slice();
   for(const e of localRank())if(!seen.has(e.t+'|'+e.n+'|'+e.v))rows.push({...e,src:'local'});
   rows.sort((a,b)=>b.v-a.v);
-  const dgn={d1:'ちょっと不思議',d2:'不思議',d3:'もっと不思議',d4:'かなり不思議'};
+  const dgn={d1:'ちょっと不思議',d2:'不思議',d3:'もっと不思議',d4:'かなり不思議',d5:'すごく不思議'};
   const me=playerName();
   document.getElementById('ranklist').innerHTML=rows.length?rows.slice(0,30).map((e,i)=>
     `<div class="item" style="${e.n===me?'border-color:var(--acc);':''}"><span>${i+1}位 <b>${esc(e.n)}</b><br><small>${dgn[e.dg]||'?'}・Lv${e.lv||'?'}${e.src==='local'?'・送信待ち':''}</small></span><b style="color:var(--btc);white-space:nowrap">${e.v}モコ</b></div>`
@@ -804,6 +1191,16 @@ function randFloorPos(f){for(let i=0;i<500;i++){const x=rnd(1,W-2),y=rnd(1,H-2);
 function roomOf(x,y){return G.f.rooms.find(r=>x>=r.x-0&&x<r.x+r.w&&y>=r.y&&y<r.y+r.h)||null;}
 
 // ===== エンティティ =====
+function threatDepth(fl,dg=G.dg){return dg.id==='d1'?clamp(Math.round(fl*10/dg.floors),1,10):fl*2+(dg.pressure||1)-1;}
+function enemyPower(fl,dg=G.dg){const depth=threatDepth(fl,dg);return dg.id==='d1'?1+(depth-1)*0.12*dg.pow:(1+(dg.pressure||1)*.1)*(1+Math.min(depth-1,9)*.1+Math.max(0,depth-10)*.006);}
+function bossProfile(dg=G.dg){
+  if(dg.id==='d5')return {...KRAKEN};
+  if(dg.id==='d4')return {...BOSS,n:'真・サンダーバード',hp:320,atk:32,def:9,xp:350};
+  if(dg.id==='d2')return {...BOSS,hp:140,atk:17,def:5,xp:150};
+  return {...BOSS};
+}
+function monsterPool(fl,dg=G.dg){const depth=threatDepth(fl,dg);return MONS.filter(m=>!m.rare&&!(dg.id==='d1'&&m.extended)&&depth>=m.min&&depth<=m.max);}
+function itemPool(fl,dg=G.dg){return ITEMS.filter(i=>!(fl<2&&(i.t==='armor'||i.t==='weapon'))&&(!i.extended||(dg.id!=='d1'&&threatDepth(fl,dg)>=i.minDepth)));}
 function makeItem(fl){
   if(Math.random()<0.18){
     const efl2=clamp(Math.round(fl*10/G.dg.floors),1,10);
@@ -811,23 +1208,23 @@ function makeItem(fl){
     const a=ARTS[t-1];
     return {...a,g:'🖼️',t:'art',price:Math.round(rnd(a.v[0],a.v[1])*G.dg.artMul),d:'ダンジョンに眠っていた絵。工房まで生きて持ち帰れば売れる。'};
   }
-  const pool=ITEMS.filter(i=>!(fl<2&&(i.t==='armor'||i.t==='weapon')));
+  const pool=itemPool(fl);
   const tot=pool.reduce((s,i)=>s+i.w,0);let r=Math.random()*tot;
   let def=pool[0];for(const i of pool){r-=i.w;if(r<=0){def=i;break;}}
   const it={...def};
   if(def.t==='wand')it.charges=rnd(2,4);
-  if(def.t==='armor'||def.t==='weapon')it.plus=rnd(1,3);
+  if(def.t==='armor'||def.t==='weapon')it.plus=rnd(1,3)+(G.dg.id==='d1'?0:Math.min(6,Math.floor(fl/8)));
   return it;
 }
 function makeMon(fl,boss){
-  const efl=clamp(Math.round(fl*10/G.dg.floors),1,10);
+  const efl=threatDepth(fl);
   let d;
-  if(boss)d=BOSS;
+  if(boss)d=bossProfile();
   else if(efl>=2&&Math.random()<0.06)d=MONS.find(m=>m.rare);
-  else d=pick(MONS.filter(m=>!m.rare&&efl>=m.min&&efl<=m.max));
-  const s=boss?(G.dg.bossMul||1):1+(efl-1)*0.12*G.dg.pow;
-  const nm=(boss&&(G.dg.bossMul||1)>1)?'真・サンダーバード':d.n;
-  return {...d,n:nm,hp:Math.round(d.hp*s),mhp:Math.round(d.hp*s),atk:Math.round(d.atk*s),sleep:0,aware:false,tick:0,x:0,y:0};
+  else d=pick(monsterPool(fl));
+  const s=boss?1:enemyPower(fl);
+  const extra=G.dg.id==='d1'||boss||d.friendly?0:Math.floor((efl-1)/18);
+  return {...d,hp:Math.round(d.hp*s),mhp:Math.round(d.hp*s),atk:Math.round(d.atk*s),def:d.def+extra,xp:Math.round(d.xp*(1+extra*.15)),sleep:0,aware:false,tick:0,x:0,y:0};
 }
 function entAt(x,y){return G?G.mons.find(m=>m.x===x&&m.y===y):null;}
 function itemAt(x,y){return G.items.find(i=>i.x===x&&i.y===y);}
@@ -855,7 +1252,7 @@ function newFloor(){
   G.floor++;META.best=Math.max(META.best,G.floor);G.f=genFloor(G.floor);G.mons=[];G.items=[];
   const r=G.f.start;G.p.x=rnd(r.x,r.x+r.w-1);G.p.y=rnd(r.y,r.y+r.h-1);
   const nItem=rnd(4,7);for(let i=0;i<nItem;i++){const p=randFloorPos(G.f);if(p)G.items.push({...makeItem(G.floor),x:p.x,y:p.y});}
-  const nMon=(G.dg.boss&&G.floor===G.dg.floors)?3:rnd(3,4+Math.min(4,G.floor));
+  const nMon=(G.dg.boss&&G.floor===G.dg.floors)?3:rnd(3,4+Math.min(4,G.floor))+(G.dg.pressure||0);
   for(let i=0;i<nMon;i++)spawnMon(false);
   G.traps=[];const TRAPG={mine:'💣',warp:'🌀',hunger:'🕳️',rust:'🧷'};
   const nT=rnd(3,5);
@@ -877,7 +1274,16 @@ function newFloor(){
       }
     }
   }
-  if(G.dg.boss&&G.floor===G.dg.floors){const b=makeMon(G.floor,true);b.x=G.f.stairs.x;b.y=G.f.stairs.y;G.mons.push(b);G.f.map[b.y][b.x]=FLOOR;log(`巨大な翼の羽ばたきが聞こえる……${(G.dg.bossMul||1)>1?'真・サンダーバード':'サンダーバード'}が画材を守っている！`);}
+  if(G.dg.id!=='d1'&&G.floor%5===0){
+    for(const id of ['moonherb','compressed',...(G.floor%10===0?['barrier','sealwand']:[])]){
+      for(let attempt=0;attempt<50;attempt++){
+        const q=randFloorPos(G.f);if(!q)break;if(itemAt(q.x,q.y))continue;
+        const it={...ITEMS.find(i=>i.id===id)};if(it.t==='wand')it.charges=3;G.items.push({...it,x:q.x,y:q.y});break;
+      }
+    }
+    log('この階には深層探索の補給品も残されている。');
+  }
+  if(G.dg.boss&&G.floor===G.dg.floors){const b=makeMon(G.floor,true);b.x=G.f.stairs.x;b.y=G.f.stairs.y;G.mons.push(b);G.f.map[b.y][b.x]=FLOOR;log(`${b.n}が最深部を守っている！${b.kraken?' 赤い予兆から離れろ！':''}`);}
   log(`地下${G.floor}階に降りた。`);
   reveal();
 }
@@ -925,8 +1331,9 @@ function trigTrap(tr){
   else if(tr.t==='rust'){if(p.armor&&p.armor.plus>0){p.armor.plus--;log('サビの罠！ まとっているマントが傷んだ……');}else log('サビの罠だ。しかし何も起きなかった。');}
 }
 function itemName(it){let s=it.n;if(it.base)s='★'+s;if(it.t==='art')s+=`（${it.price}モコ）`;if(it.plus)s+=`+${it.plus}`;if(it.charges!=null)s+=`[${it.charges}]`;return s;}
-function wBonus(){return G.p.weapon?((G.p.weapon.plus||0)+(G.p.weapon.base||0)):0;}
-function aBonus(){return G.p.armor?((G.p.armor.plus||0)+(G.p.armor.base||0)):0;}
+function activeBuff(name){return (G.p[name]||0)>G.turn;}
+function wBonus(){return (G.p.weapon?((G.p.weapon.plus||0)+(G.p.weapon.base||0)):0)+(activeBuff('furyUntil')?6:0);}
+function aBonus(){return (G.p.armor?((G.p.armor.plus||0)+(G.p.armor.base||0)):0)+(activeBuff('barrierUntil')?12:0);}
 function dmgCalc(atk,def){return Math.max(1,Math.round(atk*(0.9+Math.random()*0.2)-def/2));}
 function attack(a,m){
   if(m.friendly){
@@ -957,7 +1364,7 @@ function needXp(lv){return Math.round(8*Math.pow(1.45,lv-1));}
 function actFoot(){
   if(!gameInputReady())return;
   if(G.f.map[G.p.y][G.p.x]===STAIRS){
-    if(G.floor>=G.dg.floors){if(G.dg.boss){log('ここが最深部だ。サンダーバードを倒すしかない。');return;}winDepth();return;}
+    if(G.floor>=G.dg.floors){if(G.dg.boss){log(`ここが最深部だ。${bossProfile().n}を倒すしかない。`);return;}winDepth();return;}
     newFloor();draw();ui();return;}
   const it=itemAt(G.p.x,G.p.y);
   if(it){if(G.p.inv.length<bagCap()){G.p.inv.push(it);G.items.splice(G.items.indexOf(it),1);log(`${itemName(it)}を拾った。`);endTurn();}else log('袋がいっぱいだ。');return;}
@@ -980,17 +1387,8 @@ function actThunder(){
 
 // ===== アイテム使用 =====
 let selIdx=-1;
-function openInv(){if(!gameInputReady())return;selIdx=-1;renderInv();document.getElementById('inv').classList.add('show');}
+function openInv(){if(!gameInputReady())return;selIdx=-1;renderInv();document.getElementById('inv').classList.add('show');document.getElementById('inv').scrollTop=0;}
 function closeInv(){document.getElementById('inv').classList.remove('show');}
-function renderInv(){
-  const l=document.getElementById('invlist');
-  document.getElementById('invcount').textContent=`${G.p.inv.length}/${bagCap()}`;
-  if(!G.p.inv.length)l.innerHTML='<div class="desc">袋は空っぽだ。</div>';
-  else l.innerHTML=G.p.inv.map((it,i)=>{const eq=(G.p.armor===it||G.p.weapon===it)?'<small>まとい中</small>':'';return `<div class="item ${i===selIdx?'sel':''}" onclick="selIdx=${i};renderInv()"><span>${it.g} ${itemName(it)}</span>${eq}</div>`;}).join('');
-  const it=G.p.inv[selIdx];
-  document.getElementById('invdesc').textContent=it?it.d:'アイテムをタップして選ぶ';
-  document.getElementById('useBtn').textContent=it&&(it.t==='armor'||it.t==='weapon')?((G.p.armor===it||G.p.weapon===it)?'外す':'まとう'):'使う';
-}
 function useSelected(){
   const it=G.p.inv[selIdx];if(!it)return;
   if(it.t==='art'){log('これは売り物だ。工房まで持ち帰ろう。');closeInv();return;}
@@ -1002,6 +1400,25 @@ function useSelected(){
   }
   const p=G.p;let consumed=true;
   switch(it.id){
+    case 'compressed':p.btc=Math.min(p.mbtc,p.btc+100);p.hp=Math.min(p.mhp,p.hp+15);log('圧縮コインでBTCとHPが回復した。');break;
+    case 'moonherb':p.hp=Math.min(p.mhp,p.hp+80);log('月光の草でHPが80回復した。');break;
+    case 'lifedrop':p.mhp+=5;p.hp=Math.min(p.mhp,p.hp+30);log('命のしずくで最大HP+5、HPが回復した。');break;
+    case 'fury':p.furyUntil=G.turn+13;log('猛進！ 続く12ターン攻撃力+6。');break;
+    case 'barrier':p.barrierUntil=G.turn+13;log('結界！ 続く12ターン防御力+12、予兆攻撃を半減。');break;
+    case 'sleepwave':
+      for(const m of G.mons)if(!m.friendly&&visible(m.x,m.y)&&Math.max(Math.abs(m.x-p.x),Math.abs(m.y-p.y))<=3){m.sleep=m.boss?2:4;m.intent=null;}
+      log('まどろみの波が周囲の敵を包んだ。');break;
+    case 'sleepwand':case 'sealwand':
+      closeInv();openDir(`${it.n}をどの方向に振る？`,d=>{
+        const [dx,dy]=DIRS[d];let x=p.x,y=p.y;
+        while(passable(x+dx,y+dy)){x+=dx;y+=dy;const m=entAt(x,y);if(m){
+          if(it.id==='sleepwand'){m.sleep=m.boss?2:6;log(`${m.n}を眠らせた！`);}
+          else{m.sealUntil=G.turn+7;log(`${m.n}の特殊能力を6ターン封印！`);}
+          m.intent=null;m.aware=true;break;
+        }}
+        it.charges=(it.charges||1)-1;if(it.charges<=0)p.inv.splice(p.inv.indexOf(it),1);
+        endTurn();
+      });return;
     case 'coin':p.btc=Math.min(p.mbtc,p.btc+30);log('コインを食べた。BTC残高が回復。');break;
     case 'bigcoin':p.mbtc+=5;p.btc=Math.min(p.mbtc,p.btc+60);log('大コインを食べた。お腹いっぱい！');break;
     case 'mofu':p.hp=Math.min(p.mhp,p.hp+30);log('モフモフの草でモフられた。HPが回復。');break;
@@ -1026,9 +1443,9 @@ function useSelected(){
         endTurn();
       });
       return;
-    case 'cloak2':
+    case 'dragoncloak':case 'abysscloak':case 'cloak2':
     case 'cloak':if(p.armor===it){p.armor=null;log('マントを脱いだ。');}else{p.armor=it;log(`${itemName(it)}をまとった。防御力アップ。`);}consumed=false;break;
-    case 'collar2':
+    case 'stormcollar':case 'starcollar':case 'collar2':
     case 'collar':if(p.weapon===it){p.weapon=null;log('首輪を外した。');}else{p.weapon=it;log(`${itemName(it)}をまとった。攻撃力アップ。`);}consumed=false;break;
   }
   if(consumed)p.inv.splice(selIdx,1);
@@ -1075,11 +1492,52 @@ function endTurn(){
     if(m.sleep>0){m.sleep--;continue;}
     if(m.slow){m.tick++;if(m.tick%2)continue;}
     actMon(m);
-    if(m.fast&&G.mons.includes(m)&&p.hp>0)actMon(m);
+    if(m.fast&&!isSealed(m)&&G.mons.includes(m)&&p.hp>0)actMon(m);
   }
-  if(G.turn%40===0&&G.mons.length<10)spawnMon(true);
+  if(G.turn%(40-(G.dg.pressure||0)*4)===0&&G.mons.length<10+(G.dg.pressure||0))spawnMon(true);
   if(p.hp<=0){gameOver();return;}
   reveal();draw();ui();saveRun();
+}
+function isSealed(m){return (m.sealUntil||0)>G.turn;}
+function monsterSpecial(m,dist){
+  if(!(m.beam||m.roar||m.kraken))return false;
+  if(isSealed(m)){m.intent=null;return false;}
+  if(m.intent){
+    if(G.turn<m.intent.at)return true;
+    const hit=m.intent.cells.some(q=>q.x===G.p.x&&q.y===G.p.y);
+    if(hit){const damage=Math.max(1,Math.round(m.intent.damage*(activeBuff('barrierUntil')?0.5:1)));G.p.hp-=damage;log(`${m.n}の${m.intent.label}！ ${damage}ダメージ！`);G.fx={type:'flash',t:5};}
+    else log(`${m.n}の${m.intent.label}をかわした！`);
+    m.intent=null;m.specialReady=G.turn+4;return true;
+  }
+  if(!visible(m.x,m.y)||dist>5||G.turn<(m.specialReady||0))return false;
+  const cells=[];let label='放電';
+  if(m.kraken){
+    label='触手なぎ払い';
+    for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]])for(let n=1;n<=6;n++){
+      const x=m.x+dx*n,y=m.y+dy*n;if(!passable(x,y))break;cells.push({x,y});
+    }
+  }else if(m.roar){
+    if(dist>2)return false;label='咆哮衝撃波';
+    for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++)if(Math.abs(dx)+Math.abs(dy)<=2&&passable(m.x+dx,m.y+dy))cells.push({x:m.x+dx,y:m.y+dy});
+  }else{
+    const tx=G.p.x-m.x,ty=G.p.y-m.y;
+    if(tx&&ty&&Math.abs(tx)!==Math.abs(ty))return false;
+    const dx=Math.sign(tx),dy=Math.sign(ty);
+    for(let n=1;n<=5;n++){const x=m.x+dx*n,y=m.y+dy*n;if(!passable(x,y))break;cells.push({x,y});}
+  }
+  if(!cells.some(q=>q.x===G.p.x&&q.y===G.p.y))return false;
+  // A one-turn warning must leave a legal escape, including warnings already laid by another monster.
+  const danger=cells.concat(...G.mons.filter(o=>o!==m&&o.intent).map(o=>o.intent.cells));
+  const canEscape=DIRS.some(([dx,dy])=>{
+    if(!dx&&!dy)return false;
+    const x=G.p.x+dx,y=G.p.y+dy;
+    if(!passable(x,y)||entAt(x,y))return false;
+    if(dx&&dy&&(!passable(G.p.x+dx,G.p.y)||!passable(G.p.x,G.p.y+dy)))return false;
+    return !danger.some(q=>q.x===x&&q.y===y);
+  });
+  if(!canEscape)return false;
+  m.intent={cells,label,damage:Math.max(1,Math.round(m.atk*.9)),at:G.turn+1};
+  log(`${m.n}が${label}の構え！ 赤い床から離れよう。`);return true;
 }
 function actMon(m){
   const p=G.p;
@@ -1091,13 +1549,14 @@ function actMon(m){
     else if(sameRoom||dist<=3)m.aware=Math.random()<0.25; // 見え方が人によって違う＝気づかれにくい
     if(!m.aware){if(Math.random()<0.5)wander(m);return;}
   }
+  if(monsterSpecial(m,dist))return;
   if(dist<=1){
     const d=dmgCalc(m.atk,p.def+aBonus());p.hp-=d;
     log(`${m.n}の攻撃！ ${d}ダメージ。`);
-    if(m.steal){p.btc=Math.max(0,p.btc-5);log('チュパカブラに血の代わりにBTCを5吸われた！');}
-    if(m.push){const dx=Math.sign(p.x-m.x),dy=Math.sign(p.y-m.y);if(passable(p.x+dx,p.y+dy)&&!entAt(p.x+dx,p.y+dy)){p.x+=dx;p.y+=dy;log('イエティの怪力で吹き飛ばされた！');}}
+    if(m.steal&&!isSealed(m)){p.btc=Math.max(0,p.btc-5);log('チュパカブラに血の代わりにBTCを5吸われた！');}
+    if(m.push&&!isSealed(m)){const dx=Math.sign(p.x-m.x),dy=Math.sign(p.y-m.y);if(passable(p.x+dx,p.y+dy)&&!entAt(p.x+dx,p.y+dy)){p.x+=dx;p.y+=dy;log(`${m.n}の怪力で吹き飛ばされた！`);}}
   }else{
-    if(m.boss&&G.turn%3===0){const it=G.items[0];if(it){G.items.shift();m.hp=Math.min(m.mhp,m.hp+8);log('サンダーバードが床のアイテムを丸呑みしてHP回復！');return;}}
+    if(m.boss&&!m.kraken&&!isSealed(m)&&G.turn%3===0){const it=G.items[0];if(it){G.items.shift();m.hp=Math.min(m.mhp,m.hp+8);log(`${m.n}が床のアイテムを丸呑みしてHP回復！`);return;}}
     stepToward(m,p.x,p.y);
   }
 }
@@ -1129,7 +1588,8 @@ function win(){
   G.over=true;ui();
   const r=sellArts();META.fund+=G.dg.bonus;META.total+=G.dg.bonus;const stw=stashInv();if(!META.clear)META.clear={};META.clear[G.dg.id]=true;delRun();saveMeta();registerScore(r.sum);
   document.getElementById('endTitle').textContent='画材を取り戻した！';
-  const bn=(G.dg.bossMul||1)>1?'真・サンダーバード':'サンダーバード';
+  const bn=bossProfile().n;
+  if(G.dg.id==='d5')document.getElementById('endTitle').textContent='地下50階・深海の主を討伐！';
   document.getElementById('endText').innerHTML=`${bn}を倒し、工房モコファクに画材が帰ってきた。<br>絵描きたちは今日も絵を描ける。<br><br>地下${G.floor}階制覇 / Lv${G.p.lv} / ${G.turn}ターン<br>絵${r.n}枚売却 +${r.sum}モコ ／ 討伐ボーナス +${G.dg.bonus}モコ<br>持ち物${stw}個を倉庫に収めた`;
   const unlk=DUNGEONS.find(x=>x.lock===G.dg.id);
   HOME_MSG=`凱旋！ 売上${r.sum+G.dg.bonus}モコで工房が大いに潤った。`+(unlk?`「${unlk.n}」が解放された！`:'');
@@ -1151,9 +1611,28 @@ function drawMonsterSprite(c,m,x,y,size,time){
   const path=(col,fn,edge=true)=>{c.beginPath();fn();c.closePath();c.fillStyle=col;c.fill();if(edge){c.strokeStyle=outline;c.stroke();}};
   const line=(pts,col,w=1.2)=>{c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.strokeStyle=col;c.lineWidth=w;c.stroke();c.lineWidth=1.65;};
   const eye=(ex,ey,r=2,col='#171c23')=>{ellipse(ex,ey,r,r*1.2,col,false);ellipse(ex-.45,ey-.65,.6,.65,'#fff5d9',false);};
-  ellipse(0,-1,m.boss?21:15,m.boss?5:4,'rgba(9,10,13,.42)',false);
+  ellipse(0,m.kraken===1?-3:-1,m.boss?21:15,m.kraken===1?3:m.boss?5:4,'rgba(9,10,13,.42)',false);
   c.translate(0,-bob);
-  if(m.boss){
+  if(m.kraken===1){
+    // Broad mantle and curling, sucker-lined tentacles distinguish the sea boss.
+    c.scale(.94,.94);c.translate(0,-2.4);
+    const curl=Math.sin(t*.002+phase)*1.2;
+    for(const s of [-1,1]){
+      c.save();c.scale(s,1);
+      path('#516c87',()=>{c.moveTo(5,-22);c.bezierCurveTo(17,-25,22,-21,22,-14);c.bezierCurveTo(22,-8,16,-10,19,-14);c.bezierCurveTo(17,-10,19,-5,23,-8);c.bezierCurveTo(27,-15,22,-28,10,-28);});
+      path('#69889a',()=>{c.moveTo(4,-17);c.bezierCurveTo(12,-20,18,-13,15,-6);c.quadraticCurveTo(21,-3,23,-7+curl);c.quadraticCurveTo(21,4,13,-2);c.bezierCurveTo(7,-4,13,-12,3,-11);});
+      path('#8ba8aa',()=>{c.moveTo(2,-15);c.bezierCurveTo(10,-14,6,-5,9,-4);c.quadraticCurveTo(11,-3,12,-6);c.quadraticCurveTo(13,1,7,-1);c.bezierCurveTo(1,-2,3,-11,0,-10);});
+      for(const [sx,sy] of [[17,-21],[20,-18],[16,-9],[17,-5],[7,-8],[8,-4]])ellipse(sx,sy,1.1,1.5,'#dcc7b2',false,.3);
+      c.restore();
+    }
+    path('#52738e',()=>{c.moveTo(-11,-22);c.bezierCurveTo(-17,-32,-8,-43,0,-47);c.bezierCurveTo(8,-43,17,-32,11,-22);c.quadraticCurveTo(0,-16,-11,-22);});
+    path('#7da2b0',()=>{c.moveTo(-9,-29);c.quadraticCurveTo(-8,-38,0,-44);c.quadraticCurveTo(3,-35,7,-30);c.quadraticCurveTo(-2,-25,-9,-29);},false);
+    ellipse(0,-23,12,7,'#718794');
+    ellipse(-6,-24,4,3.3,'#eed095');ellipse(6,-24,4,3.3,'#eed095');
+    ellipse(-5,-24,1.2,2.6,'#242637',false);ellipse(5,-24,1.2,2.6,'#242637',false);
+    line([[-2,-17],[0,-15],[2,-17]],'#d9c7b0',1.4);
+    for(const [sx,sy] of [[-21,-30],[20,-34],[-18,-8]]){ellipse(sx,sy,1.6,1.9,'rgba(125,199,208,.32)',false);line([[sx-.5,sy-1],[sx,sy-1.4]],'#aeced0',.8);}
+  }else if(m.boss){
     // Thunderbird: layered ochre flight feathers and a warm luminous breast.
     c.translate(0,-3);
     const spread=Math.sin(t*.0023+phase)*1.5;
@@ -1259,6 +1738,111 @@ function drawMonsterSprite(c,m,x,y,size,time){
     ellipse(-3.5,-30,2.5,3,'#d15b58',false);ellipse(3.5,-30,2.5,3,'#d15b58',false);
     ellipse(-3.8,-30.5,1.1,1.7,'#ffd096',false);ellipse(3.2,-30.5,1.1,1.7,'#ffd096',false);
     line([[-2,-23],[2,-23]],'#8d7481',1.2);line([[-2,-18],[2,-18]],'#8d7481',1.2);
+  }else if(m.n==='ジャッカロープ'){
+    // Rabbit proportions, long ears, and branching antlers.
+    ellipse(10,-10,4.5,4.5,'#d8c5a2');
+    ellipse(-6,-3,7,3,'#a58a69',true,-.13);ellipse(6,-3,7,3,'#a58a69',true,.13);
+    ellipse(0,-12,11,12,'#baa17f');ellipse(-2,-12,6,9,'#e1ceaa',false);
+    ellipse(-5,-32,3.3,10,'#c4ad8b',true,-.18);ellipse(5,-32,3.3,10,'#c4ad8b',true,.18);
+    ellipse(-5,-32,1.4,7,'#c59889',false,-.18);ellipse(5,-32,1.4,7,'#c59889',false,.18);
+    for(const s of [-1,1]){
+      line([[s*8,-25],[s*12,-33],[s*12,-43]],'#40382f',3.8);
+      line([[s*8,-25],[s*12,-33],[s*12,-43]],'#d4bc90',2.1);
+      line([[s*12,-34],[s*18,-38],[s*18,-42]],'#d4bc90',2.1);
+      line([[s*12,-37],[s*8,-41],[s*8,-45]],'#d4bc90',2);
+    }
+    ellipse(0,-24,9,8,'#c7af8b');ellipse(0,-20,5.5,4,'#ebd6b1',false);
+    eye(-4,-25,1.6);eye(4,-25,1.6);
+    poly([[-1.6,-22],[1.6,-22],[0,-20]],'#976c67',false);
+    line([[0,-20],[0,-18],[-2,-17]],'#76604c',.9);line([[0,-18],[2,-17]],'#76604c',.9);
+    line([[-4,-10],[-5,-5]],'#876f56',1);line([[4,-10],[5,-5]],'#876f56',1);
+  }else if(m.n==='リザードマン'){
+    path('#3e6856',()=>{c.moveTo(5,-11);c.quadraticCurveTo(18,-5,20,-16);c.quadraticCurveTo(24,-4,11,-3);c.lineTo(4,-5);});
+    poly([[-9,-13],[-12,-3],[-16,-2],[-13,0],[-5,-1],[-3,-12]],'#5c8561');
+    poly([[9,-13],[12,-3],[16,-2],[13,0],[5,-1],[3,-12]],'#5c8561');
+    path('#6d9a67',()=>{c.moveTo(-7,-30);c.lineTo(-11,-21);c.lineTo(-8,-7);c.quadraticCurveTo(0,-2,8,-7);c.lineTo(11,-21);c.lineTo(7,-30);});
+    ellipse(0,-16,6,10,'#bab584',false);
+    for(let row=0;row<4;row++)line([[-4,-22+row*4],[4,-22+row*4]],'#83926a',.9);
+    for(const s of [-1,1]){
+      poly([[s*8,-25],[s*15,-20],[s*15,-11],[s*11,-10],[s*10,-18],[s*5,-19]],'#67956a');
+      for(let k=0;k<3;k++)line([[s*(12+k*1.4),-11],[s*(12.5+k*1.5),-7.5]],'#d1c9a3',1.2);
+      for(let k=0;k<3;k++)line([[s*(9+k*2),-2],[s*(9+k*2),.2]],'#d1c9a3',1);
+    }
+    path('#719d70',()=>{c.moveTo(-10,-29);c.lineTo(-9,-36);c.lineTo(-4,-40);c.lineTo(5,-40);c.lineTo(10,-35);c.lineTo(10,-27);c.quadraticCurveTo(0,-21,-10,-29);});
+    ellipse(0,-28,8,4.5,'#94ac7c');
+    ellipse(-5,-33,3.1,2.7,'#b85f54');ellipse(5,-33,3.1,2.7,'#b85f54');
+    ellipse(-5,-33,.75,2.1,'#2a3028',false);ellipse(5,-33,.75,2.1,'#2a3028',false);
+    line([[-6,-26],[0,-25],[6,-27]],'#3e6353',1);
+    ellipse(-2,-29,.7,.7,'#41634d',false);ellipse(2,-29,.7,.7,'#41634d',false);
+    for(const [sx,sy] of [[-4,-38],[2,-37],[-8,-18],[8,-14]])poly([[sx-1.5,sy],[sx,sy+2],[sx+1.5,sy]],'#90b184',false);
+  }else if(m.n==='シャドーピープル'){
+    // Faceless human silhouette: rim light keeps the dark creature readable.
+    const silhouette=()=>{c.moveTo(-6,-32);c.quadraticCurveTo(-12,-30,-13,-22);c.lineTo(-17,-9);c.lineTo(-13,-8);c.lineTo(-7,-22);c.lineTo(-6,-15);c.lineTo(-9,-1);c.lineTo(-3,-3);c.lineTo(0,-12);c.lineTo(3,-3);c.lineTo(9,-1);c.lineTo(6,-16);c.lineTo(7,-23);c.lineTo(13,-9);c.lineTo(17,-10);c.lineTo(12,-25);c.quadraticCurveTo(10,-31,6,-32);};
+    path('#1d202b',silhouette);
+    ellipse(0,-37,6,8,'#1d202b');
+    line([[-4,-43],[-6,-39],[-5,-33],[-9,-29],[-11,-23],[-15,-12]],'#767c94',1.25);
+    line([[5,-34],[8,-30],[10,-25],[14,-13]],'#444a65',1);
+    line([[-5,-16],[-7,-5]],'#62667f',1);line([[4,-15],[7,-4]],'#43485e',1);
+    ellipse(0,-1,13,2.2,'rgba(99,86,121,.3)',false);
+  }else if(m.n==='ジャージー・デビル'){
+    const flap=Math.sin(t*.0028+phase);
+    for(const s of [-1,1]){
+      c.save();c.scale(s,1);
+      poly([[5,-28],[14,-37-flap],[23,-32],[20,-24],[18,-27],[14,-18],[12,-22],[7,-17]],'#393a45');
+      poly([[8,-27],[14,-33-flap],[20,-31],[16,-27],[13,-23],[11,-25]],'#6b5866',false);
+      line([[8,-26],[14,-33-flap],[16,-27]],'#a3888d',.9);c.restore();
+    }
+    path('#3b3b43',()=>{c.moveTo(7,-9);c.bezierCurveTo(21,0,23,-12,17,-14);c.quadraticCurveTo(21,-6,12,-7);});
+    poly([[-8,-14],[-8,-5],[-13,-4],[-12,0],[-4,-1],[-2,-13]],'#383941');
+    poly([[7,-14],[7,-5],[12,-4],[11,0],[3,-1],[1,-13]],'#383941');
+    ellipse(0,-20,9,12,'#4a454c');
+    poly([[-5,-24],[0,-27],[5,-23],[4,-11],[0,-8],[-4,-12]],'#756169',false);
+    poly([[-7,-32],[-10,-42],[-5,-39],[-2,-34],[3,-36],[8,-42],[8,-33],[9,-27],[5,-23],[-4,-25]],'#51494e');
+    ellipse(3,-28,6.5,7,'#746269',true,-.28);
+    ellipse(5,-24,5,3.2,'#97817d');
+    eye(-2,-32,1.4,'#d56c5b');eye(5,-33,1.3,'#d56c5b');
+    ellipse(4,-25,.85,1,'#403c42',false);ellipse(7,-25,.75,.85,'#403c42',false);
+    line([[2,-22],[7,-22]],'#493e43',.85);
+    line([[-11,-3],[-5,-3]],'#9d8a7d',1);line([[4,-3],[10,-3]],'#9d8a7d',1);
+  }else if(m.n==='アルカリ・レイク・モンスター'){
+    path('#686a5b',()=>{c.moveTo(7,-15);c.quadraticCurveTo(15,-15,23,-22);c.quadraticCurveTo(23,-10,12,-7);c.lineTo(4,-8);});
+    for(const s of [-1,1])poly([[s*6,-12],[s*13,-8],[s*16,-2],[s*10,-2],[s*5,-7]],'#777463');
+    ellipse(0,-13,15,9,'#8d8973');
+    for(let k=0;k<4;k++)poly([[k*5-6,-21],[k*5-3,-26+k*.7],[k*5,-20]],'#b1a489');
+    ellipse(-8,-17,10,7,'#9b9176');
+    path('#aea081',()=>{c.moveTo(-14,-19);c.lineTo(-23,-15);c.lineTo(-22,-8);c.quadraticCurveTo(-12,-4,-3,-10);c.lineTo(-4,-17);});
+    line([[-22,-11],[-15,-10],[-7,-12]],'#554f43',1.2);
+    for(let k=0;k<4;k++)poly([[-21+k*3.5,-11],[-19.5+k*3.5,-8.5],[-18.5+k*3.5,-11]],'#e8d7ac',false);
+    poly([[-17,-17],[-17,-29],[-11,-20]],'#d4c3a0');
+    eye(-7,-19,1.6,'#a46e42');ellipse(-21,-15,.9,.7,'#635a49',false);
+    for(const [sx,sy] of [[0,-16],[6,-14],[10,-11],[4,-10]])poly([[sx-2,sy],[sx,sy+2],[sx+2,sy]],'#b3a689',false);
+    line([[12,-3],[13,-1]],'#c8b897',1);line([[-13,-3],[-14,-1]],'#c8b897',1);
+  }else if(m.n==='クリッター'){
+    c.translate(0,-3-Math.sin(t*.002+phase)*1.2);
+    const pulse=Math.sin(t*.003+phase)*1.8;
+    path('rgba(111,102,167,.5)',()=>{c.moveTo(-14,-10);c.bezierCurveTo(-25,-18,-7,-21,-13,-32);c.bezierCurveTo(-14,-42,2,-30,8,-39);c.bezierCurveTo(20,-43,15,-27,21,-23);c.bezierCurveTo(27,-13,11,-17,12,-8);c.bezierCurveTo(10,0,0,-11,-7,-6);c.quadraticCurveTo(-14,-2,-14,-10);},false);
+    path('#8a9bbd',()=>{c.moveTo(-10,-13);c.bezierCurveTo(-17,-22,-6,-22,-8,-31-pulse);c.quadraticCurveTo(0,-24,5,-34);c.bezierCurveTo(13,-38,9,-23,16,-20);c.quadraticCurveTo(7,-20,8,-11);c.quadraticCurveTo(0,-17,-4,-11);c.quadraticCurveTo(-7,-6,-10,-13);},false);
+    path('#adcbd3',()=>{c.moveTo(-5,-15);c.bezierCurveTo(-11,-22,0,-21,-3,-29);c.quadraticCurveTo(6,-24,8,-19);c.lineTo(2,-19);c.lineTo(3,-13);c.lineTo(-1,-17);},false);
+    line([[-12,-31],[-7,-28],[-9,-23],[-4,-25]],'#d9c4dc',1.1);
+    line([[11,-16],[15,-11],[11,-7]],'#b4a8cf',1.1);
+    ellipse(-18,-24,1.2,1.8,'#b4b9d6',false);ellipse(17,-33,1,1.6,'#b8d0d9',false);
+  }else if(m.n==='印旛沼の怪獣'){
+    path('#323a3c',()=>{c.moveTo(6,-9);c.quadraticCurveTo(18,-10,22,-4);c.lineTo(15,-2);c.lineTo(5,-4);});
+    ellipse(0,-14,17,13,'#343e40');
+    path('#536163',()=>{c.moveTo(-13,-20);c.quadraticCurveTo(-5,-29,7,-24);c.quadraticCurveTo(13,-20,13,-12);c.quadraticCurveTo(8,-22,-3,-19);c.quadraticCurveTo(-9,-16,-13,-20);},false);
+    for(const s of [-1,1]){
+      path('#465154',()=>{c.moveTo(s*12,-19);c.quadraticCurveTo(s*22,-17,s*23,-7);c.quadraticCurveTo(s*13,-7,s*8,-13);});
+      line([[s*14,-16],[s*20,-10]],'#778078',.9);
+    }
+    ellipse(-1,-28,11,10,'#3e484b');
+    path('#899082',()=>{c.moveTo(-8,-32);c.quadraticCurveTo(-3,-36,0,-32);c.quadraticCurveTo(4,-35,8,-31);c.lineTo(8,-25);c.quadraticCurveTo(4,-20,-2,-20);c.quadraticCurveTo(-10,-21,-9,-26);});
+    ellipse(-4,-30,3,2,'#4f5d59',false);ellipse(4,-30,3,2,'#4f5d59',false);
+    eye(-4,-30,1.2);eye(4,-30,1.2);
+    ellipse(0,-27,3.3,1.9,'#515e58',false);
+    ellipse(-1.4,-27,.7,.6,'#273432',false);ellipse(1.4,-27,.7,.6,'#273432',false);
+    ellipse(0,-23.5,6.5,2.2,'#38443f',false);
+    line([[-4,-24.5],[4,-24.5]],'#c3baa0',1);
+    line([[-9,-7],[-3,-4],[7,-6]],'#5d6c67',1.2);
   }else{
     // Akomon Rice is a peaceful little rice spirit, with a jade sash.
     ellipse(-6,-2,4,2.8,'#c3bc94');ellipse(6,-2,4,2.8,'#c3bc94');
@@ -1302,19 +1886,39 @@ function drawItemSprite(c,it,x,y,size,time){
       line([[cx-3,cy-3],[cx+2,cy-3],[cx+3,cy-1],[cx-1,cy],[cx+3,cy+1],[cx+2,cy+3],[cx-3,cy+3]],'#fff0b0',1.2);
       line([[cx-r*.55,cy-r*.48],[cx-r*.2,cy-r*.65]],'#fff0b0',1.5);
     };
-    if(it.id==='bigcoin'){coin(-6,-7,7.8);coin(6,-9,8);coin(0,-18,8.3);}else coin(0,-11,9.5);
+    if(it.id==='compressed'){
+      poly([[-11,-20],[0,-27],[11,-20],[11,-7],[0,-1],[-11,-7]],'#a37436');
+      poly([[-10,-19],[0,-25],[10,-19],[10,-9],[0,-3],[-10,-9]],'#ecc678');
+      ellipse(0,-14,7.3,8,'#c99441');
+      line([[-1.5,-20],[-1.5,-8]],'#fff0b0',1.6);
+      line([[-4,-18],[3,-18],[4,-15],[0,-14],[4,-13],[3,-10],[-4,-10]],'#fff0b0',1.5);
+      line([[-9,-20],[0,-25],[7,-21]],'#fff0b0',1.2);
+      for(const yy of [-17,-13,-9])line([[9,yy],[11,yy-1]],'#a57535',1);
+    }else if(it.id==='bigcoin'){coin(-6,-7,7.8);coin(6,-9,8);coin(0,-18,8.3);}else coin(0,-11,9.5);
   }else if(it.t==='herb'&&it.id==='rice'){
     poly([[-12,-5],[-12,-11],[-5,-25],[0,-28],[5,-25],[12,-11],[12,-5],[7,-2],[-7,-2]],'#e4dbb8');
     poly([[-10,-9],[-3,-24],[0,-25],[7,-15],[9,-8]],'#fff2d2',false);
     poly([[-4,-13],[5,-13],[5,-3],[-4,-3]],'#415b49');
     for(const [rx,ry] of [[-6,-16],[0,-21],[5,-16],[-8,-9]])line([[rx,ry],[rx+1,ry-2]],'#c8bd96',1);
+  }else if(it.t==='herb'&&it.id==='lifedrop'){
+    c.beginPath();c.moveTo(0,-31);c.bezierCurveTo(-2,-24,-11,-17,-11,-11);c.bezierCurveTo(-11,1,11,1,11,-11);c.bezierCurveTo(11,-18,2,-26,0,-31);c.closePath();c.fillStyle='#6c9da7';c.fill();c.strokeStyle=outline;c.stroke();
+    c.beginPath();c.moveTo(-1,-25);c.bezierCurveTo(-3,-19,-8,-15,-7,-10);c.quadraticCurveTo(-6,-5,-1,-6);c.quadraticCurveTo(4,-13,-1,-25);c.fillStyle='#a1d3ca';c.fill();
+    line([[-4,-11],[4,-11]],'#e5efd3',2);line([[0,-15],[0,-7]],'#e5efd3',2);
+    ellipse(-5,-18,1.2,2.5,'#e4f1de',false,.35);
   }else if(it.t==='herb'){
-    line([[0,-3],[0,-24]],'#699253',2.5);
+    const moon=it.id==='moonherb',fury=it.id==='fury';
+    line([[0,-3],[0,-24]],moon?'#88aba1':fury?'#9b7155':'#699253',2.5);
     for(const [lx,ly,rot] of [[-5,-9,-.7],[5,-14,.7],[-5,-20,-.7],[4,-25,.65]]){
-      ellipse(lx,ly,5,3,'#82a95a',true,rot);
-      line([[lx<0?lx-2:lx+2,ly-1],[0,ly+3]],'#b9ca79',1);
+      ellipse(lx,ly,5,3,moon?'#b6cdc0':fury?'#c78361':'#82a95a',true,rot);
+      line([[lx<0?lx-2:lx+2,ly-1],[0,ly+3]],moon?'#e5ead0':fury?'#efbd77':'#b9ca79',1);
     }
     poly([[-4,-4],[3,-6],[5,-2],[-3,-1]],'#ad8150');
+    if(moon){
+      ellipse(2,-30,4,4,'#d9e6be');ellipse(4,-31,3.3,3.5,'#789e9c',false);
+    }else if(fury){
+      poly([[-3,-27],[-4,-32],[0,-30],[2,-35],[5,-30],[3,-26]],'#e6aa63');
+      poly([[0,-29],[2,-32],[3,-28]],'#f5d890',false);
+    }
   }else if(it.t==='scroll'){
     c.rotate(.18);
     c.fillStyle='#b39765';c.fillRect(-9,-26,19,23);
@@ -1323,30 +1927,55 @@ function drawItemSprite(c,it,x,y,size,time){
     ellipse(-9,-25,3.2,3.2,'#e6cb94');
     ellipse(9,-5,3.2,3.2,'#d9b979');
     line([[-4,-21],[5,-21]],'#a89470',1);line([[-4,-18],[4,-18]],'#a89470',1);
-    const ink=it.id==='thunder'?'#b27b34':it.id==='home'?'#739774':'#7d809a';
-    poly([[-2,-16],[3,-17],[0,-12],[3,-12],[-2,-8],[0,-13],[-3,-13]],ink,false);
+    const ink=it.id==='thunder'?'#b27b34':it.id==='home'?'#739774':it.id==='sleepwave'?'#8b719b':it.id==='barrier'?'#618d87':'#7d809a';
+    if(it.id==='sleepwave'){
+      ellipse(0,-13,3.6,4,ink,false);ellipse(2,-14,3,3.2,'#ecdbb1',false);
+      ellipse(5,-15,.7,.7,ink,false);
+    }else if(it.id==='barrier'){
+      poly([[-4,-16],[0,-18],[4,-16],[3,-11],[0,-8],[-3,-11]],ink,false);
+      line([[-2,-15],[0,-16],[2,-15],[1,-11],[0,-10]],'#ddd7a5',.8);
+    }else poly([[-2,-16],[3,-17],[0,-12],[3,-12],[-2,-8],[0,-13],[-3,-13]],ink,false);
     line([[-8,-7],[7,-7]],'#a57d52',1);
   }else if(it.t==='wand'){
     line([[-9,-3],[8,-25]],outline,5);
     line([[-9,-3],[8,-25]],'#987350',3);
     line([[-9,-3],[5,-21]],'#c39b6c',1);
-    poly([[4,-24],[3,-30],[9,-35],[14,-29],[11,-23],[7,-22]],'#719aab');
-    poly([[4,-29],[9,-33],[10,-28],[7,-24]],'#b4d4d0',false);
+    const sleep=it.id==='sleepwand',seal=it.id==='sealwand';
+    if(sleep){
+      ellipse(9,-29,6,6,'#aaa0bf');ellipse(12,-31,4.7,4.6,'#555369');
+      ellipse(5,-30,.8,1.3,'#e0d2dc',false);
+    }else if(seal){
+      poly([[3,-31],[9,-36],[15,-31],[15,-25],[9,-20],[3,-25]],'#a97666');
+      poly([[6,-29],[9,-32],[12,-29],[12,-26],[9,-23],[6,-26]],'#e6c592');
+      line([[6,-31],[12,-25]],'#8b5757',1.8);line([[12,-31],[6,-25]],'#8b5757',1.8);
+    }else{
+      poly([[4,-24],[3,-30],[9,-35],[14,-29],[11,-23],[7,-22]],'#719aab');
+      poly([[4,-29],[9,-33],[10,-28],[7,-24]],'#b4d4d0',false);
+    }
     line([[4,-23],[10,-21]],'#ddbc77',2);
   }else if(it.t==='weapon'){
-    const rare=!!it.base;
-    ellipse(0,-13,12,9,rare?'#bed1cf':'#7c9c9a');
+    const rare=!!it.base,storm=it.id==='stormcollar',star=it.id==='starcollar';
+    ellipse(0,-13,12,9,star?'#8c81a3':storm?'#6993a2':rare?'#bed1cf':'#7c9c9a');
     ellipse(0,-14,8,5.5,'#403c34');
-    c.strokeStyle=rare?'#e9e9d2':'#c6c48d';c.lineWidth=2.3;c.beginPath();c.ellipse(0,-13,10.5,7.5,0,0,Math.PI);c.stroke();
-    poly([[0,-14],[-5,-6],[-1,-6],[-3,1],[6,-10],[1,-9],[3,-14]],rare?'#f8edb3':'#e8c365');
+    c.strokeStyle=star?'#e3bf86':storm?'#b8d1c6':rare?'#e9e9d2':'#c6c48d';c.lineWidth=2.3;c.beginPath();c.ellipse(0,-13,10.5,7.5,0,0,Math.PI);c.stroke();
+    if(star)poly([[0,-15],[2,-10],[7,-9],[3,-5],[4,0],[0,-3],[-4,0],[-3,-5],[-7,-9],[-2,-10]],'#eed79c');
+    else{
+      poly([[0,-14],[-5,-6],[-1,-6],[-3,1],[6,-10],[1,-9],[3,-14]],storm?'#d2e1ce':rare?'#f8edb3':'#e8c365');
+      if(storm){line([[-11,-19],[-14,-15],[-11,-13]],'#accfce',1);line([[11,-20],[14,-17],[12,-14]],'#accfce',1);}
+    }
     for(const xx of [-10,10])ellipse(xx,-14,2,2,'#e2c994',false);
   }else if(it.t==='armor'){
-    const rare=!!it.base;
-    poly([[-7,-25],[-13,-6],[-11,-3],[-5,-5],[0,-2],[5,-5],[11,-3],[13,-6],[7,-25]],rare?'#aebbbe':'#93694c');
-    poly([[-5,-23],[-8,-7],[-3,-9],[0,-6],[3,-9],[8,-7],[5,-23]],rare?'#d1d9d0':'#b18b64',false);
-    poly([[-9,-23],[-7,-29],[-3,-30],[0,-27],[4,-30],[8,-28],[10,-23],[5,-20],[0,-23],[-5,-20]],rare?'#f3ead5':'#d9c59c');
+    const rare=!!it.base,dragon=it.id==='dragoncloak',abyss=it.id==='abysscloak';
+    poly([[-7,-25],[-13,-6],[-11,-3],[-5,-5],[0,-2],[5,-5],[11,-3],[13,-6],[7,-25]],abyss?'#52667f':dragon?'#66896c':rare?'#aebbbe':'#93694c');
+    poly([[-5,-23],[-8,-7],[-3,-9],[0,-6],[3,-9],[8,-7],[5,-23]],abyss?'#7b9ea8':dragon?'#8faa74':rare?'#d1d9d0':'#b18b64',false);
+    poly([[-9,-23],[-7,-29],[-3,-30],[0,-27],[4,-30],[8,-28],[10,-23],[5,-20],[0,-23],[-5,-20]],abyss?'#c3d5ca':dragon?'#c5bd89':rare?'#f3ead5':'#d9c59c');
     ellipse(0,-23,2,2,'#c59f59');
-    line([[-3,-19],[-5,-8]],rare?'#889da2':'#805a44',1);line([[4,-18],[7,-9]],rare?'#889da2':'#805a44',1);
+    if(dragon){
+      for(const [sx,sy] of [[-3,-18],[3,-18],[0,-14],[-5,-11],[5,-11]])line([[sx-2,sy],[sx,sy+2],[sx+2,sy]],'#cfcc90',1);
+    }else if(abyss){
+      line([[-6,-12],[-3,-14],[0,-12],[3,-14],[6,-12]],'#c1d7ca',1.2);
+      line([[-8,-8],[-4,-10],[0,-8],[4,-10],[8,-8]],'#9cbfc1',1.1);
+    }else{line([[-3,-19],[-5,-8]],rare?'#889da2':'#805a44',1);line([[4,-18],[7,-9]],rare?'#889da2':'#805a44',1);}
   }else{
     ellipse(0,-10,8,8,'#caa866');
     line([[-3,-14],[3,-14],[3,-7],[-3,-7],[-3,-14]],'#f3dd9c',1.5);
@@ -1384,14 +2013,22 @@ function makeTiles(){
   }));
   for(let v=0;v<4;v++)corr.push(mkTile(g=>{g.fillStyle='#30382e';g.fillRect(0,0,T,T);stoneBlock(g,2,2,T-4,T-4,['#5e6654','#656957','#686955','#5b6050'][v]);g.strokeStyle='#333c2f';g.beginPath();g.moveTo(0,17);g.lineTo(14,19);g.lineTo(23,30);g.stroke();}));
   const wallFace=mkTile(g=>{
-    g.fillStyle='#282b22';g.fillRect(0,0,T,T);
-    stoneBlock(g,1,1,46,12,'#8d8b70');
-    stoneBlock(g,1,15,22,15,'#8b8165');stoneBlock(g,25,15,22,15,'#92876b');
-    stoneBlock(g,-10,32,32,14,'#777052');stoneBlock(g,24,32,34,14,'#81785a');
-    g.fillStyle='rgba(12,15,9,.4)';g.fillRect(0,44,T,4);
-    g.fillStyle='#a29b76';g.fillRect(1,1,46,2);g.fillStyle='#373f2a';g.fillRect(3,13,16,2);g.fillRect(31,30,13,2);
+    // Raised cap, vertical masonry and a continuous foot plinth distinguish walls from floor slabs.
+    g.fillStyle='#131c18';g.fillRect(0,0,T,T);
+    g.fillStyle='#464f46';g.fillRect(0,0,T,11);g.fillStyle='#87907a';g.fillRect(1,1,T-2,2);
+    g.fillStyle='#b2b6a0';g.fillRect(0,9,T,3);g.fillStyle='#1a251f';g.fillRect(0,12,T,3);
+    stoneBlock(g,1,16,21,11,'#969883');stoneBlock(g,25,16,22,11,'#a0a18c');
+    stoneBlock(g,-10,30,32,10,'#8d9380');stoneBlock(g,25,30,34,10,'#9a9e88');
+    g.fillStyle='#afb29b';g.fillRect(0,40,T,3);g.fillStyle='#5e6c5a';g.fillRect(0,43,T,2);g.fillStyle='#111d15';g.fillRect(0,45,T,3);
+    g.fillStyle='#3f4f39';g.fillRect(3,27,12,2);g.fillRect(34,38,9,2);
   });
-  const wallTop=mkTile(g=>{g.fillStyle='#2c3229';g.fillRect(0,0,T,T);stoneBlock(g,1,1,46,46,'#454d3a');g.fillStyle='rgba(19,26,17,.28)';g.fillRect(3,7,26,3);g.fillRect(17,33,24,2);});
+  const wallTop=mkTile(g=>{
+    g.fillStyle='#17221b';g.fillRect(0,0,T,T);
+    for(const [x,y,w,h] of [[2,2,24,17],[29,2,17,23],[2,22,17,24],[22,28,24,18]]){
+      g.fillStyle='#465141';g.beginPath();g.moveTo(x+3,y);g.lineTo(x+w-2,y+2);g.lineTo(x+w,y+h-4);g.lineTo(x+w-5,y+h);g.lineTo(x,y+h-2);g.lineTo(x,y+4);g.closePath();g.fill();
+      g.strokeStyle='#626d55';g.lineWidth=1;g.beginPath();g.moveTo(x+3,y+1);g.lineTo(x+w-3,y+3);g.stroke();
+    }
+  });
   const stairs=mkTile(g=>{
     g.drawImage(floors[1],0,0);g.fillStyle='#141b16';g.fillRect(5,5,38,38);
     for(let i=0;i<6;i++){g.fillStyle=['#c1af7c','#a9986b','#91825b','#756a4c','#58513b','#3c3c2e'][i];g.fillRect(8,7+i*5,32,4);}
@@ -1407,6 +2044,25 @@ function resize(){
 }
 window.addEventListener('resize',resize);
 function gameInputReady(){return !!G&&!G.over&&!document.querySelector('.overlay.show');}
+function knownOpenTile(x,y){return x>=0&&y>=0&&x<W&&y<H&&G.f.seen[y][x]&&G.f.map[y][x]!==WALL;}
+function drawKnownWallEdges(g,ox,oy,x0,x1,y0,y1){
+  // Keep the barrier silhouette readable even after fog and ambient lighting; never inspect unseen floors.
+  g.save();
+  for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){
+    if(!G.f.seen[y][x]||G.f.map[y][x]!==WALL)continue;
+    const px=ox+x*T,py=oy+y*T,lit=visible(x,y);
+    if(knownOpenTile(x,y+1)){
+      g.fillStyle=lit?'#8e9985':'#5c6d5e';g.fillRect(px,py+T-8,T,2);
+      g.fillStyle=lit?'#596d58':'#384c3b';g.fillRect(px,py+T-6,T,3);
+      g.fillStyle='#0b170f';g.fillRect(px,py+T-3,T,3);
+      g.strokeStyle=lit?'#788775':'#4e6152';g.lineWidth=1;g.beginPath();g.moveTo(px,py+13);g.lineTo(px+T,py+13);g.moveTo(px,py+28);g.lineTo(px+T,py+28);g.moveTo(px+23,py+16);g.lineTo(px+23,py+27);g.stroke();
+    }
+    if(knownOpenTile(x,y-1)){g.fillStyle=lit?'#87937a':'#596b56';g.fillRect(px,py+1,T,2);g.fillStyle='#142519';g.fillRect(px,py+8,T,3);}
+    if(knownOpenTile(x+1,y)){g.fillStyle=lit?'#86957c':'#53684f';g.fillRect(px+T-11,py,2,T);g.fillStyle='#101e13';g.fillRect(px+T-3,py,3,T);}
+    if(knownOpenTile(x-1,y)){g.fillStyle=lit?'#849279':'#53644e';g.fillRect(px+10,py,2,T);g.fillStyle='#101e13';g.fillRect(px,py,2,T);}
+  }
+  g.restore();
+}
 function torch(g,x,y,time,seed){
   const sway=reducedMotion.matches?0:Math.sin(time*.007+seed)*1.4;
   g.fillStyle='#211c15';g.fillRect(x-5,y+4,10,8);g.fillStyle='#826047';g.fillRect(x-2,y-2,4,16);
@@ -1436,24 +2092,32 @@ function draw(){
     if(!G.f.seen[y][x])continue;
     const tile=G.f.map[y][x],px=ox+x*T,py=oy+y*T,seenNow=visible(x,y);
     if(tile===WALL){
-      const face=y+1<H&&G.f.map[y+1][x]!==WALL;
+      const face=knownOpenTile(x,y+1);
       ctx.drawImage(face?TILES.wallFace:TILES.wallTop,px,py);
       if(face&&seenNow&&(x%4===1)){flames.push({x:px+T/2,y:py+T*.60,seed:x+y});}
-      if(x+1<W&&G.f.map[y][x+1]!==WALL){
+      if(knownOpenTile(x+1,y)){
         ctx.fillStyle='#76785d';ctx.fillRect(px+T-12,py,9,T);ctx.fillStyle='#a19a74';ctx.fillRect(px+T-12,py,2,T);ctx.fillStyle='#333e27';ctx.fillRect(px+T-3,py,3,T);
         ctx.fillStyle='#303a26';ctx.fillRect(px+T-12,py+23,9,2);
       }
-      if(x>0&&G.f.map[y][x-1]!==WALL){ctx.fillStyle='#585e46';ctx.fillRect(px+2,py,10,T);ctx.fillStyle='#97926f';ctx.fillRect(px+10,py,2,T);ctx.fillStyle='#273520';ctx.fillRect(px+2,py+23,10,2);}
-      if(y>0&&G.f.map[y-1][x]!==WALL){ctx.fillStyle='#747858';ctx.fillRect(px,py,T,8);ctx.fillStyle='#9a9a73';ctx.fillRect(px+1,py+1,T-2,2);ctx.fillStyle='#303b27';ctx.fillRect(px,py+8,T,3);}
+      if(knownOpenTile(x-1,y)){ctx.fillStyle='#585e46';ctx.fillRect(px+2,py,10,T);ctx.fillStyle='#97926f';ctx.fillRect(px+10,py,2,T);ctx.fillStyle='#273520';ctx.fillRect(px+2,py+23,10,2);}
+      if(knownOpenTile(x,y-1)){ctx.fillStyle='#747858';ctx.fillRect(px,py,T,8);ctx.fillStyle='#9a9a73';ctx.fillRect(px+1,py+1,T-2,2);ctx.fillStyle='#303b27';ctx.fillRect(px,py+8,T,3);}
     }else{
       const set=roomOf(x,y)?TILES.floors:TILES.corr;
       ctx.drawImage(tile===STAIRS?TILES.stairs:set[hash2(x,y)%set.length],px,py);
-      if(y>0&&G.f.map[y-1][x]===WALL){const s=ctx.createLinearGradient(0,py,0,py+19);s.addColorStop(0,'rgba(9,13,6,.65)');s.addColorStop(1,'rgba(9,13,6,0)');ctx.fillStyle=s;ctx.fillRect(px,py,T,19);}
-      if(x>0&&G.f.map[y][x-1]===WALL){ctx.fillStyle='rgba(12,20,9,.24)';ctx.fillRect(px,py,6,T);}
+      if(y>0&&G.f.seen[y-1][x]&&G.f.map[y-1][x]===WALL){const s=ctx.createLinearGradient(0,py,0,py+19);s.addColorStop(0,'rgba(9,13,6,.65)');s.addColorStop(1,'rgba(9,13,6,0)');ctx.fillStyle=s;ctx.fillRect(px,py,T,19);}
+      if(x>0&&G.f.seen[y][x-1]&&G.f.map[y][x-1]===WALL){ctx.fillStyle='rgba(12,20,9,.24)';ctx.fillRect(px,py,6,T);}
       // Quiet environmental detail; it never signals a gameplay item.
       if(tile===FLOOR&&hash2(x+83,y)%31===0){ctx.fillStyle='#414b32';ctx.fillRect(px+6,py+31,3,2);ctx.fillRect(px+10,py+34,5,2);}
     }
-    if(!seenNow){ctx.fillStyle='rgba(7,14,10,.70)';ctx.fillRect(px,py,T,T);}
+    if(!seenNow){ctx.fillStyle=tile===WALL?'rgba(7,14,10,.43)':'rgba(7,14,10,.70)';ctx.fillRect(px,py,T,T);}
+  }
+  // A warning marks only known, currently visible cells; the attack lands after the player's next action.
+  for(const m of G.mons)if(m.intent&&visible(m.x,m.y))for(const q of m.intent.cells){
+    if(!G.f.seen[q.y]?.[q.x]||!visible(q.x,q.y))continue;
+    const px=ox+q.x*T,py=oy+q.y*T;
+    ctx.fillStyle='rgba(181,56,43,.32)';ctx.fillRect(px+2,py+2,T-4,T-4);
+    ctx.strokeStyle='#eab777';ctx.lineWidth=1.5;ctx.strokeRect(px+5,py+5,T-10,T-10);
+    ctx.fillStyle='#ffe4aa';ctx.font='bold 16px sans-serif';ctx.textAlign='center';ctx.fillText('!',px+T/2,py+T*.65);
   }
   for(const tr of G.traps||[])if(tr.seen&&visible(tr.x,tr.y)){
     const x=ox+(tr.x+.5)*T,y=oy+(tr.y+.7)*T;ctx.save();ctx.translate(x,y);ctx.scale(1,.55);ctx.rotate(Math.PI/4);ctx.fillStyle='#5c3532';ctx.fillRect(-12,-12,24,24);ctx.strokeStyle='#cf7b5c';ctx.lineWidth=2;ctx.strokeRect(-12,-12,24,24);ctx.restore();
@@ -1471,10 +2135,12 @@ function draw(){
       const m=b.m;drawMonsterSprite(ctx,m,x,y,T,reducedMotion.matches?0:now);
       if(m.hp<m.mhp||m.boss){ctx.fillStyle='#172014';ctx.fillRect(x-17,y-T-7,34,5);ctx.fillStyle=m.friendly?'#c6df96':'#d98765';ctx.fillRect(x-16,y-T-6,32*clamp(m.hp/m.mhp,0,1),3);}
       if(m.sleep>0){ctx.fillStyle='#ddd5b1';ctx.font='12px Georgia';ctx.textAlign='center';ctx.fillText('z z',x+13,y-T+3);}
+      if(m.sealUntil>G.turn){ctx.fillStyle='#d2b6ee';ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillText('封',x+15,y-T+5);}
     }
   }
   const pcx=vw/2,pcy=vh/2+14;
   const shade=ctx.createRadialGradient(pcx,pcy,T*1.2,pcx,pcy,Math.max(vw,vh)*.76);shade.addColorStop(0,'rgba(8,16,10,0)');shade.addColorStop(.6,'rgba(6,16,10,.18)');shade.addColorStop(1,'rgba(3,10,7,.79)');ctx.fillStyle=shade;ctx.fillRect(0,0,vw,vh);
+  drawKnownWallEdges(ctx,ox,oy,x0,x1,y0,y1);
   for(const f of flames){
     ctx.save();ctx.globalCompositeOperation='screen';const light=ctx.createRadialGradient(f.x,f.y,3,f.x,f.y,T*2.5);light.addColorStop(0,'rgba(255,163,57,.27)');light.addColorStop(.4,'rgba(210,133,35,.10)');light.addColorStop(1,'rgba(180,120,20,0)');ctx.fillStyle=light;ctx.fillRect(f.x-T*2.5,f.y-T*2.5,T*5,T*5);ctx.restore();torch(ctx,f.x,f.y,now,f.seed);
   }
@@ -1523,9 +2189,133 @@ function drawMocco(px,py,g,time=0){
 }
 function renderMoccoPortrait(){const c=document.getElementById('titleMocco');if(!c)return;const g=c.getContext('2d');g.clearRect(0,0,c.width,c.height);if(moccoArt.complete&&moccoArt.naturalWidth){g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';g.drawImage(moccoArt,0,0,c.width,c.height);}}
 
+// The handbook and bag reuse the exact same illustrations as the dungeon.
+const MENU_ART_CACHE=new Map();
+const MENU_TYPES={weapon:'まとい・武器',armor:'まとい・防具',wand:'杖',scroll:'巻物',herb:'草',food:'食料',art:'絵画・持ち帰り品'};
+function menuArt(kind,obj){
+  const key=kind+':'+(obj.id||obj.n)+':'+(obj.tier||0);
+  if(!MENU_ART_CACHE.has(key)){
+    const c=document.createElement('canvas');c.width=c.height=128;
+    const g=c.getContext('2d');g.imageSmoothingEnabled=false;
+    if(kind==='monster')drawMonsterSprite(g,obj,64,108,90,0);
+    else drawItemSprite(g,obj,64,108,90,0);
+    MENU_ART_CACHE.set(key,c.toDataURL('image/png'));
+  }
+  return MENU_ART_CACHE.get(key);
+}
+function guideIntro(title,body){return `<div class="guide-intro"><h3>${title}</h3><p>${body}</p></div>`;}
+function guideEntry(kind,obj,title,body,meta=[]){
+  const type=kind==='monster'?'monster':obj.t;
+  return `<article class="guide-card ${kind==='monster'?'monster-card':obj.t==='art'?'treasure-card':''} type-${type}" data-type="${type}"><div class="entry-art"><img src="${menuArt(kind,obj)}" alt="" width="128" height="128"></div><div class="entry-copy"><h3>${esc(title)}</h3><p>${body}</p></div><div class="entry-meta">${meta.map(x=>`<span>${esc(String(x))}</span>`).join('')}</div></article>`;
+}
+function helpCard(title,body){return `<article class="guide-card rule-card"><div class="entry-copy"><h3>${title.replace(/^[^\p{L}\p{N}]+/u,'')}</h3><p>${body}</p></div></article>`;}
+function guideSpawnLocations(m){
+  if(typeof threatDepth!=='function')return [`地下${m.min}〜${m.max}階相当`];
+  const labels={d1:'ちょっと',d2:'不思議',d3:'もっと',d4:'かなり',d5:'すごく'};
+  return DUNGEONS.flatMap(dg=>{
+    if(dg.id==='d1'&&m.extended)return [];
+    const levels=Array.from({length:dg.floors},(_,i)=>i+1).filter(fl=>{const d=threatDepth(fl,dg);return m.rare?d>=2:d>=m.min&&d<=m.max;});
+    return levels.length?[`${labels[dg.id]} ${levels[0]}〜${levels.at(-1)}F`]:[];
+  });
+}
+function openHelp(tab){
+  if(tab!==undefined)HELP_TAB=tab;
+  const panel=document.getElementById('help');panel.classList.add('show');
+  for(let i=0;i<3;i++){
+    const b=document.getElementById('htab'+i);b.classList.toggle('main',HELP_TAB===i);
+    b.setAttribute('aria-selected',String(HELP_TAB===i));
+  }
+  const el=document.getElementById('helpBody');
+  el.setAttribute('aria-labelledby','htab'+HELP_TAB);
+  if(HELP_TAB===0){
+    let h=guideIntro('一歩ずつ、まだ見ぬ地下へ。','立ち止まって考える時間も、冒険のうち。道具とまといを使いこなし、見つけた絵を工房へ持ち帰ろう。');
+    h+='<h3 class="guide-section-label">冒険の心得</h3><div class="guide-grid">';
+    h+=helpCard('目的','工房「モコファク」から消えた画材を取り戻すため、地下ダンジョンに潜る。最初の目標は「不思議な地下室」地下10階のサンダーバード討伐。');
+    h+=helpCard('基本ルール','ターン制。モッコメリアンが1歩動く（または攻撃・アイテム使用する）と、敵も1回動く。十字キーかマップのタッチで8方向に移動。敵にぶつかると体当たり攻撃（手はないので）。');
+    h+=helpCard('BTC残高（おなか）','仮想通貨が主食。1ターンごとに少しずつ減り、ゼロになると毎ターンHPが減っていく。床のコインを食べて補給しよう。HPは歩いていれば少しずつ自然回復する。');
+    h+=helpCard('雷速ゲージ','敵を倒すとゲージが1つたまり、3つで必殺技「雷速」が撃てる。向いている方向の直線上の敵をまとめて感電させる大技。');
+    h+=helpCard('絵と会社ランク','ダンジョンに落ちている絵は、生きて持ち帰ると売れる。累計売上で会社がランクアップし、HP・攻撃・BTC上限・倉庫と袋の容量が増える。倒れると絵も持ち物も全部失う——欲張るか帰るかの判断が命。');
+    h+=helpCard('倉庫と持ち込み',`初期の倉庫は${RANKS[0].wcap}個、袋は${RANKS[0].bcap}個。持ち帰ったアイテムは工房の倉庫に保管され、出発前に最大5個まで持ち込める（持ち込み不可のダンジョンを除く）。袋・倉庫の容量はランクで拡張。「並べ替え」で整理、いらない物は1モコで売却できる。`);
+    h+=helpCard('罠','床には踏むまで見えない罠が隠れている。地雷（大ダメージ）、バネ（ワープ）、ハラヘリの罠（BTC-20）、サビの罠（マントの強化値-1）。一度踏めば赤いプレートで見えるようになる。');
+    h+=helpCard('セーブ','冒険は毎ターン自動セーブ。タイトルの「つづきから」で再開できる。会社と倉庫の成長はずっと残る。');
+    if(typeof threatDepth==='function'){
+      h+=helpCard('深層への備え','「ちょっと」の敵・拾える道具は従来どおり。以降の地下室は総階数で敵の登場を引き延ばさず、同じ階でも後の地下室ほど強化される。5階ごとに回復・食料、10階ごとに結界と封印の補給品も配置される。');
+      h+=helpCard('赤い予兆と特殊能力','赤い床の「!」は次のターンの攻撃範囲。範囲から移動するか、睡眠・封印で攻撃を止めよう。結界は予兆攻撃を半減する。倍速の敵にも封印が有効。');
+    }
+    h+='</div><h3 class="guide-section-label">地下室と持ち帰りの記録</h3><div class="guide-grid">';
+    for(const dg of DUNGEONS){
+      const lock=dg.lock?`「${(DUNGEONS.find(x=>x.id===dg.lock)||{n:'?'}).n}」制覇で解放。`:'最初から入れる。';
+      h+=helpCard(`${dg.n}（${dg.floors}F）`,`${dg.d}${lock}`);
+    }
+    h+=helpCard('モンスターハウス','「かなり不思議な地下室」'+(typeof KRAKEN!=='undefined'?'と「すごく不思議な地下室」':'')+'では、まれに敵とアイテムがぎっしり詰まった部屋がある。入った瞬間に全員が目を覚ます。お宝と引き換えの大ピンチ。');
+    h+=helpCard('持ち帰り王','一度の冒険で持ち帰った絵の売却総額を競うランキング。帰還・踏破すると自動で登録される。名前はランキング画面でいつでも変えられる。');
+    h+='</div><h3 class="guide-section-label">会社の成長 ― 全'+RANKS.length+'段階</h3><div class="guide-grid">';
+    for(let i=0;i<RANKS.length;i++){
+      const rk=RANKS[i],state=i===rankIdx()?' ／ 現在':i<rankIdx()?' ／ 達成済み':'';
+      h+=helpCard(`${i+1}. ${rk.n}${state}`,`累計売上 ${rk.need.toLocaleString('ja-JP')}モコから。<br>倉庫 ${rk.wcap}個 ／ 袋 ${rk.bcap}個。<br>次の冒険：HP+${rk.hp} ／ 攻撃+${rk.atk} ／ BTC上限+${rk.btc}。`);
+    }
+    el.innerHTML=h+'</div>';
+  }else if(HELP_TAB===1){
+    let h=guideIntro('旅の道具と、小さなお宝。','道具の姿を覚えて、必要なときに袋から使おう。まといは冒険を支え、絵画は持ち帰ることで工房の力になる。');
+    for(const [type,label] of TYPE_LABELS){
+      const list=ITEMS.filter(it=>it.t===type);if(!list.length)continue;
+      h+=`<h3 class="guide-section-label">${label.replace(/^[^\p{L}\p{N}]+/u,'')}</h3><div class="guide-grid">`;
+      for(const it of list)h+=guideEntry('item',it,it.n,esc(it.d)+(it.base&&!it.extended?'（レア・色違い）':''),[MENU_TYPES[it.t],...(it.extended?['不思議以降の道具']:it.base?['希少品']:[])]);
+      h+='</div>';
+    }
+    h+='<h3 class="guide-section-label">絵画 ― 持ち帰ると売れる</h3><div class="guide-grid">';
+    for(const a of ARTS)h+=guideEntry('item',{...a,t:'art'},a.n,`売値 ${a.v[0]}〜${a.v[1]}モコ。ダンジョンによっては2〜3倍で売れる。`,['持ち帰り品',`${a.v[0]}〜${a.v[1]}モコ`]);
+    el.innerHTML=h+'</div>';
+  }else{
+    let h=guideIntro('地下にひそむ、未確認生物。','敵はすべて公式サイト「世界の未確認生物」のUMAたち。戦闘能力はゲーム独自の設定。表示は基礎能力で、地下室と階数に応じて強化される。姿と特徴を知ることが、生還への第一歩。');
+    h+='<h3 class="guide-section-label">幻獣の観察記録</h3><div class="guide-grid">';
+    for(const m of MONS){
+      const stats=m.friendly?['味方']:[`基礎HP ${m.hp}`,`攻 ${m.atk}`,`防 ${m.def}`,`経験値 ${m.xp}`];
+      h+=guideEntry('monster',m,m.n,esc(MON_NOTES[m.n]||''),[...guideSpawnLocations(m),...stats]);
+    }
+    h+='</div><h3 class="guide-section-label">深層の主</h3><div class="guide-grid">';
+    if(typeof bossProfile==='function'){
+      for(const dg of DUNGEONS.filter(d=>d.boss)){
+        const b=bossProfile(dg);
+        const body=b.kraken?'図鑑020。巨大なタコ・イカ型の海のUMA。ゲームでは50階の主。十字方向への触手攻撃を予告し、次のターンに放つ。予兆は睡眠・封印で解除できる。':'図鑑091。伝説の巨大な鳥。離れていると3ターンごとに床の道具を食べてHPを8回復する。封印で止め、まといと道具を使って挑もう。';
+        h+=guideEntry('monster',b,b.n+'（ボス）',body,[`${dg.n} ${dg.floors}F`,`HP ${b.hp}`,`攻 ${b.atk}`,`防 ${b.def}`]);
+      }
+    }else{
+      h+=guideEntry('monster',BOSS,BOSS.n+'（ボス）','図鑑091。伝説の巨大な鳥。「不思議な地下室」地下10階で画材を抱え込んでいる。3ターンごとに床のアイテムを丸呑みしてHPを回復する。',[`HP ${BOSS.hp}`,`攻 ${BOSS.atk}`,`防 ${BOSS.def}`,`経験値 ${BOSS.xp}`]);
+      h+=guideEntry('monster',BOSS,'真・サンダーバード（裏ボス）','「かなり不思議な地下室」地下30階に待つ真の姿。HPと攻撃力が2.2倍（HP176・攻22）。装備を鍛えてから挑もう。',['地下30階','HP 176','攻 22']);
+    }
+    el.innerHTML=h+'</div>';
+  }
+  panel.scrollTop=0;
+}
+function selectBagItem(index){
+  selIdx=index;renderInv();
+  const selected=document.querySelector('#invlist .bag-item.sel');
+  if(selected)selected.focus({preventScroll:true});
+  // On narrow screens keep the selected item's actions close at hand.
+  if(window.matchMedia('(max-width: 650px)').matches)document.getElementById('bagDetail').scrollIntoView({block:'nearest',behavior:'auto'});
+}
+function renderInv(){
+  const l=document.getElementById('invlist'),p=G.p;
+  document.getElementById('invcount').textContent=`${p.inv.length}/${bagCap()}`;
+  l.innerHTML=p.inv.length?p.inv.map((it,i)=>{
+    const eq=p.armor===it||p.weapon===it;
+    return `<button type="button" class="bag-item type-${it.t} ${i===selIdx?'sel':''}" data-type="${it.t}" aria-pressed="${i===selIdx}" onclick="selectBagItem(${i})"><span class="item-slot">${String(i+1).padStart(2,'0')}</span><span class="entry-art"><img src="${menuArt('item',it)}" width="128" height="128" alt=""></span><span class="entry-copy"><span class="item-name">${esc(itemName(it))}</span><span class="item-type">${MENU_TYPES[it.t]||'道具'}</span>${eq?'<span class="equipped-badge">まとい中</span>':''}</span></button>`;
+  }).join(''):'<div class="bag-empty"><h3>袋は空っぽだ。</h3><p>地下で見つけた道具や絵は、<br>ここに大切にしまっておこう。</p></div>';
+  const it=p.inv[selIdx],eq=it&&(p.armor===it||p.weapon===it);
+  const art=document.getElementById('bagDetailArt');
+  art.innerHTML=it?`<img src="${menuArt('item',it)}" width="128" height="128" alt="">`:'<span aria-hidden="true">◇</span>';
+  document.getElementById('bagDetailName').textContent=it?itemName(it):'旅の持ちもの';
+  document.getElementById('bagDetailMeta').textContent=it?(MENU_TYPES[it.t]||'道具')+(eq?' ／ まとい中':''):'道具を選んで詳しく見る';
+  document.getElementById('invdesc').textContent=it?it.d:'アイテムをタップして選ぶ。使い道を確かめて、次の一歩を決めよう。';
+  const use=document.getElementById('useBtn');
+  use.textContent=it&&(it.t==='armor'||it.t==='weapon')?(eq?'外す':'まとう'):'使う';
+  use.disabled=!it;document.getElementById('dropBtn').disabled=!it;
+}
+
 function ui(){
   const p=G.p;
-  document.getElementById('sceneLabel').textContent=`${G.dg.n}　地下 ${G.floor} 階`;
+  document.getElementById('sceneLabel').textContent=`${G.dg.n}　地下 ${G.floor} 階`+[(p.furyUntil||0)>G.turn?'猛進中':null,(p.barrierUntil||0)>G.turn?'結界中':null].filter(Boolean).map(s=>` ／ ${s}`).join('');
   document.getElementById('hp').textContent=`${Math.max(0,p.hp)}/${p.mhp}`;
   document.querySelector('#hpbar i').style.width=clamp(p.hp/p.mhp*100,0,100)+'%';
   document.getElementById('btc').textContent=`${Math.ceil(p.btc)}/${p.mbtc}`;
