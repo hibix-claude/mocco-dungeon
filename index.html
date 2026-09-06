@@ -102,6 +102,9 @@ canvas { display: block; image-rendering: pixelated; }
   border-top: 1px solid #9b935324;
 }
 #dpad { display: grid; grid-template-columns: repeat(3, 40px); grid-template-rows: repeat(3, 34px); gap: 4px; align-self: center; }
+/* Include disabled keys and their gaps; menus keep their separate pan-y scrolling. */
+#ctrl, #ctrl * { touch-action: none; }
+#ctrl button:disabled { pointer-events: none; }
 #dpad button, #acts button, .btn {
   color: #e9e2cd; border: 1px solid #71684b; border-radius: 4px;
   background: linear-gradient(180deg, #424635 0, #303526 15%, #242b20 100%);
@@ -2532,6 +2535,14 @@ window.addEventListener('keydown',e=>{
   else if(key==='t'){e.preventDefault();actThunder();}
 });
 
+function blockInactiveControlGesture(e){
+  // Disabled buttons may skip their own handlers. Guard only their parent panel,
+  // leaving the inventory's scrolling and active gameplay taps untouched.
+  if(!gameInputReady()&&e.cancelable)e.preventDefault();
+}
+const controlPanel=document.getElementById('ctrl');
+for(const type of ['touchstart','touchend'])controlPanel.addEventListener(type,blockInactiveControlGesture,{capture:true,passive:false});
+controlPanel.addEventListener('dblclick',e=>{if(e.cancelable)e.preventDefault();});
 function refreshVisualScreen(){
   const active=gameInputReady();
   document.querySelectorAll('#ctrl button').forEach(b=>b.disabled=!active);
