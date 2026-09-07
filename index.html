@@ -737,6 +737,134 @@ body:has(#title.show) #sceneLabel, body:has(#home.show) #sceneLabel, body:has(#d
   #whSaleDialog #whSaleWarning { margin-top: 11px; margin-bottom: 13px; }
 }
 
+/* Return overflow: choose what to sell before storing the rest. */
+#returnChoice {
+  padding: 26px clamp(18px, 4vw, 46px) 22px;
+  padding-bottom: max(22px, env(safe-area-inset-bottom));
+  overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; touch-action: pan-y;
+  scroll-padding-block: 18px 88px; scrollbar-width: thin; scrollbar-color: #8e8054 #19271c;
+  color: var(--txt);
+  background: radial-gradient(ellipse at 92% 0, #9780521f, transparent 48%), repeating-linear-gradient(0deg, #aba17405 0 1px, transparent 1px 45px), linear-gradient(135deg, #283325fc, #132319fc 72%);
+}
+#returnChoice [hidden] { display: none !important; }
+#returnChoice .return-heading { position: relative; margin-bottom: 18px; padding-bottom: 17px; border-bottom: 1px solid #ad966b70; }
+#returnChoice .return-heading::after { content: "◆"; position: absolute; right: 0; bottom: -5px; padding-left: 11px; color: #bda579; background: #263123; font-size: 10px; line-height: 10px; }
+#returnChoice .return-kicker { margin: 0 0 7px; color: #afa481; font-size: 10px; font-weight: 600; line-height: 1.5; letter-spacing: .19em; }
+#returnChoice #returnTitle {
+  margin: 0; padding: 0; border: 0; color: #eadcb8; font-family: var(--serif);
+  font-size: 26px; line-height: 1.55; font-weight: 700; letter-spacing: .055em;
+  text-shadow: 0 2px #0b1b11; overflow-wrap: anywhere;
+}
+#returnChoice #returnTitle:focus-visible { outline: 2px solid #dfc68a; outline-offset: 5px; }
+#returnChoice .return-info {
+  margin: 0 0 17px; padding: 13px 17px; border: 1px solid #e3d5ad70; border-left: 4px solid #b49a62;
+  border-radius: 2px; color: #4e452e;
+  background: repeating-linear-gradient(3deg, #75643b05 0 1px, transparent 1px 4px), linear-gradient(105deg, #e0d3ae, #c9bb94);
+  box-shadow: inset 0 1px #f9ecc679, 0 4px 12px #030b052b;
+  font-size: 13px; line-height: 1.9; font-variant-numeric: tabular-nums; overflow-wrap: anywhere;
+}
+#returnChoice .return-info strong, #returnChoice .return-info b { color: #302c1e; }
+#returnChoice #returnPick, #returnChoice #returnReview { min-width: 0; }
+#returnChoice #returnPick > .desc { margin: 0 0 14px; color: #b6bea4; font-size: 12px; line-height: 1.8; }
+#returnChoice .return-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; align-content: start; min-width: 0; }
+#returnChoice .return-item {
+  position: relative; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 6px 13px;
+  align-content: center; min-width: 0; min-height: 98px; margin: 0; padding: 13px;
+  text-align: left; font-family: inherit; color: #e2dfc4;
+  border: 1px solid #7c80515e; border-radius: 3px;
+  background: linear-gradient(115deg, #35422e, #233425);
+  box-shadow: inset 0 1px #c9c5911c, inset 0 -2px #0f211548, 0 2px 5px #02090224;
+  touch-action: pan-y; transition: border-color .12s, background .12s, transform .08s;
+}
+#returnChoice .return-art {
+  display: grid; place-items: center; grid-column: 1; grid-row: 1 / 3;
+  align-self: center; width: 64px; height: 64px; padding: 3px; overflow: hidden;
+  border: 1px solid #9b8b5759; border-radius: 3px;
+  background: radial-gradient(ellipse at 50% 80%, #71884b35, transparent 65%), linear-gradient(#243622, #10271a);
+  box-shadow: inset 0 2px 7px #0004, 0 1px #d5d1a017;
+}
+#returnChoice .return-art img { display: block; width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; filter: drop-shadow(0 3px 2px #0006); }
+#returnChoice .return-copy { display: block; grid-column: 2; min-width: 0; align-self: end; }
+#returnChoice .return-copy b { display: block; color: #e8e0c2; font-size: 13px; line-height: 1.65; font-weight: 700; overflow-wrap: anywhere; }
+#returnChoice .return-copy small { display: block; margin-top: 3px; color: #aab698; font-size: 10px; line-height: 1.6; letter-spacing: .035em; overflow-wrap: anywhere; }
+#returnChoice .return-choice {
+  grid-column: 2; justify-self: start; align-self: start; padding: 3px 7px;
+  color: #c7d6b2; border: 1px solid #92a76b50; border-radius: 2px; background: #385b3570;
+  font-size: 10px; font-weight: 600; line-height: 1.5; letter-spacing: .035em; overflow-wrap: anywhere;
+}
+#returnChoice .return-item.sell, #returnChoice .return-item[aria-pressed="true"] {
+  background: linear-gradient(115deg, #5a4930, #3c3825); border-color: #d1ab69;
+  box-shadow: inset 3px 0 #d2aa69, inset 0 1px #f1d9a328, 0 2px 6px #0004;
+}
+#returnChoice .return-item.sell .return-copy b, #returnChoice .return-item[aria-pressed="true"] .return-copy b { color: #f4dba5; }
+#returnChoice .return-item.sell .return-copy small, #returnChoice .return-item[aria-pressed="true"] .return-copy small { color: #c8b78e; }
+#returnChoice .return-item.sell .return-choice, #returnChoice .return-item[aria-pressed="true"] .return-choice { color: #ffe0aa; border-color: #dbb27383; background: #8056359c; }
+#returnChoice .return-actions {
+  position: sticky; bottom: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px; margin-top: 19px; padding: 14px 0 3px; z-index: 1;
+  border-top: 1px solid #a5946057; background: #192a1efa;
+  box-shadow: 0 -8px 13px #18291dd9;
+}
+#returnChoice .return-actions .btn {
+  min-width: 0; min-height: 48px; margin: 0; padding: 11px 8px; border-radius: 3px;
+  font-size: 13px; line-height: 1.65; letter-spacing: .02em; overflow-wrap: anywhere; touch-action: manipulation;
+}
+#returnChoice .return-actions .btn:disabled { opacity: .4; cursor: default; }
+#returnChoice .return-actions .btn:focus-visible, #returnChoice .return-item:focus-visible { outline: 2px solid #f0d995 !important; outline-offset: 3px; }
+#returnChoice .return-item:active:not(:disabled) { transform: translateY(1px); }
+#returnChoice #returnReview { padding-top: 4px; }
+#returnChoice #returnReview > h3 { margin: 0 0 14px; color: #e6d3a9; font-family: var(--serif); font-size: 20px; line-height: 1.7; letter-spacing: .025em; overflow-wrap: anywhere; }
+#returnChoice #returnSummary {
+  margin: 0 0 17px; padding: 15px 18px; color: #453e2a; border: 1px solid #d7c49385; border-radius: 3px;
+  background: linear-gradient(110deg, #ddcfa8, #c8ba94); font-size: 14px; line-height: 1.95;
+  font-variant-numeric: tabular-nums; white-space: pre-line; overflow-wrap: anywhere;
+}
+#returnChoice #returnSummary strong, #returnChoice #returnSummary b { color: #2f2b1d; }
+#returnChoice #returnSaleNames {
+  margin: 0 0 17px; padding: 14px 17px 14px 34px; color: #d6c7a1;
+  border: 1px solid #82744b57; border-radius: 3px; background: #15261ab5;
+  font-size: 12px; line-height: 1.85; list-style-type: square;
+}
+#returnChoice #returnSaleNames:empty { display: none; }
+#returnChoice #returnSaleNames li { padding-left: 2px; overflow-wrap: anywhere; }
+#returnChoice #returnSaleNames li + li { margin-top: 5px; }
+#returnChoice #returnSaleNames li::marker { color: #b29863; }
+#returnChoice #returnReview > .desc { margin: 14px 0 17px; color: #c6b595; font-size: 12px; line-height: 1.85; }
+@media (hover: hover) {
+  #returnChoice .return-item:hover:not(:disabled) { border-color: #b2b07a; background: linear-gradient(115deg, #465639, #30452d); }
+  #returnChoice .return-item.sell:hover:not(:disabled), #returnChoice .return-item[aria-pressed="true"]:hover:not(:disabled) { border-color: #ebc68a; background: linear-gradient(115deg, #6b5636, #4d452c); }
+}
+@media (max-width: 650px) {
+  #returnChoice { padding: 21px 16px max(19px, env(safe-area-inset-bottom)); }
+  #returnChoice .return-heading { margin-bottom: 15px; padding-bottom: 14px; }
+  #returnChoice .return-kicker { font-size: 9px; }
+  #returnChoice #returnTitle { font-size: 22px; letter-spacing: .02em; }
+  #returnChoice .return-info { padding: 11px 13px; margin-bottom: 15px; font-size: 12px; }
+  #returnChoice .return-grid { grid-template-columns: minmax(0, 1fr); gap: 9px; }
+  #returnChoice .return-item { min-height: 92px; padding: 11px; gap: 5px 12px; }
+  #returnChoice .return-copy b { font-size: 14px; }
+  #returnChoice .return-choice { font-size: 10px; }
+  #returnChoice .return-actions { gap: 8px; padding-top: 12px; }
+  #returnChoice .return-actions .btn { font-size: 12px; letter-spacing: 0; }
+  #returnChoice #returnReview > h3 { font-size: 18px; }
+  #returnChoice #returnSummary { padding: 13px 15px; font-size: 13px; }
+}
+@media (max-width: 359px) {
+  #returnChoice { padding-inline: 12px; }
+  #returnChoice #returnTitle { font-size: 20px; }
+  #returnChoice .return-item { grid-template-columns: 56px minmax(0, 1fr); gap: 5px 10px; padding: 10px; }
+  #returnChoice .return-art { width: 56px; height: 60px; }
+  #returnChoice .return-copy b { font-size: 13px; }
+  #returnChoice .return-actions .btn { padding-inline: 5px; font-size: 11px; }
+}
+@media (max-height: 420px) {
+  #returnChoice { padding-top: 15px; }
+  #returnChoice .return-heading { margin-bottom: 12px; padding-bottom: 11px; }
+  #returnChoice #returnTitle { font-size: 21px; }
+  #returnChoice .return-info { padding-block: 9px; }
+  #returnChoice .return-actions { position: static; margin-top: 14px; }
+}
+
 </style>
 </head>
 <body>
@@ -810,6 +938,21 @@ body:has(#title.show) #sceneLabel, body:has(#home.show) #sceneLabel, body:has(#d
         </div>
       </div>
     </dialog>
+    <div id="returnChoice" class="overlay" role="dialog" aria-modal="true" aria-labelledby="returnTitle" style="z-index:9">
+      <header class="return-heading"><p class="return-kicker">工房の荷ほどき</p><h2 id="returnTitle" tabindex="-1">持ち帰った品物を整理</h2></header>
+      <p id="returnInfo" class="return-info" aria-live="polite"></p>
+      <div id="returnPick">
+        <p class="desc">売る品物を選んで、残りを倉庫に収めよう。売値は1個につき1モコ。<br>預かり品は保存されています。整理が済むまでは次の冒険に出発できません。</p>
+        <div id="returnList" class="return-grid"></div>
+        <footer class="return-actions"><button class="btn" type="button" onclick="clearReturnSelection()">選択を解除</button><button id="returnReviewBtn" class="btn main" type="button" onclick="reviewReturnChoice()">整理内容を確認</button></footer>
+      </div>
+      <div id="returnReview" hidden>
+        <h3>この内容で確定しますか？</h3>
+        <p id="returnSummary"></p><ul id="returnSaleNames"></ul>
+        <p class="desc">売却した品物は元に戻せません。倉庫に保管済みの品物は変更しません。</p>
+        <footer class="return-actions"><button id="returnBackBtn" class="btn" type="button" onclick="backReturnChoice()">選び直す</button><button id="returnCommitBtn" class="btn main" type="button" onclick="commitReturnChoice()">売却して収納</button></footer>
+      </div>
+    </div>
     <div id="help" class="overlay" role="dialog" aria-label="あそびかた・図鑑" style="z-index:8">
       <header class="menu-heading"><p class="menu-kicker">MOCCOMERIAN'S FIELD NOTES</p><h2>あそびかた・図鑑</h2></header>
       <div class="guide-tabs" role="tablist" aria-label="冒険手帳の章">
@@ -956,13 +1099,15 @@ const RANKS=[
 function whCap(){return RANKS[rankIdx()].wcap;}
 function bagCap(){return RANKS[rankIdx()].bcap||RANKS[0].bcap;}
 const store={m:{},get(k){try{const v=localStorage.getItem(k);if(v!=null)return JSON.parse(v);}catch(e){}return this.m[k]!==undefined?this.m[k]:null;},set(k,v){this.m[k]=v;try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}},del(k){delete this.m[k];try{localStorage.removeItem(k);}catch(e){}}};
-let META=Object.assign({fund:0,total:0,arts:0,runs:0,best:0,wh:[]},store.get('mocco_meta')||{});
+let META=Object.assign({fund:0,total:0,arts:0,runs:0,best:0,wh:[],returnItems:[]},store.get('mocco_meta')||{});
 if(!Array.isArray(META.wh))META.wh=[];
+if(!Array.isArray(META.returnItems))META.returnItems=[];
 let HOME_MSG='';
 function saveMeta(){store.set('mocco_meta',META);}
 function saveRun(){if(!G||G.over)return;const p=G.p;store.set('mocco_run',{dg:G.dg.id,floor:G.floor,turn:G.turn,f:G.f,mons:G.mons,items:G.items,traps:G.traps,mh:G.mhRoom||null,p:{...p,armor:undefined,weapon:undefined,armorIdx:p.inv.indexOf(p.armor),weaponIdx:p.inv.indexOf(p.weapon)}});}
 function delRun(){store.del('mocco_run');}
 function resumeGame(){
+  if(hasReturnItems()){openHome();return;}
   const r=store.get('mocco_run');if(!r)return;
   document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('show'));
   logs=[];
@@ -976,11 +1121,10 @@ function resumeGame(){
 let WSEL=new Set();
 function stashInv(){
   G.p.armor=null;G.p.weapon=null;
-  const keep=G.p.inv.splice(0);let stored=0;
-  for(const it of keep){if(META.wh.length<whCap()){META.wh.push(it);stored++;}}
-  return stored;
+  return stageReturnItems(G.p.inv.splice(0));
 }
 function openDgSel(){
+  if(hasReturnItems()){openHome();return;}
   document.getElementById('home').classList.remove('show');
   const l=document.getElementById('dglist');
   l.innerHTML=DUNGEONS.map((d,i)=>{
@@ -992,7 +1136,7 @@ function openDgSel(){
 }
 function pickDg(i){document.getElementById('dgsel').classList.remove('show');startGame(DUNGEONS[i]);}
 function closeDg(){document.getElementById('dgsel').classList.remove('show');openHome();}
-function openWh(){renderWh();document.getElementById('wh').classList.add('show');}
+function openWh(){if(hasReturnItems()){openReturnChoice();return;}renderWh();document.getElementById('wh').classList.add('show');}
 function closeWh(){document.getElementById('wh').classList.remove('show');cancelWhSale();}
 function renderWh(){
   document.getElementById('whcount').textContent=`${META.wh.length}/${whCap()} ・ 持っていく ${WSEL.size}/5`;
@@ -1230,6 +1374,7 @@ function openHome(){
   document.querySelector('#rankProg i').style.width=pct+'%';
   document.getElementById('rankProgLabel').textContent=next?`次のランク「${next.n}」まで ${Math.round(pct)}%`:'最高ランク到達！';
   document.getElementById('home').classList.add('show');
+  if(hasReturnItems())openReturnChoice();
 }
 // ===== 持ち帰り王ランキング =====
 const RANK_API='https://script.google.com/macros/s/AKfycbz_PYSdpqk0sviT1uBuK-gUsuBulzTP7tBPAhreCm9HzZ3d7UAQGgbGLHmNy0qAwKSJ5w/exec';
@@ -1402,6 +1547,7 @@ function itemAt(x,y){return G.items.find(i=>i.x===x&&i.y===y);}
 
 // ===== ゲーム開始 =====
 function startGame(dg){
+  if(hasReturnItems()){openHome();return;}
   const dgd=dg||DUNGEONS[1];
   document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('show'));
   logs=[];
@@ -1426,8 +1572,18 @@ function newFloor(){
   const nMon=(G.dg.boss&&G.floor===G.dg.floors)?3:rnd(3,4+Math.min(4,G.floor))+(G.dg.pressure||0);
   for(let i=0;i<nMon;i++)spawnMon(false);
   G.traps=[];const TRAPG={mine:'💣',warp:'🌀',hunger:'🕳️',rust:'🧷'};
-  const nT=rnd(3,5);
-  for(let i=0;i<nT;i++){const q=randFloorPos(G.f);if(q&&!(q.x===G.f.stairs.x&&q.y===G.f.stairs.y)&&!G.traps.some(t=>t.x===q.x&&t.y===q.y)){const tt=pick(['mine','warp','hunger','rust']);G.traps.push({x:q.x,y:q.y,t:tt,g:TRAPG[tt],seen:false});}}
+  const nT=rnd(3,5),keptTraps=[];
+  for(let i=0;i<nT;i++){
+    const q=randFloorPos(G.f);
+    if(q&&!(q.x===G.f.stairs.x&&q.y===G.f.stairs.y)&&!G.traps.some(t=>t.x===q.x&&t.y===q.y)){
+      const roll=Math.random(),tt=['mine','warp','hunger','rust'][Math.floor(roll*4)];
+      const trap={x:q.x,y:q.y,t:tt,g:TRAPG[tt],seen:false};
+      // Reserve every old candidate until the loop ends, preserving positions and RNG use.
+      G.traps.push(trap);
+      if(tt!=='rust'||roll<13/16)keptTraps.push(trap);
+    }
+  }
+  G.traps=keptTraps;
   G.mhRoom=null;
   if(G.dg.mh&&G.floor>=3&&!(G.dg.boss&&G.floor===G.dg.floors)&&Math.random()<0.25){
     const cand=G.f.rooms.filter(r=>r!==G.f.start&&r.w>=4&&r.h>=3);
@@ -1566,7 +1722,7 @@ function useSelected(){
   if(it.id==='home'){
     G.p.inv.splice(selIdx,1);closeInv();
     const r=sellArts();const st=stashInv();G.over=true;delRun();saveMeta();registerScore(r.sum);
-    HOME_MSG=(r.n?`帰還した！ 絵${r.n}枚が${r.sum}モコで売れた。`:'帰還した。今回は絵を持ち帰れなかった。')+(st?`<br>持ち物${st}個を倉庫に収めた。`:'')+(r.up?'<br><b style="color:var(--acc)">会社がランクアップした！</b>':'');
+    HOME_MSG=(r.n?`帰還した！ 絵${r.n}枚が${r.sum}モコで売れた。`:'帰還した。今回は絵を持ち帰れなかった。')+'<br>'+returnStorageMessage(st)+(r.up?'<br><b style="color:var(--acc)">会社がランクアップした！</b>':'');
     openHome();return;
   }
   const p=G.p;let consumed=true;
@@ -1742,7 +1898,7 @@ function winDepth(){
   G.over=true;ui();
   const r=sellArts();META.fund+=G.dg.bonus;META.total+=G.dg.bonus;const stw=stashInv();if(!META.clear)META.clear={};META.clear[G.dg.id]=true;delRun();saveMeta();registerScore(r.sum);
   document.getElementById('endTitle').textContent=`「${G.dg.n}」踏破！`;
-  document.getElementById('endText').innerHTML=`地下${G.dg.floors}階を制覇した！ ／ Lv${G.p.lv} ／ ${G.turn}ターン<br>絵${r.n}枚売却 +${r.sum}モコ ／ 踏破ボーナス +${G.dg.bonus}モコ<br>持ち物${stw}個を倉庫に収めた`;
+  document.getElementById('endText').innerHTML=`地下${G.dg.floors}階を制覇した！ ／ Lv${G.p.lv} ／ ${G.turn}ターン<br>絵${r.n}枚売却 +${r.sum}モコ ／ 踏破ボーナス +${G.dg.bonus}モコ<br>${returnStorageMessage(stw)}`;
   const unlk2=DUNGEONS.find(x=>x.lock===G.dg.id);
   HOME_MSG=`「${G.dg.n}」を踏破！ 売上${r.sum+G.dg.bonus}モコ。`+(unlk2?`「${unlk2.n}」が解放された！`:'');
   document.getElementById('end').classList.add('show');
@@ -1761,7 +1917,7 @@ function win(){
   document.getElementById('endTitle').textContent='画材を取り戻した！';
   const bn=bossProfile().n;
   if(G.dg.id==='d5')document.getElementById('endTitle').textContent='地下50階・深海の主を討伐！';
-  document.getElementById('endText').innerHTML=`${bn}を倒し、工房モコファクに画材が帰ってきた。<br>絵描きたちは今日も絵を描ける。<br><br>地下${G.floor}階制覇 / Lv${G.p.lv} / ${G.turn}ターン<br>絵${r.n}枚売却 +${r.sum}モコ ／ 討伐ボーナス +${G.dg.bonus}モコ<br>持ち物${stw}個を倉庫に収めた`;
+  document.getElementById('endText').innerHTML=`${bn}を倒し、工房モコファクに画材が帰ってきた。<br>絵描きたちは今日も絵を描ける。<br><br>地下${G.floor}階制覇 / Lv${G.p.lv} / ${G.turn}ターン<br>絵${r.n}枚売却 +${r.sum}モコ ／ 討伐ボーナス +${G.dg.bonus}モコ<br>${returnStorageMessage(stw)}`;
   const unlk=DUNGEONS.find(x=>x.lock===G.dg.id);
   HOME_MSG=`凱旋！ 売上${r.sum+G.dg.bonus}モコで工房が大いに潤った。`+(unlk?`「${unlk.n}」が解放された！`:'');
   document.getElementById('end').classList.add('show');
@@ -2407,7 +2563,8 @@ function openHelp(tab){
     h+=helpCard('雷速ゲージ','敵を倒すとゲージが1つたまり、3つで必殺技「雷速」が撃てる。向いている方向の直線上の敵をまとめて感電させる大技。');
     h+=helpCard('絵と会社ランク','ダンジョンに落ちている絵は、生きて持ち帰ると売れる。累計売上で会社がランクアップし、HP・攻撃・BTC上限・倉庫と袋の容量が増える。倒れると絵も持ち物も全部失う——欲張るか帰るかの判断が命。');
     h+=helpCard('倉庫と持ち込み',`初期の倉庫は${RANKS[0].wcap}個、袋は${RANKS[0].bcap}個。持ち帰ったアイテムは工房の倉庫に保管され、出発前に最大5個まで持ち込める（持ち込み不可のダンジョンを除く）。袋・倉庫の容量はランクで拡張。「並べ替え」で整理、いらない物は1モコで売却できる。`);
-    h+=helpCard('罠','床には踏むまで見えない罠が隠れている。地雷（大ダメージ）、バネ（ワープ）、ハラヘリの罠（BTC-20）、サビの罠（マントの強化値-1）。一度踏めば赤いプレートで見えるようになる。');
+    h+=helpCard('罠','床には踏むまで見えない罠が隠れている。地雷（大ダメージ）、バネ（ワープ）、ハラヘリの罠（BTC-20）、サビの罠（マントの強化値-1）。サビの罠は従来の約4分の1の頻度になった。一度踏めば赤いプレートで見えるようになる。');
+    h+=helpCard('倉庫に入り切らないとき','帰還時に持ち帰り品が倉庫の空きより多い場合、持ち帰った品物をすべて一時預かりする。売るものを1個1モコで選び、確認後に残りを収納。預かり品は保存されるので、再読み込みしても失われない。絵の自動売却と踏破ボーナスは従来どおり。');
     h+=helpCard('セーブ','冒険は毎ターン自動セーブ。タイトルの「つづきから」で再開できる。会社と倉庫の成長はずっと残る。');
     if(typeof threatDepth==='function'){
       h+=helpCard('深層への備え','「ちょっと」の敵・拾える道具は従来どおり。以降の地下室は総階数で敵の登場を引き延ばさず、同じ階でも後の地下室ほど強化される。5階ごとに回復・食料、10階ごとに結界と封印の補給品も配置される。');
@@ -2484,6 +2641,85 @@ function renderInv(){
   use.disabled=!it;document.getElementById('dropBtn').disabled=!it;
 }
 
+// ===== RETURN CHOICE =====
+// Pending returns live in META, not the dungeon save, until the player confirms.
+let RETURN_SELL=new Set(),RETURN_REVIEW=null;
+function hasReturnItems(){return Array.isArray(META.returnItems)&&META.returnItems.length>0;}
+function stageReturnItems(items){
+  if(!Array.isArray(META.returnItems))META.returnItems=[];
+  if(!items.length)return 0;
+  if(hasReturnItems()||META.wh.length+items.length>whCap()){
+    META.returnItems.push(...items);return 0;
+  }
+  META.wh.push(...items);return items.length;
+}
+function returnStorageMessage(stored){
+  return hasReturnItems()?`持ち帰った品物${META.returnItems.length}個を一時預かり中。工房で売却・収納を選んでください。`:`持ち物${stored}個を倉庫に収めた。`;
+}
+function returnPlan(){
+  const items=META.returnItems||[];
+  const sold=[...RETURN_SELL].filter(i=>Number.isInteger(i)&&i>=0&&i<items.length).sort((a,b)=>a-b);
+  let rank=rankIdx();
+  while(RANKS[rank+1]&&META.total+sold.length>=RANKS[rank+1].need)rank++;
+  const capacity=RANKS[rank].wcap,free=Math.max(0,capacity-META.wh.length),kept=items.length-sold.length;
+  return {sold,kept,capacity,free,overflow:Math.max(0,kept-free)};
+}
+function openReturnChoice(){
+  if(!hasReturnItems())return;
+  if(document.getElementById('whSaleDialog').open)cancelWhSale();
+  RETURN_SELL.clear();RETURN_REVIEW=null;
+  renderReturnChoice();
+  const panel=document.getElementById('returnChoice');panel.classList.add('show');panel.scrollTop=0;
+  document.getElementById('returnTitle').focus({preventScroll:true});
+}
+function renderReturnChoice(){
+  const plan=returnPlan();
+  document.getElementById('returnPick').hidden=false;
+  document.getElementById('returnReview').hidden=true;
+  const extra=plan.capacity>whCap()?` ／ 売却後の昇格で倉庫${plan.capacity}個に拡張`:'';
+  document.getElementById('returnInfo').textContent=`預かり ${(META.returnItems||[]).length}個 ／ 倉庫 ${META.wh.length}/${whCap()}個。収納 ${plan.kept}個・売却 ${plan.sold.length}個（+${plan.sold.length}モコ）。`+
+    (plan.overflow?` あと${plan.overflow}個、売る品物を選んでください。`:' この内容で倉庫に収まります。')+extra;
+  document.getElementById('returnList').innerHTML=(META.returnItems||[]).map((it,i)=>`<button id="returnItem${i}" type="button" class="return-item${RETURN_SELL.has(i)?' sell':''}" aria-pressed="${RETURN_SELL.has(i)}" onclick="toggleReturnSale(${i})"><span class="return-art"><img src="${menuArt('item',it)}" alt="" width="128" height="128"></span><span class="return-copy"><b>${esc(itemName(it))}</b><small>${esc(MENU_TYPES[it.t]||'道具')}${it.d?' ／ '+esc(it.d):''}</small></span><span class="return-choice">${RETURN_SELL.has(i)?'売る +1モコ':'倉庫へ'}</span></button>`).join('');
+  document.getElementById('returnReviewBtn').disabled=plan.overflow>0;
+}
+function toggleReturnSale(i){
+  if(RETURN_REVIEW||!Number.isInteger(i)||!(META.returnItems||[])[i])return;
+  RETURN_SELL.has(i)?RETURN_SELL.delete(i):RETURN_SELL.add(i);
+  renderReturnChoice();document.getElementById('returnItem'+i)?.focus({preventScroll:true});
+}
+function clearReturnSelection(){RETURN_SELL.clear();RETURN_REVIEW=null;renderReturnChoice();}
+function returnSignature(){return JSON.stringify([META.returnItems,META.wh,META.total,META.fund]);}
+function reviewReturnChoice(){
+  if(!hasReturnItems()||!document.getElementById('returnChoice').classList.contains('show'))return;
+  const plan=returnPlan();if(plan.overflow)return;
+  RETURN_REVIEW={items:META.returnItems.slice(),warehouse:META.wh.slice(),sold:plan.sold.slice(),signature:returnSignature()};
+  document.getElementById('returnPick').hidden=true;document.getElementById('returnReview').hidden=false;
+  document.getElementById('returnSummary').textContent=`${plan.sold.length}個を${plan.sold.length}モコで売却し、残り${plan.kept}個を倉庫へ収納します。整理後の倉庫：${META.wh.length+plan.kept}/${plan.capacity}個。`;
+  document.getElementById('returnSaleNames').innerHTML=plan.sold.length?plan.sold.map(i=>`<li>${esc(itemName(META.returnItems[i]))} <span>1モコ</span></li>`).join(''):'<li>売却する品物はありません。</li>';
+  document.getElementById('returnCommitBtn').textContent=plan.sold.length?'売却して収納':'売らずに収納';
+  document.getElementById('returnCommitBtn').disabled=false;
+  document.getElementById('returnChoice').scrollTop=0;
+  document.getElementById('returnBackBtn').focus({preventScroll:true});
+}
+function backReturnChoice(){RETURN_REVIEW=null;renderReturnChoice();document.getElementById('returnReviewBtn').focus({preventScroll:true});}
+function commitReturnChoice(){
+  const review=RETURN_REVIEW;if(!review||!document.getElementById('returnChoice').classList.contains('show'))return;
+  const same=(a,b)=>a.length===b.length&&a.every((it,i)=>it===b[i]);
+  if(!same(review.items,META.returnItems)||!same(review.warehouse,META.wh)||review.signature!==returnSignature()){
+    RETURN_REVIEW=null;RETURN_SELL.clear();renderReturnChoice();
+    document.getElementById('returnInfo').textContent+=' 品物や倉庫の状態が変わったため、もう一度選んでください。';return;
+  }
+  RETURN_SELL=new Set(review.sold);const plan=returnPlan();if(plan.overflow){backReturnChoice();return;}
+  const selected=new Set(review.sold),kept=review.items.filter((_,i)=>!selected.has(i));
+  RETURN_REVIEW=null;document.getElementById('returnCommitBtn').disabled=true;
+  META.wh.push(...kept);META.fund+=selected.size;META.total+=selected.size;META.returnItems=[];
+  RETURN_SELL.clear();saveMeta();
+  document.getElementById('returnChoice').classList.remove('show');
+  HOME_MSG=`荷ほどき完了。${kept.length}個を倉庫へ収納した。`+(selected.size?` ${selected.size}個を売却して${selected.size}モコを受け取った。`:'');
+  openHome();
+}
+// ===== END RETURN CHOICE =====
+
 function ui(){
   const p=G.p;
   document.getElementById('sceneLabel').textContent=`${G.dg.n}　地下 ${G.floor} 階`+[(p.furyUntil||0)>G.turn?'猛進中':null,(p.barrierUntil||0)>G.turn?'結界中':null].filter(Boolean).map(s=>` ／ ${s}`).join('');
@@ -2523,6 +2759,15 @@ window.addEventListener('keydown',e=>{
     if(e.key==='Escape'){e.preventDefault();cancelWhSale();}
     return;
   }
+  if(document.getElementById('returnChoice')?.classList.contains('show')){
+    if(e.key==='Escape'){e.preventDefault();if(RETURN_REVIEW)backReturnChoice();}
+    if(e.key==='Tab'){
+      const section=document.getElementById(RETURN_REVIEW?'returnReview':'returnPick');
+      const buttons=[...section.querySelectorAll('button')].filter(b=>!b.disabled);
+      if(buttons.length){e.preventDefault();const at=buttons.indexOf(document.activeElement);const next=at<0?(e.shiftKey?buttons.length-1:0):(at+(e.shiftKey?-1:1)+buttons.length)%buttons.length;buttons[next].focus();}
+    }
+    return;
+  }
   if(e.target&&(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)||e.target.isContentEditable))return;
   if(e.target&&e.target.tagName==='BUTTON'&&(e.key==='Enter'||e.key===' '))return;
   if(e.key==='Escape'){closeInv();closeDir();closeHelp();return;}
@@ -2560,6 +2805,7 @@ resize();
 renderMoccoPortrait();
 if(store.get('mocco_run'))document.getElementById('contBtn').style.display='block';
 {const fl=store.get('mocco_flash');if(fl){HOME_MSG=fl;store.del('mocco_flash');}}
+if(hasReturnItems())openHome();
 setTimeout(()=>{syncRank();fetchOnline();},2000);
 </script>
 </body>
