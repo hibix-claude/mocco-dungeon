@@ -865,6 +865,110 @@ body:has(#title.show) #sceneLabel, body:has(#home.show) #sceneLabel, body:has(#d
   #returnChoice .return-actions { position: static; margin-top: 14px; }
 }
 
+/* Carry-home records: medal podium and the current expedition's result. */
+#ranklist { min-width: 0; }
+#ranklist > .rank-entry {
+  --rank-bg: linear-gradient(110deg, #313d2c, #223023);
+  --rank-edge: #78805970;
+  --rank-ink: #e5dfc3;
+  display: grid; grid-template-columns: 58px minmax(0, 1fr) minmax(0, 140px);
+  align-items: center; gap: 12px; min-width: 0; margin: 0 0 10px; padding: 15px 17px;
+  color: var(--rank-ink); border: 1px solid var(--rank-edge); border-radius: 3px;
+  background: var(--rank-bg); box-shadow: inset 0 1px #ece3b712, 0 3px 8px #02090329;
+  cursor: default; text-align: left; font-variant-numeric: tabular-nums;
+}
+#ranklist > .rank-gold {
+  --rank-bg: linear-gradient(110deg, #68532e, #413b25 72%);
+  --rank-edge: #cfad65;
+  --rank-ink: #ffebbb;
+}
+#ranklist > .rank-silver {
+  --rank-bg: linear-gradient(110deg, #4b5854, #2c3d36 72%);
+  --rank-edge: #b4c2b5;
+  --rank-ink: #eef2df;
+}
+#ranklist > .rank-bronze {
+  --rank-bg: linear-gradient(110deg, #624736, #3e3529 72%);
+  --rank-edge: #c09168;
+  --rank-ink: #f7dbbb;
+}
+#ranklist > .rank-entry.rank-self {
+  box-shadow: inset 3px 0 #e2cd8c, inset 0 1px #f6e8ae22, 0 3px 8px #02090329;
+}
+#ranklist .rank-place {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; min-width: 0; color: var(--rank-ink); text-align: center;
+}
+#ranklist .rank-place b { font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+#ranklist .rank-medal { display: block; font-size: 27px; line-height: 1.2; filter: drop-shadow(0 2px 1px #0005); }
+#ranklist .rank-copy { display: block; min-width: 0; }
+#ranklist .rank-copy > b {
+  display: block; color: var(--rank-ink); font-family: var(--serif); font-size: 16px;
+  line-height: 1.65; letter-spacing: .025em; overflow-wrap: anywhere;
+}
+#ranklist .rank-copy > small {
+  display: block; margin-top: 4px; color: #bec6aa; font-size: 11px;
+  line-height: 1.75; overflow-wrap: anywhere;
+}
+#ranklist .rank-gold .rank-copy > small { color: #ded0a8; }
+#ranklist .rank-silver .rank-copy > small { color: #cad9c8; }
+#ranklist .rank-bronze .rank-copy > small { color: #dcc1a5; }
+#ranklist .rank-value {
+  display: block; min-width: 0; color: var(--rank-ink); text-align: right;
+  font-size: 17px; line-height: 1.6; letter-spacing: .015em; overflow-wrap: anywhere;
+}
+@media (hover: hover) {
+  #ranklist > .rank-entry:hover:not([style*="opacity"]) { border-color: var(--rank-edge); background: var(--rank-bg); }
+}
+.return-rank {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 160px); gap: 6px 18px;
+  width: 100%; min-width: 0; margin: 0 0 18px; padding: 17px 20px;
+  color: #eadfbd; border: 1px solid #b69d66a6; border-left: 4px solid #cbb075; border-radius: 3px;
+  background: radial-gradient(ellipse at 100% 0, #c3a05418, transparent 70%), linear-gradient(115deg, #41432d, #283827);
+  box-shadow: inset 0 1px #eadba226, 0 4px 11px #030a052b;
+  text-align: left; font-variant-numeric: tabular-nums; overflow-wrap: anywhere;
+}
+.return-rank[hidden] { display: none !important; }
+.return-rank > p { min-width: 0; margin: 0; padding: 0; }
+.return-rank .return-rank-kicker {
+  grid-column: 1 / -1; color: #c4b585; font-size: 10px; line-height: 1.5;
+  font-weight: 600; letter-spacing: .13em;
+}
+.return-rank .return-rank-place { align-self: center; color: #e8dfc2; font-size: 13px; line-height: 1.85; }
+.return-rank .return-rank-place strong { color: #ffe4a2; font-family: var(--serif); font-size: 23px; font-weight: 700; }
+.return-rank .return-rank-value {
+  align-self: center; color: #f2dba5; font-size: 21px; font-weight: 700; line-height: 1.65; text-align: right;
+}
+.return-rank .return-rank-note { grid-column: 1 / -1; color: #bdc4a8; font-size: 10px; line-height: 1.75; }
+#homeRankResult { margin-top: 9px; }
+#returnRankResult { margin-bottom: 17px; }
+@media (max-width: 650px) {
+  #ranklist > .rank-entry { grid-template-columns: 46px minmax(0, 1fr); gap: 3px 12px; padding: 12px; }
+  #ranklist .rank-place { grid-column: 1; grid-row: 1 / 3; }
+  #ranklist .rank-copy { grid-column: 2; }
+  #ranklist .rank-copy > b { font-size: 15px; }
+  #ranklist .rank-copy > small { font-size: 10px; }
+  #ranklist .rank-value { grid-column: 2; text-align: left; font-size: 16px; }
+  .return-rank { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 13px 15px; margin-bottom: 15px; }
+  .return-rank .return-rank-place { font-size: 12px; }
+  .return-rank .return-rank-place strong { font-size: 22px; }
+  .return-rank .return-rank-value { font-size: 20px; text-align: left; }
+  .return-rank .return-rank-note { margin-top: 2px; }
+}
+@media (max-width: 359px) {
+  #ranklist > .rank-entry { grid-template-columns: 38px minmax(0, 1fr); gap: 3px 9px; padding: 10px; }
+  #ranklist .rank-medal { font-size: 24px; }
+  #ranklist .rank-place b { font-size: 12px; }
+  #ranklist .rank-copy > b { font-size: 14px; }
+  .return-rank { padding-inline: 12px; }
+}
+@media (max-height: 420px) {
+  #ranklist > .rank-entry { margin-bottom: 8px; padding-block: 10px; }
+  .return-rank { margin-bottom: 12px; padding-block: 10px; gap: 3px 14px; }
+  .return-rank .return-rank-place strong { font-size: 20px; }
+  .return-rank .return-rank-value { font-size: 18px; }
+}
+
 </style>
 </head>
 <body>
@@ -904,6 +1008,7 @@ body:has(#title.show) #sceneLabel, body:has(#home.show) #sceneLabel, body:has(#d
     <div id="rank" class="overlay" style="z-index:7">
       <h2>👑 持ち帰り王ランキング</h2>
       <div class="desc">一度の冒険で持ち帰った絵の売却総額を競う。帰還・踏破すると自動で登録される。</div>
+      <p class="desc">同じ金額の場合は、先に記録した冒険が上位になります。</p>
       <div id="ranklist"></div>
       <div class="row" style="align-items:stretch">
         <input id="pname" maxlength="12" placeholder="プレイヤー名（12文字まで）" style="flex:1;min-width:120px;padding:10px;border-radius:8px;border:1px solid var(--line);background:#221f2c;color:var(--txt);font-family:inherit;font-size:14px">
@@ -940,6 +1045,7 @@ body:has(#title.show) #sceneLabel, body:has(#home.show) #sceneLabel, body:has(#d
     </dialog>
     <div id="returnChoice" class="overlay" role="dialog" aria-modal="true" aria-labelledby="returnTitle" style="z-index:9">
       <header class="return-heading"><p class="return-kicker">工房の荷ほどき</p><h2 id="returnTitle" tabindex="-1">持ち帰った品物を整理</h2></header>
+      <div id="returnRankResult" class="return-rank" role="status" hidden></div>
       <p id="returnInfo" class="return-info" aria-live="polite"></p>
       <div id="returnPick">
         <p class="desc">売る品物を選んで、残りを倉庫に収めよう。売値は1個につき1モコ。<br>預かり品は保存されています。整理が済むまでは次の冒険に出発できません。</p>
@@ -971,11 +1077,13 @@ body:has(#title.show) #sceneLabel, body:has(#home.show) #sceneLabel, body:has(#d
     <div id="end" class="overlay" style="justify-content:center;text-align:center">
       <h2 id="endTitle"></h2>
       <p id="endText" style="color:var(--dim);line-height:1.7;font-size:14px;margin-bottom:16px"></p>
+      <div id="endRankResult" class="return-rank" role="status" hidden></div>
       <button class="btn main" style="flex:none" onclick="openHome()">工房へ戻る</button>
     </div>
     <div id="home" class="overlay" style="text-align:center;justify-content:center">
       <h2>🏠 工房モコファク</h2>
       <div id="homeSale" class="desc" style="min-height:1em"></div>
+      <div id="homeRankResult" class="return-rank" role="status" hidden></div>
       <canvas id="homeCv" width="340" height="160" style="width:100%;max-width:340px;margin:0 auto;border-radius:10px;display:block;border:1px solid var(--line)"></canvas>
       <div style="max-width:340px;width:100%;margin:6px auto 0">
         <div id="rankProg" style="height:8px;background:#000;border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:0;background:var(--acc);transition:width .4s"></i></div>
@@ -1109,6 +1217,7 @@ function delRun(){store.del('mocco_run');}
 function resumeGame(){
   if(hasReturnItems()){openHome();return;}
   const r=store.get('mocco_run');if(!r)return;
+  clearReturnRank();
   document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('show'));
   logs=[];
   G={dg:DUNGEONS.find(d=>d.id===r.dg)||DUNGEONS[1],floor:r.floor,turn:r.turn,f:r.f,mons:r.mons,items:r.items,traps:r.traps||[],mhRoom:r.mh||null,p:r.p,over:false,fx:null};
@@ -1378,13 +1487,20 @@ function openHome(){
 }
 // ===== 持ち帰り王ランキング =====
 const RANK_API='https://script.google.com/macros/s/AKfycbz_PYSdpqk0sviT1uBuK-gUsuBulzTP7tBPAhreCm9HzZ3d7UAQGgbGLHmNy0qAwKSJ5w/exec';
-let ONLINE=null;
+let ONLINE=null,RETURN_SCORE=null;
 async function fetchOnline(){
   try{
     const r=await fetch(RANK_API,{cache:'no-store'});
-    if(r.ok){const d=await r.json();if(Array.isArray(d.entries)){ONLINE=d.entries;return ONLINE;}}
+    if(r.ok){const d=await r.json();if(Array.isArray(d.entries)){
+      ONLINE=d.entries;refreshRankViews();return ONLINE;
+    }}
   }catch(e){}
+  refreshRankViews();
   return null;
+}
+function refreshRankViews(){
+  renderReturnRank();
+  if(document.getElementById('rank').classList.contains('show'))renderRankList();
 }
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 let HELP_TAB=0;
@@ -1413,11 +1529,13 @@ function localRank(){return store.get('mocco_rank_local')||[];}
 function playerName(){return META.name||'名無しの幻獣';}
 function saveName(){const v=document.getElementById('pname').value.trim().replace(/[<>&"']/g,'').slice(0,12);if(v){META.name=v;saveMeta();}openRank();}
 function registerScore(sum){
-  if(!sum||sum<=0)return;
-  const e={n:playerName(),v:sum,dg:G.dg.id,lv:G.p.lv,t:Date.now()};
+  const e={n:playerName(),v:Number.isFinite(sum)&&sum>0?sum:0,dg:G.dg.id,lv:G.p.lv,t:Date.now()};
+  RETURN_SCORE=e;
+  if(!e.v){refreshRankViews();return;}
   const loc=localRank();loc.push(e);loc.sort((a,b)=>b.v-a.v);store.set('mocco_rank_local',loc.slice(0,50));
   const pend=store.get('mocco_pending')||[];pend.push(e);store.set('mocco_pending',pend.slice(-10));
   log(`絵の売却総額${sum}モコを「持ち帰り王」に記録した！`);
+  refreshRankViews();
   syncRank();
 }
 async function syncRank(){
@@ -1446,16 +1564,43 @@ async function syncRank(){
     catch(err){store.set('mocco_pending',pend);store.del('mocco_flash');}
   }catch(e){}
 }
+function rankKey(e){return e.t+'|'+e.n+'|'+e.v;}
+function rankRows(extra=null){
+  const rows=[],seen=new Set();
+  const add=(e,src)=>{
+    if(!e||typeof e.n!=='string'||!Number.isFinite(Number(e.v))||Number(e.v)<=0)return;
+    const key=rankKey(e);if(seen.has(key))return;seen.add(key);
+    rows.push({...e,v:Number(e.v),src});
+  };
+  for(const e of ONLINE!==null?ONLINE:sharedRank())add(e,ONLINE!==null?'online':'shared');
+  for(const e of localRank())add(e,'local');
+  // Even a return below the local top 50 must have its own result, not the player's best score.
+  if(extra)add(extra,'local');
+  return rows.sort((a,b)=>b.v-a.v||(Number(a.t)||0)-(Number(b.t)||0)||(a.n<b.n?-1:a.n>b.n?1:0));
+}
+function renderReturnRank(){
+  let html='';
+  if(RETURN_SCORE){
+    const e=RETURN_SCORE,rows=rankRows(e),idx=rows.findIndex(r=>rankKey(r)===rankKey(e));
+    const provisional=idx>=0&&rows[idx].src!=='online';
+    html='<p class="return-rank-kicker">今回の持ち帰り記録</p>'+
+      (e.v>0?`<p class="return-rank-place">あなたは持ち帰りランキング <strong>${idx+1}位</strong> です。</p>`:
+        '<p class="return-rank-place">今回は絵の持ち帰りがないため、ランキング対象外です。</p>')+
+      `<p class="return-rank-value">${e.v.toLocaleString('ja-JP')}モコ</p>`+
+      `<p class="return-rank-note">${e.v>0?(provisional?'暫定順位：この端末と取得済みの記録で集計。':'取得済みのランキングでの順位です。')+'<br>':''}絵の売却額のみ。踏破・討伐ボーナスや品物の売却額は含みません。</p>`;
+  }
+  for(const id of ['endRankResult','homeRankResult','returnRankResult']){
+    const el=document.getElementById(id);el.hidden=!RETURN_SCORE;
+    if(el.innerHTML!==html)el.innerHTML=html;
+  }
+}
+function clearReturnRank(){RETURN_SCORE=null;renderReturnRank();}
 function renderRankList(){
-  const base=ONLINE!==null?ONLINE.map(e=>({...e,src:'online'})):sharedRank().map(e=>({...e,src:'shared'}));
-  const seen=new Set(base.map(e=>e.t+'|'+e.n+'|'+e.v));
-  const rows=base.slice();
-  for(const e of localRank())if(!seen.has(e.t+'|'+e.n+'|'+e.v))rows.push({...e,src:'local'});
-  rows.sort((a,b)=>b.v-a.v);
+  const rows=rankRows(RETURN_SCORE);
   const dgn={d1:'ちょっと不思議',d2:'不思議',d3:'もっと不思議',d4:'かなり不思議',d5:'すごく不思議'};
   const me=playerName();
   document.getElementById('ranklist').innerHTML=rows.length?rows.slice(0,30).map((e,i)=>
-    `<div class="item" style="${e.n===me?'border-color:var(--acc);':''}"><span>${i+1}位 <b>${esc(e.n)}</b><br><small>${dgn[e.dg]||'?'}・Lv${e.lv||'?'}${e.src==='local'?'・送信待ち':''}</small></span><b style="color:var(--btc);white-space:nowrap">${e.v}モコ</b></div>`
+    `<div class="item rank-entry${i<3?' rank-'+['gold','silver','bronze'][i]:''}${e.n===me?' rank-self':''}"><span class="rank-place">${i<3?`<span class="rank-medal" aria-hidden="true">${['🥇','🥈','🥉'][i]}</span>`:''}<b>${i+1}位</b></span><span class="rank-copy"><b>${esc(e.n)}</b><small>${dgn[e.dg]||'?'}・Lv${esc(e.lv||'?')}${e.src==='local'?'・送信待ち':''}</small></span><b class="rank-value">${e.v.toLocaleString('ja-JP')}モコ</b></div>`
   ).join(''):'<div class="desc">まだ記録がない。絵を持ち帰って初代・持ち帰り王になろう！</div>';
 }
 function openRank(){
@@ -1548,6 +1693,7 @@ function itemAt(x,y){return G.items.find(i=>i.x===x&&i.y===y);}
 // ===== ゲーム開始 =====
 function startGame(dg){
   if(hasReturnItems()){openHome();return;}
+  clearReturnRank();
   const dgd=dg||DUNGEONS[1];
   document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('show'));
   logs=[];
@@ -1904,6 +2050,7 @@ function winDepth(){
   document.getElementById('end').classList.add('show');
 }
 function gameOver(){
+  clearReturnRank();
   G.over=true;ui();draw();
   const arts=G.p.inv.filter(i=>i.t==='art').length;
   document.getElementById('endTitle').textContent='モッコメリアンは倒れた……';
