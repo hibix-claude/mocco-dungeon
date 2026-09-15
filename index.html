@@ -867,6 +867,13 @@ body:has(#title.show) #sceneLabel, body:has(#home.show) #sceneLabel, body:has(#d
 
 /* Carry-home records: medal podium and the current expedition's result. */
 #ranklist { min-width: 0; }
+#rankStatus { color: var(--dim); }
+.rank-spinner {
+  width: 13px; height: 13px; flex: none; border-radius: 50%;
+  border: 2px solid var(--line-hi); border-top-color: var(--acc);
+  animation: rankspin 0.8s linear infinite;
+}
+@keyframes rankspin { to { transform: rotate(360deg); } }
 #ranklist > .rank-entry {
   --rank-bg: linear-gradient(110deg, #313d2c, #223023);
   --rank-edge: #78805970;
@@ -1009,6 +1016,7 @@ body:has(#title.show) #sceneLabel, body:has(#home.show) #sceneLabel, body:has(#d
       <h2>👑 持ち帰り王ランキング</h2>
       <div class="desc">一度の冒険で持ち帰った絵の売却総額を競う。帰還・踏破すると自動で登録される。</div>
       <p class="desc">同じ金額の場合は、先に記録した冒険が上位になります。</p>
+      <div id="rankStatus" class="desc" role="status" aria-live="polite" hidden style="display:flex;align-items:center;gap:8px"></div>
       <div id="ranklist"></div>
       <div class="row" style="align-items:stretch">
         <input id="pname" maxlength="12" placeholder="プレイヤー名（12文字まで）" style="flex:1;min-width:120px;padding:10px;border-radius:8px;border:1px solid var(--line);background:#221f2c;color:var(--txt);font-family:inherit;font-size:14px">
@@ -1488,13 +1496,28 @@ function openHome(){
 // ===== 持ち帰り王ランキング =====
 const RANK_API='https://script.google.com/macros/s/AKfycbz_PYSdpqk0sviT1uBuK-gUsuBulzTP7tBPAhreCm9HzZ3d7UAQGgbGLHmNy0qAwKSJ5w/exec';
 let ONLINE=null,RETURN_SCORE=null;
+let RANK_FETCHING=false;
+function renderRankStatus(){
+  const el=document.getElementById('rankStatus');if(!el)return;
+  if(RANK_FETCHING){
+    el.hidden=false;
+    el.innerHTML='<span class="rank-spinner" aria-hidden="true"></span>🌐 オンラインランキングを取得中…';
+  }else if(ONLINE===null){
+    el.hidden=false;
+    el.innerHTML='⚠️ オンラインに接続できませんでした。この端末の記録のみ表示しています。';
+  }else{
+    el.hidden=true;el.innerHTML='';
+  }
+}
 async function fetchOnline(){
+  RANK_FETCHING=true;renderRankStatus();
   try{
     const r=await fetch(RANK_API,{cache:'no-store'});
     if(r.ok){const d=await r.json();if(Array.isArray(d.entries)){
-      ONLINE=d.entries;refreshRankViews();return ONLINE;
+      ONLINE=d.entries;RANK_FETCHING=false;renderRankStatus();refreshRankViews();return ONLINE;
     }}
   }catch(e){}
+  RANK_FETCHING=false;renderRankStatus();
   refreshRankViews();
   return null;
 }
@@ -1607,6 +1630,8 @@ function openRank(){
   renderRankList();
   document.getElementById('pname').value=META.name||'';
   document.getElementById('rank').classList.add('show');
+  if(ONLINE===null){RANK_FETCHING=true;}
+  renderRankStatus();
   syncRank().then(()=>fetchOnline()).then(()=>{if(document.getElementById('rank').classList.contains('show'))renderRankList();});
 }
 function closeRank(){document.getElementById('rank').classList.remove('show');}
