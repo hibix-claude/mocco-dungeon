@@ -1622,7 +1622,7 @@ function renderRankList(){
   const rows=rankRows(RETURN_SCORE);
   const dgn={d1:'ちょっと不思議',d2:'不思議',d3:'もっと不思議',d4:'かなり不思議',d5:'すごく不思議'};
   const me=playerName();
-  document.getElementById('ranklist').innerHTML=rows.length?rows.slice(0,30).map((e,i)=>
+  document.getElementById('ranklist').innerHTML=rows.length?rows.slice(0,20).map((e,i)=>
     `<div class="item rank-entry${i<3?' rank-'+['gold','silver','bronze'][i]:''}${e.n===me?' rank-self':''}"><span class="rank-place">${i<3?`<span class="rank-medal" aria-hidden="true">${['🥇','🥈','🥉'][i]}</span>`:''}<b>${i+1}位</b></span><span class="rank-copy"><b>${esc(e.n)}</b><small>${dgn[e.dg]||'?'}・Lv${esc(e.lv||'?')}${e.src==='local'?'・送信待ち':''}</small></span><b class="rank-value">${e.v.toLocaleString('ja-JP')}モコ</b></div>`
   ).join(''):'<div class="desc">まだ記録がない。絵を持ち帰って初代・持ち帰り王になろう！</div>';
 }
@@ -1856,7 +1856,7 @@ function killMon(m){
 }
 function gainXp(x){
   G.p.xp+=x;
-  while(G.p.xp>=needXp(G.p.lv)){G.p.xp-=needXp(G.p.lv);G.p.lv++;G.p.mhp+=5;G.p.hp+=5;G.p.atk+=1;if(G.p.lv%3===0)G.p.def+=1;log(`レベル${G.p.lv}に上がった！ モフモフ感が増した。`);}
+  while(G.p.xp>=needXp(G.p.lv)){G.p.xp-=needXp(G.p.lv);G.p.lv++;G.p.mhp+=5;G.p.hp=G.p.mhp;G.p.atk+=1;if(G.p.lv%3===0)G.p.def+=1;log(`レベル${G.p.lv}に上がった！ HPが全回復した。`);}
 }
 function needXp(lv){return Math.round(8*Math.pow(1.45,lv-1));}
 function actFoot(){
